@@ -1,0 +1,46 @@
+<md-content style="overflow:visible;">
+  <md-content layout="row" layout-wrap layout-padding>
+    <md-input-container  flex="100">
+      <!-- Use floating placeholder instead of label -->
+      <md-icon md-svg-icon="email"></md-icon>
+      <input ng-model="usuario.email" type="email" placeholder="Email" ng-required="true">
+      <div ng-messages="validacion.email" >
+        <div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+        <div ng-message="email">{{'EMAIL_INVALIDO' | translate}}</div>
+      </div>
+    </md-input-container>
+  </md-content>
+  <md-chips ng-model="usuario.roles" ng-click="cargarPermisos($event)" md-autocomplete-snap md-require-match>
+    <md-autocomplete
+        md-selected-item="selectedItem"
+        md-search-text="searchText"
+        md-items="item in querySearch(searchText)"
+        md-item-text="item.nombre"
+        md-no-cache="true"
+        placeholder="Buscar roles">
+      <span md-highlight-text="searchText">{{item.nombre}}</span>
+      <md-not-found>
+      No hay resultados para la búsqueda.
+     </md-not-found>
+    </md-autocomplete>
+    <md-chip-template>
+      <span>
+        <strong>{{$chip.nombre}}</strong>
+      </span>
+    </md-chip-template>
+  </md-chips>
+</md-content>
+<md-content>
+    <section ng-repeat="grupo in permisos">
+      <md-subheader class="md-accent md-hue-1"><b>{{grupo.nombre}}</b></md-subheader>
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="permiso in grupo.permisos">
+          <div class="md-list-item-text" layout="column">
+            <h3><b>{{ permiso.clave }}</b></h3>
+            <p>{{ permiso.descripcion }}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </section>
+</md-content>
+<div id="toast_parent"></div>

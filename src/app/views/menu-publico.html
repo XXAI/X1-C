@@ -1,0 +1,19 @@
+<div class="md-toolbar-tools">   
+	<md-button hide-gt-sm class="md-icon-button "  ng-click="toggleMenu()" aria-label="Menu">
+        <md-icon md-svg-icon="menu" ></md-icon>
+    </md-button>      
+	<h2>
+	  <a ng-href="#/"><md-icon md-svg-icon="logo"></md-icon> {{ 'APP_NOMBRE' | translate }}</a>
+	</h2>
+	<span flex></span>
+	
+	<md-button hide-xs hide-sm ng-repeat="item in menuPublico" ng-click="ir(item.path)"  aria-label="{{ item.titulo | translate }}" >
+		<md-icon md-svg-icon="{{item.icono}}" ></md-icon> {{ item.titulo | translate }}
+	</md-button>
+	
+	
+	
+	<md-button class="md-icon-button" aria-label="Cambiar idioma" ng-click="mostrarIdiomas($event)">
+	  <md-icon md-svg-icon="language"></md-icon>
+	</md-button>
+</div>

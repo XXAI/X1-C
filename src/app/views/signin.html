@@ -1,0 +1,43 @@
+<md-sidenav  layout="column"  class="md-sidenav-left md-whiteframe-z2" md-component-id="left-publico"  ng-include="'src/app/views/menu-publico-side-nav.html'"></md-sidenav>
+<div layout="column" flex>
+	<md-toolbar ng-include="'src/app/views/menu-publico.html'" class="md-whiteframe-z2"></md-toolbar>
+	<md-content layout="row" layout-padding layout-wrap layout-align="space-around none">
+	
+		<md-content class="md-whiteframe-z2" layout="column" flex="30" flex-md="40" flex-sm="60" flex-xs="100">
+			<md-progress-linear ng-if="cargando" class="md-accent" md-mode="indeterminate"></md-progress-linear>
+			<h1 class="md-display-4" style="font-size:2.5em; margin-bottom:0px; line-height:1em;text-align:center" translate="BIENVENIDO"></h1>
+			<div ng-if="errorSignin" layout layout-align="center"><p><md-icon md-svg-icon="alert-circle"></md-icon> {{ errorSignin | translate }}</p></div>
+			<form flex layout="column" ng-submit="signin()">
+				<md-input-container class="filtro-busqueda">
+					<label translate="EMAIL"></label>
+					<input name="email" type="email" ng-model="email" required>
+				</md-input-container>
+				<md-input-container class="filtro-busqueda">
+					<label translate="PASSWORD"></label>
+					<input name="password" type="password" ng-model="password" required>
+				</md-input-container>
+				<md-button type="submit" ng-disabled="cargando" class="md-raised md-primary" ng-click="signin()">
+					<md-icon md-svg-icon="salud-id" ></md-icon> {{ 'ENTRAR' | translate }}
+				</md-button>
+			</form>
+			<md-button style="display:inline-block" ng-href="{{urlOlvidePassword}}"  target="_blank" aria-label="{{ 'OLVIDE_PASSWORD' | translate }}">
+				<small>{{ 'OLVIDE_PASSWORD' | translate }}</small>
+				<md-icon md-svg-icon="launch" style="width:10px;height:10px;vertical-align:top;margin-top:8px"></md-icon>
+			</md-button>
+			<md-divider></md-divider>
+			<md-content style="text-align:center; margin:0px;">
+				<p hide-xs style="margin:5px;"><small>{{ 'NO_TIENES_CUENTA' | translate }}</small></p>
+				<md-button ng-href="{{urlObtenerOAuth}}" target="_blank" style="margin:0px;" aria-label="{{ 'OBTENER_CUENTA_OAUTH' | translate }}" ng-href="#/signup" class="md-accent"><md-icon md-svg-icon="exit-to-app" ></md-icon> {{ 'OBTENER_CUENTA_OAUTH' | translate }}</md-button>
+			</md-content>
+			<md-button hide-xs ng-href="{{urlOAuthInfo}}" target="_blank" aria-label="{{ 'QUE_ES_OAUTH' | translate }}">
+				<small>{{ 'QUE_ES_OAUTH' | translate }}</small>
+				<md-icon md-svg-icon="launch" style="width:10px;height:10px;vertical-align:top;margin-top:8px"></md-icon>
+			</md-button>
+		</md-content>
+	</md-content>
+	<div flex></div>
+	<md-content>
+		<md-divider></md-divider>
+		<md-content layout="row" layout-fill ng-include="'src/app/views/pie-pagina.html'"></md-content>	
+	</md-content>
+</div>

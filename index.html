@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="App">
+<head>
+	<meta charset="UTF-8">
+	<title>Plataforma Base</title>
+	<link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css"/>
+	<!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"/>-->
+	<link rel="stylesheet" href="assets/css/general.css">
+	<link rel="stylesheet" href="login.css">
+	<meta name="viewport" content="initial-scale=1" />
+</head>
+<body ng-view  layout="row">
+	
+	<script src="bower_components/angular/angular.min.js"></script>
+
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+	<script src="bower_components/angular-route/angular-route.min.js"></script>
+	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="bower_components/ngstorage/ngStorage.min.js"></script>
+	<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+	<script src="bower_components/angular-translate/angular-translate.min.js"></script>
+	<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+	<script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+	<script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
+	<script src="bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
+		
+	<script src="src/app/app.js"></script>
+	<script src="src/app/urls.js"></script>
+	<script src="src/app/constants.js"></script>
+	<script src="src/app/services.js"></script>
+	<script src="src/app/controllers.js"></script>
+	
+	<script src="src/dashboard/modulo.js"></script>
+	<script src="src/dashboard/services.js"></script>
+	<script src="src/dashboard/directives.js"></script>
+	<script src="src/dashboard/controllers.js"></script>
+
+	<script src="src/admin/usuarios/modulo.js"></script>
+	<script src="src/admin/usuarios/services.js"></script>
+	<script src="src/admin/usuarios/controllers.js"></script>
+	<script src="src/admin/roles/modulo.js"></script>
+	<script src="src/admin/roles/services.js"></script>
+	<script src="src/admin/roles/controllers.js"></script>
+</body>
+</html>

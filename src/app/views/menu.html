@@ -1,0 +1,62 @@
+<md-toolbar>
+	<div class="md-toolbar-tools  md-whiteframe-z2">
+		<md-button class="md-icon-button "  ng-click="toggleMenu()" aria-label="LogoMenu">
+	        <md-icon md-svg-icon="logo" ></md-icon>
+	    </md-button>
+		<h2 ng-show="menuIsOpen" >{{ 'APP_NOMBRE' | translate }}</h2>
+		<span flex></span>
+	</div>
+</md-toolbar>
+<md-content>
+	<md-list layout="column" ng-init="mostrarMenuUsuario = false;">
+		<md-list-item ng-show="menuIsOpen" md-theme="userInfoTheme" layout="column">
+			<img ng-src="{{loggedUser.avatar }}" class="md-avatar md-whiteframe-z2" alt="usuario" style="width:120px;height:120px;"/>
+		</md-list-item>
+
+		<md-list-item ng-hide="menuIsOpen" md-theme="userInfoTheme" ng-click="mostrarMenuUsuario = !mostrarMenuUsuario" aria-label="usuario-menu-cerrado">
+			<img ng-src="{{loggedUser.avatar}}" class="md-avatar" alt="usuario" style="width:24px;"/>
+			<md-tooltip md-direction="right" show-gt-sm>Opciones del usuario</md-tooltip>
+		</md-list-item>
+
+		<md-list-item ng-show="menuIsOpen" ng-click="mostrarMenuUsuario = !mostrarMenuUsuario">
+		  	<md-icon class="md-primary" md-svg-icon="{{(mostrarMenuUsuario)?'menu-up':'menu-down'}}"></md-icon>
+		    <p ng-show="menuIsOpen"><small>{{loggedUser.email}}</small></p>
+		</md-list-item>
+		
+		<md-content md-theme="userInfoTheme" ng-show="mostrarMenuUsuario" >
+			<md-list-item ng-click="mostrarIdiomas($event)" aria-label="'CAMBIAR_IDIOMA' | translate">
+			  	<md-icon class="md-primary" md-svg-icon="language"></md-icon>
+			    <p ng-show="menuIsOpen" translate="CAMBIAR_IDIOMA"></p>
+			    <md-tooltip md-direction="right" show-gt-sm>{{'CAMBIAR_IDIOMA' | translate}}</md-tooltip>
+			</md-list-item>
+			
+			<md-list-item ng-click="logout()" aria-label=" 'CERRAR_SESION' | translate">
+			  	<md-icon class="md-primary" md-svg-icon="exit-to-app"></md-icon>
+			    <p ng-show="menuIsOpen" translate="CERRAR_SESION"></p>
+			    <md-tooltip md-direction="right" show-gt-sm>{{'CERRAR_SESION' | translate}}</md-tooltip>
+			</md-list-item>
+			<md-divider></md-divider>
+		</md-content>
+
+		<div ng-repeat="grupo in menu">
+			<md-subheader ng-show="menuIsOpen && grupo.grupo" class="md-no-sticky">{{ grupo.grupo }}</md-subheader>
+			<md-divider></md-divider>
+			<md-list-item flex="none" ng-repeat="item in grupo.lista"  ng-click="ir(item.path)">
+			  	<md-icon ng-class="{'md-primary': menuSelected == item.path}" md-svg-icon="{{ item.icono }}">
+			  		<md-tooltip md-direction="right" show-gt-sm>{{item.titulo}}</md-tooltip>
+			  	</md-icon>
+			    <p ng-show="menuIsOpen" ng-style="menuSelected == item.path ? { 'font-weight':'bold' }: { 'font-weight': 'inherit' }">{{ item.titulo | translate }}</p>
+			</md-list-item>
+		</div>
+
+		<md-divider></md-divider>
+
+		<md-subheader ng-show="menuIsOpen" class="md-no-sticky">Ayuda</md-subheader>
+		<md-list-item ng-click="ir('/acerca-de')" aria-label=" 'ACERCA_DE' | translate">
+		  	<md-icon ng-class="{'md-primary': menuSelected == '/acerca-de'}" md-svg-icon="information">
+		  		<md-tooltip md-direction="right" show-gt-sm>{{'ACERCA_DE'|translate}}</md-tooltip>
+		  	</md-icon>
+		    <p ng-show="menuIsOpen" ng-style="menuSelected == '/acerca-de' ? { 'font-weight':'bold' }: { 'font-weight': 'inherit' }" translate="ACERCA_DE"></p>
+		</md-list-item>
+	</md-list>
+</md-content>

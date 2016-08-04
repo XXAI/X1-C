@@ -1,0 +1,62 @@
+<md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-include="'src/app/views/menu.html'"></md-sidenav>
+<div layout="column" class="relative" layout-fill role="main">
+	<md-button class="md-fab md-fab-bottom-right" ng-click="ir('usuarios/nuevo')" aria-label="{{ 'NUEVA' | translate }}" >
+		<md-icon md-svg-icon="plus"></md-icon>
+  	</md-button>
+	<md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+
+	<md-toolbar ng-show="!mostrarBarraBusqueda" class="md-whiteframe-z2">
+		<div class="md-toolbar-tools">
+			<md-button hide-gt-sm class="md-icon-button " ng-click="toggleMenu(true)" aria-label="Menu">
+		        <md-icon md-svg-icon="menu" ></md-icon>
+		    </md-button>   
+			<h2>
+			  <span>Usuarios</span>
+			</h2>
+			<span flex></span>		
+			<md-button class="md-icon-button" aria-label="buscar" ng-click="prepararBusqueda()" >
+			  <md-icon md-svg-icon="magnify"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	
+	<md-toolbar class="md-primary md-hue-1 md-whiteframe-z2" ng-show="mostrarBarraBusqueda">
+		<div class="md-toolbar-tools">
+			<md-button class="md-icon-button" ng-click="resetearLista()" aria-label="Menu">
+		        <md-icon md-svg-icon="keyboard-backspace" ></md-icon>
+		    </md-button>   
+			<md-input-container flex style="margin-bottom:0px;">
+				<label>&nbsp;</label>
+            	<input focus-me="buscarTexto" ng-model="textoBusqueda" ng-keyup="$event.keyCode == 13 ? realizarBusqueda() : null">
+          	</md-input-container>
+			<md-button class="md-icon-button" aria-label="buscar" ng-click="realizarBusqueda()">
+			  <md-icon md-svg-icon="magnify"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	
+	
+	<md-virtual-repeat-container style="height:880px;">
+		<md-list layout="column">
+      		<md-list-item  class="paciente-item" md-virtual-repeat="usuario in usuariosInfinitos" md-on-demand ng-click="ir('usuarios/'+usuario.id+'/editar')" ng-hide="!usuario.id" aria-label="usuario">
+	      		<p>{{  usuario.email }}</p>
+				<md-icon class="md-secondary"  aria-label="Eliminar" ng-click="eliminar($event,usuario.id,$index)" md-svg-icon="delete"></md-icon>
+				<md-divider></md-divider>
+      		</md-list-item>
+      		<md-list-item class="md-3-line paciente-item" ng-if="cargandoLista">
+      			<div class="md-list-item-text" ng-show="!usuario.id">
+			        <md-subheader style="background:none;">
+			        	<h2><span>Cargando...</span></h2>
+			        	<md-progress-linear md-mode="indeterminate"></md-progress-linear>
+			        </md-subheader>
+		        </div>
+      		</md-list-item>
+      		<md-list-item ng-if="((usuariosInfinitos.usuarios.length <= 0) && !cargando)">
+      			<md-subheader>
+      				No se econtraron usuarios.
+      			</md-subheader>
+      		</md-list-item>
+    	</md-list>
+    </md-virtual-repeat-container>
+	
+</div>

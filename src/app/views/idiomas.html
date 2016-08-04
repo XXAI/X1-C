@@ -1,0 +1,12 @@
+<md-bottom-sheet class="md-list md-has-header" ng-cloack>
+  <md-subheader ><md-icon md-svg-icon="language"></md-icon> {{ 'SELECCIONE_IDIOMA' | translate }}:</md-subheader>
+  <md-list>
+    <md-list-item ng-repeat="item in items">
+      <md-button  class="md-list-item-content"  ng-click="cambiarIdioma($index)">       
+        <md-icon md-svg-icon="checkbox-marked" ng-if="item.codigo == idiomaSeleccionado"></md-icon>
+        <md-icon md-svg-icon="checkbox-blank-outline" ng-if="item.codigo != idiomaSeleccionado"></md-icon>
+        <span class="md-inline-list-icon-label">{{ item.codigo | translate }} <small><strong></span>({{ item.codigo }})</strong></span></small></span>
+      </md-button>
+    </md-list-item>
+  </md-list>
+</md-bottom-sheet>

@@ -1,0 +1,15 @@
+<md-toolbar>
+	<div class="md-toolbar-tools">    
+		<md-icon md-svg-icon="logo"></md-icon>
+		<h2><a ng-href="#/">&nbsp;{{ 'APP_NOMBRE' | translate }}</a></h2>
+		<span flex></span>	
+	</div>
+</md-toolbar>
+<md-list>	
+		
+		<md-list-item ng-repeat="item in menuPublico" ng-class="{'md-primary': menuSelected== item.path}" ng-click="ir(item.path)">
+		  	<md-icon md-svg-icon="{{ item.icono }}"></md-icon>
+		    <p>{{ item.titulo | translate }}</p>			    
+		</md-list-item>
+	
+</md-list>

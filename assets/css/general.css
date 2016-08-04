@@ -1,0 +1,94 @@
+.read-only-input{
+    background-color: rgb(235, 235, 228) !important;
+}
+
+.lista-pacientes {
+	padding-top: 0px !important;
+	height: 880px;
+    min-height: 300px;
+    width: 100%;
+}
+
+.paciente-item {
+    height: 50px;
+    overflow: hidden;
+}
+
+/**
+Para el menu de navegacion
+**/
+md-sidenav.menu-principal-izq.md-closed{
+	min-width: 70px !important;
+	width: 24vw !important;
+	max-width: 70px !important;
+	overflow-y: hidden;
+}
+
+md-sidenav.menu-principal-izq.md-closed md-divider{
+	width: 70px !important;
+}
+
+md-sidenav.menu-principal-izq.md-closed md-icon{
+	margin:0px !important;
+}
+
+md-sidenav.menu-principal-izq.md-closed button.md-icon-button{
+	margin:0px !important;
+}
+
+md-sidenav.menu-principal-izq.md-closed img.md-avatar{
+	margin:0px !important;
+	width:24px;
+	height:24px;
+}
+
+md-sidenav.menu-principal-izq.md-closed div.md-list-item-inner,
+md-sidenav.menu-principal-izq.md-closed div.ng-scope{
+	width: 24px !important;
+}
+
+md-sidenav.menu-principal-izq.md-closed md-content{
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+md-toolbar.md-dashboardTheme-theme{
+	min-height: auto;
+}
+md-toolbar.md-dashboardTheme-theme .md-toolbar-tools{
+	height: auto;
+}
+/**
+Para el autocomplete de CLUES
+**/
+.autocomplete-custom-template li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  white-space: normal;
+}
+.autocomplete-custom-template li:last-child {
+  border-bottom-width: 0;
+}
+.autocomplete-custom-template .item-title,
+.autocomplete-custom-template .item-metadata {
+  display: block;
+  line-height: 1;
+}
+.autocomplete-custom-template .item-footer {
+  display: block;
+  padding:1px;
+}
+.autocomplete-custom-template md-icon {
+  color: inherit !important;
+}
+.clues-estatus-operacion{
+	color:#115E01;
+}
+.clues-estatus-no-operacion{
+	color:#860000;
+}
+.clues-estatus-pendiente{
+	color:#9C9C00;
+}

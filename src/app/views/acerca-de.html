@@ -1,0 +1,21 @@
+<md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"   ng-include="'src/app/views/menu.html'"></md-sidenav>
+<div layout="column" class="relative" layout-fill role="main">
+	<md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-5px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+	<md-toolbar class="md-whiteframe-z2">
+		<div class="md-toolbar-tools">    
+			<md-button hide-gt-sm class="md-icon-button" ng-click="toggleMenu(true)" aria-label="Menu">
+		        <md-icon md-svg-icon="menu" ></md-icon>
+		    </md-button>   
+			<h2>
+			  <span translate="ACERCA_DE"></span>
+			</h2>
+			<span flex></span>
+		</div>
+	</md-toolbar>
+	<md-content layout-padding>
+		<h1 class="md-title">Platforma Base Angular v. 1</h1>
+		<p>Plataforma Base con Angular Material</p>
+		<h1 class="md-title">Creado por</h1>
+		<p>Hugo C. Gutiérrez Corzo</p>
+	</md-content>
+</div>

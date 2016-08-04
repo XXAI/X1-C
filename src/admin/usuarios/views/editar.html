@@ -1,0 +1,39 @@
+<md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column"  class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"   ng-include="'src/app/views/menu.html'"></md-sidenav>
+<div layout="column" class="relative" layout-fill role="main">
+	<md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+	<md-toolbar layout="column" class="md-whiteframe-z2">
+		<div class="md-toolbar-tools">    
+			<md-button hide-gt-md class="md-icon-button " ng-click="toggleMenu(true)" aria-label="Menu">
+		        <md-icon md-svg-icon="menu" ></md-icon>
+		    </md-button>		
+			<h2>
+			  <span>{{ 'EDITAR' | translate }} </span>
+			</h2>
+			
+			<span flex></span>
+			<md-button hide-sm hide-xs ng-click="ir('usuarios')"   aria-label="{{ 'REGRESAR' | translate }}">
+			  <md-icon md-svg-icon="keyboard-backspace"></md-icon>
+			  {{ 'REGRESAR' | translate }}
+			</md-button>
+			<md-button hide-sm hide-xs ng-click="eliminar(usuario.id)" ng-disabled="cargando" aria-label="{{ 'ELIMINAR' | translate }}">
+			  <md-icon md-svg-icon="delete"></md-icon>
+			  {{ 'ELIMINAR' | translate }}
+			</md-button>		 
+			<md-button hide-sm hide-xs ng-click="guardar()" ng-disabled="cargando" aria-label="{{ 'GUARDAR' | translate }}">
+			  <md-icon md-svg-icon="content-save"></md-icon>
+			  {{ 'GUARDAR' | translate }}
+			</md-button>
+
+			<md-button class="md-icon-button" hide-gt-sm ng-click="ir('usuarios')"   aria-label="{{ 'REGRESAR' | translate }}">
+			  <md-icon md-svg-icon="keyboard-backspace"></md-icon>
+			</md-button> 
+			<md-button class="md-icon-button" hide-gt-sm show-sm ng-click="eliminar(usuario.id)"  aria-label="{{ 'ELIMINAR' | translate }}">
+			  <md-icon md-svg-icon="delete"></md-icon>
+			</md-button>
+			<md-button class="md-icon-button" hide-gt-sm ng-disabled="cargando"  show-sm ng-click="guardar()"  aria-label="{{ 'GUARDAR' | translate }}">
+			  <md-icon md-svg-icon="content-save"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-content layout="column" layout-padding flex ng-include="'src/admin/usuarios/views/form.html'"></md-content>
+</div>

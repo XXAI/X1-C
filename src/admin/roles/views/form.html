@@ -1,0 +1,22 @@
+<md-input-container>
+	<label>Nombre</label>
+	<input ng-model="rol.nombre">
+	<div ng-messages="validacion.nombre" >
+		<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+	</div>
+</md-input-container>
+
+<md-content>
+    <section ng-repeat="grupo in permisos">
+      <md-subheader class="md-accent md-hue-1"><b>{{grupo.nombre}}</b></md-subheader>
+      <md-list layout-padding>
+        <md-list-item ng-click="editarPermiso(permiso)" class="md-2-line" ng-repeat="permiso in grupo.permisos">
+          <div class="md-list-item-text" layout="column">
+            <h3><b>{{ permiso.clave }}</b></h3>
+            <p>{{ permiso.descripcion }}</p>
+          </div>
+          <md-checkbox ng-click="editarPermiso(permiso)" class="md-secondary" ng-model="permiso.seleccionado" aria-label="{{permiso.clave}}"></md-checkbox>
+        </md-list-item>
+      </md-list>
+    </section>
+</md-content>

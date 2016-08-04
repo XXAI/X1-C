@@ -1,0 +1,9 @@
+(function(){
+	'use strict';
+	angular.module('App').constant('URLS', {
+    	BASE: 'http://laravel-ip/laravel-api/public',
+    	BASE_API: 'http://laravel-ip/laravel-api/public/v1',
+		OAUTH_CLIENTE: 'http://sistemas.salud.chiapas.gob.mx/salud-id',
+		OAUTH_API: 'http://187.217.219.54/v1',		
+   	});	
+})();
