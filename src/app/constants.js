@@ -5,15 +5,15 @@
                         { 
                             grupo: false,
                             lista: [
-                                { titulo: 'Tablero', key: 'DASHBOARD', path: '/dashboard', icono: 'view-dashboard' }
+                                { titulo: 'Actas', key: '86BBF4AA1A948', path: '/actas', icono: 'file-document-box' }
                             ]
                          }
                          ,
                          { 
                             grupo:'Administrador' ,
                             lista: [
-                                { titulo: 'Usuarios', key: 'LISTAR_USUARIOS', path: '/usuarios', icono: 'account' },
-                                { titulo: 'Roles', key: 'LISTAR_ROLES', path: '/roles', icono: 'account-settings-variant' }
+                                { titulo: 'Usuarios', key: '56C1E52B98B62', path: '/usuarios', icono: 'account' },
+                                { titulo: 'Roles', key: '5CA553826561D', path: '/roles', icono: 'account-settings-variant' }
                             ]
                          }
 						 ,

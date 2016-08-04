@@ -13,7 +13,8 @@
 									'http-auth-interceptor',
 									'DashboardModule',
 									'UsuariosModule',
-									'RolesModule']);
+									'RolesModule',
+									'ActasModule']);
 	   
 	app.config(['$mdThemingProvider','$mdIconProvider','$routeProvider','$httpProvider','$translateProvider','$mdDateLocaleProvider',function($mdThemingProvider,$mdIconProvider,$routeProvider,$httpProvider,$translateProvider,$mdDateLocaleProvider){
 		$mdDateLocaleProvider.months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -54,6 +55,29 @@
 	    $mdThemingProvider.theme('altTheme')
 	    		.primaryPalette('green')
 	    		.accentPalette('light-green');
+	    $mdThemingProvider.definePalette('greyPalette', {
+            '50': 'eeeeee',
+            '100': 'eeeeee',
+            '200': 'eeeeee',
+            '300': 'eeeeee',
+            '400': 'eeeeee',
+            '500': 'eeeeee',
+            '600': 'eeeeee',
+            '700': 'eeeeee',
+            '800': 'eeeeee',
+            '900': 'eeeeee',
+            'A100': 'eeeeee',
+            'A200': 'eeeeee',
+            'A400': 'eeeeee',
+            'A700': 'eeeeee',
+            'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
+                                                // on this palette should be dark or light
+            'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
+            '200', '300', '400', 'A100','500'],
+            'contrastLightColors': undefined    // could also specify this if default was 'dark'
+        });
+        $mdThemingProvider.theme('grey', 'default')
+				.primaryPalette('greyPalette');
 
 			  
 		// Configuramos las rutas

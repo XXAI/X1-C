@@ -136,7 +136,7 @@
 
 					if($mdMedia('gt-sm')){
 	                    $mdToast.show({
-	                        template: '<md-toast><strong>'+titulo+'</strong>&nbsp;'+mensaje+'<md-toast>',
+	                        template: '<md-toast><div class="md-toast-content"><strong>'+titulo+'</strong>&nbsp;'+mensaje+'</div><md-toast>',
 	                        parent : $document[0].querySelector(contenedor),
 	                        hideDelay: duracion,
 	                        position: posicion
@@ -199,6 +199,13 @@
 						i -= 1;
 					}
 				}
+
+				menu.unshift({ 
+                        grupo: false,
+                        lista: [
+                            { titulo: 'Dashboard', key: 'DASHBOARD', path: '/dashboard', icono: 'view-dashboard' }
+                        ]
+                     });
 			}
 			if($localStorage.plataforma_app.access_token){
 				updateMenu();
