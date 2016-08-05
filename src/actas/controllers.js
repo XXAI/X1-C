@@ -297,6 +297,31 @@
             $scope.acta.insumos = [];
             $scope.acta.subtotal = 0;
             $scope.acta.total = 0;
+            $scope.acta.firma_director = res.data.requisiciones[0].firma_director;
+            $scope.acta.firma_solicita = res.data.requisiciones[0].firma_solicita;
+
+            for(var i in $scope.acta.requisiciones){
+                var requisicion = $scope.acta.requisiciones[i];
+                for(var j in requisicion.insumos){
+                    var insumo = {};
+                    
+                    insumo.descripcion = requisicion.insumos[j].descripcion;
+                    insumo.clave = requisicion.insumos[j].clave;
+                    insumo.lote = requisicion.insumos[j].lote;
+                    insumo.unidad = requisicion.insumos[j].unidad;
+                    insumo.precio = requisicion.insumos[j]['precio_'+requisicion.empresa_clave];
+
+                    insumo.insumo_id = requisicion.insumos[j].id;
+                    insumo.cantidad = requisicion.insumos[j].pivot.cantidad;
+                    insumo.total = parseFloat(requisicion.insumos[j].pivot.total);
+                    insumo.cantidad_aprovada = requisicion.insumos[j].pivot.cantidad_aprovada;
+                    insumo.total_aprovado = parseFloat(requisicion.insumos[j].pivot.total_aprovado);
+                    insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
+
+                    requisicion.insumos[j] = insumo;
+                }
+            }
+            /*
             var requisiciones = {};
             if(res.data.requisiciones.length){
                 for(var i in res.data.requisiciones){
@@ -339,21 +364,40 @@
                     }
                 }
             }
-
-            if(parseFloat($scope.acta.iva) == 0){
-                $scope.acta.iva = undefined;
-            }
-            if($scope.acta.iva){
-                //
-            }else{
-                $scope.acta.total = $scope.acta.subtotal;
-            }
-            res.data.requisiciones = requisiciones;
+            */
             $scope.cargando = false;
         },function(e){
             Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrió un error al intentar obtener los datos.'});
             console.log(e);
         });
+
+        $scope.cambiarValor = function(insumo){
+            insumo.total_aprovado = insumo.cantidad_aprovada * insumo.precio;
+            $scope.actualizarTotal($scope.selectedIndex);
+        }
+
+        $scope.cancelarValidacion = function(){
+            $scope.actualizarTotal($scope.validandoRequisicion);
+            $scope.validandoRequisicion = undefined;
+        }
+
+        $scope.actualizarTotal = function(index){
+            var total = 0;
+            var requisicion = $scope.acta.requisiciones[index];
+            for(var i in requisicion.insumos){
+                if($scope.validandoRequisicion != undefined){
+                    total += requisicion.insumos[i].total_aprovado;
+                }else{
+                    total += requisicion.insumos[i].total;
+                }
+            }
+            requisicion.sub_total = total;
+            if(parseFloat(requisicion.iva) > 0){
+                //
+            }else{
+                requisicion.gran_total = total;
+            }
+        };
 
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();
         if(!$scope.menuCerrado){
