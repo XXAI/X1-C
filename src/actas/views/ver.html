@@ -32,32 +32,32 @@
 	</md-toolbar>
 	<md-content layout="column" flex>
 		<md-content id="modulo-contenedor" layout="column" flex>
-			<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding >
-				<md-input-container flex="25" style="margin-bottom:0px;">
+			<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
 					<label>Ciudad</label>
 					<input value="{{acta.ciudad}}" readonly>
 				</md-input-container>
-				<md-input-container flex="25" style="margin-bottom:0px;">
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
 					<label>Fecha</label>
 					<input value="{{acta.fecha | date:'MM/dd/yyyy'}}" readonly>
 				</md-input-container>
-				<md-input-container flex="25" style="margin-bottom:0px;">
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
 					<label>Hora de inicio</label>
 					<input value="{{acta.hora_inicio_date | date:'HH:mm'}}" readonly>
 				</md-input-container>
-				<md-input-container flex="25" style="margin-bottom:0px;">
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
 					<label>Hora de termino</label>
 					<input value="{{acta.hora_termino_date | date:'HH:mm'}}" readonly>
 				</md-input-container>
-				<md-input-container flex="33" style="margin-bottom:0px;">
+				<md-input-container flex="33" style="margin-bottom:0px;height:46px;">
 					<label>Lugar de Reunion</label>
 					<input value="{{acta.lugar_reunion}}" readonly>
 				</md-input-container>
-				<md-input-container flex="33" style="margin-bottom:0px;">
+				<md-input-container flex="33" style="margin-bottom:0px;height:46px;">
 					<label>Director de la Unidad Medica</label>
 					<input value="{{acta.firma_director}}" readonly>
 				</md-input-container>
-				<md-input-container flex="33" style="margin-bottom:0px;">
+				<md-input-container flex="33" style="margin-bottom:0px;height:46px;">
 					<label>Administrador</label>
 					<input value="{{acta.firma_solicita}}" readonly>
 				</md-input-container>
@@ -66,7 +66,8 @@
 			<md-tabs  flex layout="column"  md-stretch-tabs="always"  md-border-bottom class="md-hue-1" md-selected="selectedIndex">
 				<md-tab ng-repeat="requisicion in acta.requisiciones track by $index" ng-disabled="(validandoRequisicion != $index && validandoRequisicion != undefined)">
 					<md-tab-label>
-						<md-icon md-svg-icon="information" ng-if="validandoRequisicion == $index"></md-icon>
+						<md-icon md-svg-icon="checkbox-marked" ng-if="requisicion.validado"></md-icon>
+						<md-icon md-svg-icon="pencil-box" ng-if="validandoRequisicion == $index"></md-icon>
 						<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}</span>
 					</md-tab-label>
 					<md-tab-body>
@@ -93,13 +94,13 @@
 											<div flex="15" style="text-align:center;">{{insumo.unidad}}</div>
 											<div flex="15" style="text-align:center;">$ {{insumo.precio | number:2}}</div>
 											<div flex="10" layout="column" style="text-align:center;">
-												<span ng-if="validandoRequisicion == undefined">{{insumo.cantidad | number}}</span>
+												<span ng-if="validandoRequisicion == undefined">{{((requisicion.validado)?insumo.cantidad_aprovada:insumo.cantidad) | number}}</span>
 												<md-input-container style="margin:0px;" ng-if="validandoRequisicion != undefined">
 													<input type="numer" aria-label="insumo-{{insumo.id}}" ng-model="insumo.cantidad_aprovada" ng-change="cambiarValor(insumo)">
-													<div class="hint">{{insumo.cantidad | number}}</div>
+													<div class="hint"><small>{{insumo.cantidad | number}}</small></div>
 												</md-input-container>
 											</div>
-											<div flex="15" style="text-align:center;">$ {{((validandoRequisicion == undefined)?insumo.total:insumo.total_aprovado) | number:2}}</div>
+											<div flex="15" style="text-align:center;">$ {{((validandoRequisicion != undefined || requisicion.validado)?insumo.total_aprovado:insumo.total) | number:2}}</div>
 										</div>
 										<md-divider></md-divider>
 									</md-list-item>
@@ -124,8 +125,14 @@
 			</md-tabs>
 			<md-content layout="row" flex="none" layout-wrap>
 				<div flex></div>
-				<md-button ng-show="validandoRequisicion != selectedIndex" class="md-raised md-primary" ng-click="validandoRequisicion = selectedIndex">
+				<md-button ng-show="validandoRequisicion != selectedIndex && !acta.requisiciones[selectedIndex].validado" class="md-raised md-primary" ng-click="iniciarValidacion()">
 					<md-icon md-svg-icon="check" ></md-icon> Validar Requisición {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}
+				</md-button>
+				<md-button ng-show="acta.requisiciones[selectedIndex].validado" class="md-raised" ng-click="verRequisicion()">
+					<md-icon md-svg-icon="arrow-right-bold" ></md-icon> Ir a Requisición
+				</md-button>
+				<md-button ng-show="validandoRequisicion != undefined" class="md-raised md-accent" ng-click="guardarValidacion()">
+					<md-icon md-svg-icon="content-save" ></md-icon> Generar Requisición
 				</md-button>
 				<md-button ng-show="validandoRequisicion != undefined" class="md-raised" ng-click="cancelarValidacion()">
 					<md-icon md-svg-icon="close" ></md-icon> Cancelar

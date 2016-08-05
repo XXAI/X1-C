@@ -302,6 +302,9 @@
 
             for(var i in $scope.acta.requisiciones){
                 var requisicion = $scope.acta.requisiciones[i];
+                if(requisicion.estatus){
+                    requisicion.validado = true;
+                }
                 for(var j in requisicion.insumos){
                     var insumo = {};
                     
@@ -321,50 +324,6 @@
                     requisicion.insumos[j] = insumo;
                 }
             }
-            /*
-            var requisiciones = {};
-            if(res.data.requisiciones.length){
-                for(var i in res.data.requisiciones){
-                    var requisicion = res.data.requisiciones[i];
-                    requisiciones[requisicion.tipo_requisicion] = {
-                        id: requisicion.id,
-                        lotes:requisicion.lotes,
-                        pedido: requisicion.pedido,
-                        tipo_requisicion: requisicion.tipo_requisicion,
-                        dias_surtimiento: requisicion.dias_surtimiento,
-                        sub_total: 0,
-                        gran_total: 0,
-                        iva: 0,
-                        insumos: []
-                    }
-
-                    $scope.acta.firma_director = requisicion.firma_director;
-                    $scope.acta.firma_solicita = requisicion.firma_solicita;
-
-                    $scope.acta.iva = requisicion.iva;
-
-                    for(var j in requisicion.insumos){
-
-                        var insumo = {};
-                        
-                        insumo.descripcion = requisicion.insumos[j].descripcion;
-                        insumo.clave = requisicion.insumos[j].clave;
-                        insumo.lote = requisicion.insumos[j].lote;
-                        insumo.unidad = requisicion.insumos[j].unidad;
-                        insumo.precio = requisicion.insumos[j]['precio_'+requisicion.empresa_clave];
-
-                        insumo.insumo_id = requisicion.insumos[j].id;
-                        insumo.cantidad = requisicion.insumos[j].pivot.cantidad;
-                        insumo.total = parseFloat(requisicion.insumos[j].pivot.total);
-                        insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
-                        
-                        $scope.acta.subtotal += insumo.total;
-
-                        $scope.acta.insumos.push(insumo);
-                    }
-                }
-            }
-            */
             $scope.cargando = false;
         },function(e){
             Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrió un error al intentar obtener los datos.'});
@@ -376,16 +335,43 @@
             $scope.actualizarTotal($scope.selectedIndex);
         }
 
+        $scope.guardarValidacion = function(){
+            if($scope.validandoRequisicion != undefined){
+                $scope.cargando = true;
+                var requisicion = $scope.acta.requisiciones[$scope.selectedIndex];
+                requisicion.estatus = 1;
+                $scope.actualizarTotal($scope.selectedIndex);
+                ActasDataApi.validarRequisicion(requisicion.id,requisicion,function(res){
+                    requisicion.validado = true;
+                    $scope.validandoRequisicion = undefined;
+                    $scope.cargando = false;
+                },function(e){
+                    $scope.cargando = false;
+                    console.log(e);
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrión un error al intentar validar la requisicion.'});
+                });
+            }
+        }
+
+        $scope.iniciarValidacion = function(){
+            if(!$scope.acta.requisiciones[$scope.selectedIndex].validado){
+                $scope.validandoRequisicion = $scope.selectedIndex;
+                $scope.actualizarTotal($scope.selectedIndex);
+            }else{
+                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Esta requisición ya fue validada.'});
+            }
+        }
+
         $scope.cancelarValidacion = function(){
-            $scope.actualizarTotal($scope.validandoRequisicion);
             $scope.validandoRequisicion = undefined;
+            $scope.actualizarTotal($scope.selectedIndex);
         }
 
         $scope.actualizarTotal = function(index){
             var total = 0;
             var requisicion = $scope.acta.requisiciones[index];
             for(var i in requisicion.insumos){
-                if($scope.validandoRequisicion != undefined){
+                if($scope.validandoRequisicion != undefined || requisicion.validado){
                     total += requisicion.insumos[i].total_aprovado;
                 }else{
                     total += requisicion.insumos[i].total;
@@ -397,6 +383,12 @@
             }else{
                 requisicion.gran_total = total;
             }
+        };
+
+        $scope.verRequisicion = function(){
+            $scope.cargando = true;
+            var requisicion = $scope.acta.requisiciones[$scope.selectedIndex];
+            $location.path('requisiciones/'+requisicion.id+'/ver');
         };
 
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();

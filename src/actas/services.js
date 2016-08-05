@@ -9,6 +9,9 @@
 			   ver: function (id, success, error) {
 	               $http.get(URLS.BASE_API + '/actas/' + id).success(success).error(error)
 	           },
+	           validarRequisicion: function (id, data, success, error) {
+	               $http.put(URLS.BASE_API + '/requisiciones/' + id, data).success(success).error(error)
+	           },
 			   crear: function (file, success, error) {
 			   		var fd = new FormData();
 			        fd.append('zipfile', file);

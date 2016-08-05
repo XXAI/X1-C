@@ -5,7 +5,9 @@
                         { 
                             grupo: false,
                             lista: [
-                                { titulo: 'Actas', key: '86BBF4AA1A948', path: '/actas', icono: 'file-document-box' }
+                                { titulo: 'Actas', key: '86BBF4AA1A948', path: '/actas', icono: 'file-document-box' },
+                                { titulo: 'Requisiciones', key: '2DDA5B8933685', path: '/requisiciones', icono: 'file-check' },
+                                { titulo: 'Pedidos', key:'D9B1342FA3DF3', path:'/pedidos', icono: 'file-lock'}
                             ]
                          }
                          ,
