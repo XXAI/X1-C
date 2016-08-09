@@ -53,9 +53,9 @@
       		<md-list-item class="md-2-line paciente-item" md-virtual-repeat="requisicion in requisicionesInfinitas" md-on-demand ng-click="ir('requisiciones/'+requisicion.id+'/ver')" ng-hide="!requisicion.id">
       			<md-icon hide-xs ng-if="requisicion.id" md-svg-icon="{{(requisicion.estatus == 2)?'file-check':'file'}}" class="md-avatar-icon"></md-icon>
 				<div class="md-list-item-text">
-		        	<h3>{{ requisicion.folio }}</h3>
-		        	<h4><strong>Pedido:</strong> {{requisicion.pedido}}</h4>
-		        	<h4><strong>Tipo: </strong> {{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}</h4>
+		        	<h3>{{ requisicion.folio }} <small><strong>Requisición No. {{ requisicion.numero }}</strong></small></h3>
+		        	<h4>{{ requisicion.clues_nombre }}</h4>
+		        	<h4><strong>Pedido:</strong> {{requisicion.pedido}} <strong>Tipo: </strong> {{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}</h4>
 		        </div>
 				<md-divider></md-divider>
       		</md-list-item>

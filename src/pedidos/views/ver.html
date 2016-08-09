@@ -22,14 +22,18 @@
 			<md-button ng-click="toggleDatosRequisicion=!toggleDatosRequisicion"  ng-disabled="cargando" aria-label="Toggle Datos Acta">
 				<md-icon md-svg-icon="{{(toggleDatosRequisicion)?'format-vertical-align-top':'format-vertical-align-bottom'}}"></md-icon>
 				<span show-gt-sm>
-				{{ (toggleDatosRequisicion)?'OCULTAR DATOS DE LA REQUISICIÓN':'MOSTRAR DATOS DE LA REQUISICIÓN' | translate }}
+				{{ (toggleDatosRequisicion)?'OCULTAR DATOS':'MOSTRAR DATOS' | translate }}
 				</span>
 				<md-tooltip hide-gt-sm md-direction="down">
-					{{ (toggleDatosRequisicion)?'OCULTAR DATOS DE LA REQUISICIÓN':'MOSTRAR DATOS DE LA REQUISICIÓN' | translate }}
+					{{ (toggleDatosRequisicion)?'OCULTAR DATOS':'MOSTRAR DATOS' | translate }}
 				</md-tooltip>
 			</md-button>
 
 			<md-icon md-svg-icon="dots-vertical" style="color: #005DA7;"></md-icon>
+
+			<md-button ng-if="(requisicion.estatus == 2)" class="md-icon-button" ng-disabled="cargando" ng-click="imprimir()"  aria-label="{{ 'IMPRIMIR' | translate }}">
+			  <md-icon md-svg-icon="printer"></md-icon>
+			</md-button>
 
 			<md-button ng-if="requisicion.estatus != 3" class="md-accent md-raised" hide-xs hide-sm ng-click="validarPedido($event)" ng-disabled="cargando"  aria-label="{{ 'VALIDAR PEDIDO' | translate }}">
 			  <md-icon md-svg-icon="check"></md-icon>
@@ -37,14 +41,6 @@
 			</md-button>
 			<md-button class="md-icon-button md-accent" ng-if="requisicion.estatus != 3" hide-gt-sm  ng-disabled="cargando" ng-click="validarPedido($event)"  aria-label="{{ 'VALIDAR PEDIDO' | translate }}">
 			  <md-icon md-svg-icon="check"></md-icon>
-			</md-button>
-
-			<md-button ng-if="(requisicion.estatus == 2)" hide-xs hide-sm ng-click="imprimir()" ng-disabled="cargando"  aria-label="{{ 'IMPRIMIR' | translate }}">
-			  <md-icon md-svg-icon="printer"></md-icon>
-			  {{ 'IMPRIMIR' | translate }}
-			</md-button>		 
-			<md-button ng-if="(requisicion.estatus == 2)" class="md-icon-button"  hide-gt-sm ng-disabled="cargando" ng-click="imprimir()"  aria-label="{{ 'IMPRIMIR' | translate }}">
-			  <md-icon md-svg-icon="printer"></md-icon>
 			</md-button>
 
 			<md-button ng-if="requisicion.estatus == 2" hide-xs hide-sm ng-click="guardar()" ng-disabled="cargando"  aria-label="{{ 'GUARDAR' | translate }}">

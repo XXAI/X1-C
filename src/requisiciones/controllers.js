@@ -96,6 +96,8 @@
                             pedido: res.data[i].pedido,
                             clues: res.data[i].clues,
                             tipo_requisicion: res.data[i].tipo_requisicion,
+                            empresa: res.data[i].empresa_clave,
+                            clues_nombre: res.data[i].clues_nombre,
                             estatus: res.data[i].estatus
                         };
                         
