@@ -126,7 +126,7 @@
 			<md-content layout="row" flex="none" layout-wrap>
 				<div flex></div>
 				<md-button ng-show="validandoRequisicion != selectedIndex && !acta.requisiciones[selectedIndex].validado" class="md-raised md-primary" ng-click="iniciarValidacion()">
-					<md-icon md-svg-icon="check" ></md-icon> Validar Requisición {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}
+					<md-icon md-svg-icon="check" ></md-icon> Validar {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}
 				</md-button>
 				<md-button ng-show="acta.requisiciones[selectedIndex].validado" class="md-raised" ng-click="verRequisicion()">
 					<md-icon md-svg-icon="arrow-right-bold" ></md-icon> Ir a Requisición

@@ -92,9 +92,12 @@
                         var obj = {
                             id: res.data[i].id,
                             folio: res.data[i].folio,
-                            fecha: new Date(res.data[i].fecha + ' 00:00:00'),
-                            total_importe: 0,
-                            clues_nombre:res.data[i].unidad_medica.nombre,
+                            numero: res.data[i].numero,
+                            pedido: res.data[i].pedido,
+                            clues: res.data[i].clues,
+                            tipo_requisicion: res.data[i].tipo_requisicion,
+                            empresa: res.data[i].empresa_clave,
+                            clues_nombre: res.data[i].clues_nombre,
                             estatus: res.data[i].estatus
                         };
                         
@@ -198,51 +201,24 @@
         $scope.cargando = true;
 
         RequisicionesDataApi.ver($routeParams.id,function(res){
-            $scope.acta = res.data;
+            $scope.requisicion = res.data;
 
-            if($scope.acta.fecha){
-                $scope.acta.fecha = new Date(res.data.fecha);
-            }
+            for(var j in $scope.requisicion.insumos){
+                var insumo_serv = $scope.requisicion.insumos[j];
+                var insumo = {};
+                
+                insumo.descripcion = insumo_serv.descripcion;
+                insumo.clave = insumo_serv.clave;
+                insumo.lote = insumo_serv.lote;
+                insumo.unidad = insumo_serv.unidad;
+                insumo.precio = insumo_serv['precio_'+$scope.requisicion.empresa_clave];
 
-            if($scope.acta.hora_inicio){
-                var horaInicio = $scope.acta.hora_inicio.split(':')
-                $scope.acta.hora_inicio_date =  new Date(1970, 0, 1, horaInicio[0], horaInicio[1], 0);
-            }
+                insumo.insumo_id = insumo_serv.id;
+                insumo.cantidad = insumo_serv.pivot.cantidad_aprovada;
+                insumo.total = parseFloat(insumo_serv.pivot.total_aprovado);
+                insumo.requisicion_id = insumo_serv.pivot.requisicion_id;
 
-            if($scope.acta.hora_termino){
-                var horaTermino = $scope.acta.hora_termino.split(':')
-                $scope.acta.hora_termino_date =  new Date(1970, 0, 1, horaTermino[0], horaTermino[1], 0);
-            }
-
-            $scope.acta.insumos = [];
-            $scope.acta.subtotal = 0;
-            $scope.acta.total = 0;
-            //$scope.acta.firma_director = res.data.requisiciones[0].firma_director;
-            //$scope.acta.firma_solicita = res.data.requisiciones[0].firma_solicita;
-
-            for(var i in $scope.acta.requisiciones){
-                var requisicion = $scope.acta.requisiciones[i];
-                if(requisicion.estatus){
-                    requisicion.validado = true;
-                }
-                for(var j in requisicion.insumos){
-                    var insumo = {};
-                    
-                    insumo.descripcion = requisicion.insumos[j].descripcion;
-                    insumo.clave = requisicion.insumos[j].clave;
-                    insumo.lote = requisicion.insumos[j].lote;
-                    insumo.unidad = requisicion.insumos[j].unidad;
-                    insumo.precio = requisicion.insumos[j]['precio_'+requisicion.empresa_clave];
-
-                    insumo.insumo_id = requisicion.insumos[j].id;
-                    insumo.cantidad = requisicion.insumos[j].pivot.cantidad;
-                    insumo.total = parseFloat(requisicion.insumos[j].pivot.total);
-                    insumo.cantidad_aprovada = requisicion.insumos[j].pivot.cantidad_aprovada;
-                    insumo.total_aprovado = parseFloat(requisicion.insumos[j].pivot.total_aprovado);
-                    insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
-
-                    requisicion.insumos[j] = insumo;
-                }
+                $scope.requisicion.insumos[j] = insumo;
             }
             $scope.cargando = false;
         },function(e){
@@ -250,61 +226,44 @@
             console.log(e);
         });
 
-        $scope.cambiarValor = function(insumo){
-            insumo.total_aprovado = insumo.cantidad_aprovada * insumo.precio;
-            $scope.actualizarTotal($scope.selectedIndex);
-        }
-
-        $scope.guardarValidacion = function(){
-            if($scope.validandoRequisicion != undefined){
-                $scope.cargando = true;
-                var requisicion = $scope.acta.requisiciones[$scope.selectedIndex];
-                requisicion.estatus = 1;
-                $scope.actualizarTotal($scope.selectedIndex);
-                RequisicionesDataApi.validarRequisicion(requisicion.id,requisicion,function(res){
-                    requisicion.validado = true;
-                    $scope.validandoRequisicion = undefined;
-                    $scope.cargando = false;
-                },function(e){
-                    $scope.cargando = false;
-                    console.log(e);
-                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrión un error al intentar validar la requisicion.'});
-                });
-            }
-        }
-
-        $scope.iniciarValidacion = function(){
-            if(!$scope.acta.requisiciones[$scope.selectedIndex].validado){
-                $scope.validandoRequisicion = $scope.selectedIndex;
-                $scope.actualizarTotal($scope.selectedIndex);
-            }else{
-                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Esta requisición ya fue validada.'});
-            }
-        }
-
-        $scope.cancelarValidacion = function(){
-            $scope.validandoRequisicion = undefined;
-            $scope.actualizarTotal($scope.selectedIndex);
-        }
-
-        $scope.actualizarTotal = function(index){
-            var total = 0;
-            var requisicion = $scope.acta.requisiciones[index];
-            for(var i in requisicion.insumos){
-                if($scope.validandoRequisicion != undefined || requisicion.validado){
-                    total += requisicion.insumos[i].total_aprovado;
-                }else{
-                    total += requisicion.insumos[i].total;
-                }
-            }
-            requisicion.sub_total = total;
-            if(parseFloat(requisicion.iva) > 0){
-                //
-            }else{
-                requisicion.gran_total = total;
-            }
+        $scope.revisarRequisicion = function(){
+            $scope.requisicion.estatus = undefined;
+            $scope.cargando = true;
+            RequisicionesDataApi.editar($scope.requisicion.id,$scope.requisicion,function(res){
+                $scope.cargando = false;
+                $location.path('actas/'+$scope.requisicion.acta_id+'/ver');
+            },function(e){
+                $scope.cargando = false;
+                console.log(e);
+                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrión un error al intentar validar la requisicion.'});
+            });
         };
-        
+
+        $scope.aprobarRequisicion = function(){
+            $scope.requisicion.estatus = 2;
+            $scope.cargando = true;
+            RequisicionesDataApi.editar($scope.requisicion.id,$scope.requisicion,function(res){
+                $scope.cargando = false;
+            },function(e){
+                $scope.requisicion.estatus = 1;
+                $scope.cargando = false;
+                console.log(e);
+                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrión un error al intentar aprobar la requisicion.'});
+            });
+        };
+
+        $scope.imprimir = function(){
+            /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
+              .then(function (data) {     // data is your url
+                  var file = new Blob([data], {type: 'application/pdf'});
+                  var fileURL = URL.createObjectURL(file);
+                  $window.open(fileURL);
+              });
+            */
+            //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
+            window.open(URLS.BASE_API +'/requisicion-pdf/'+$routeParams.id);
+        };
+
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();
         if(!$scope.menuCerrado){
           $scope.menuIsOpen = true;

@@ -30,7 +30,7 @@
 				<label>Buscar</label>
 				<md-icon md-svg-icon="magnify" class="buscar"></md-icon>
             	<input type="text" ng-model="textoBusqueda" ng-keyup="$event.keyCode==13?realizarBusqueda():null">
-            	<div class="hint" ng-if="mostrarAyuda"><small>La busqueda se realiza en los campos de folio, lugar o ciudad</small></div>
+            	<div class="hint" ng-if="mostrarAyuda"><small>La busqueda se realiza en los campos de folio, pedido, numero, clues o empresa</small></div>
           	</md-input-container>
 			<div layout="column">
 				<div flex layout-padding></div>
@@ -48,19 +48,19 @@
 		</md-content>
 	</md-sidenav>
 
-	<md-virtual-repeat-container style="height:880px;" id="modulo-importar" flex>
+	<md-virtual-repeat-container style="height:880px;" id="modulo-requisiciones" flex>
 		<md-list layout="column">
-      		<md-list-item class="md-2-line paciente-item" md-virtual-repeat="acta in requisicionesInfinitas" md-on-demand ng-click="ir('requisiciones/'+acta.id+'/ver')" ng-hide="!acta.id">
-      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="file" class="md-avatar-icon"></md-icon>
+      		<md-list-item class="md-2-line paciente-item" md-virtual-repeat="requisicion in requisicionesInfinitas" md-on-demand ng-click="ir('requisiciones/'+requisicion.id+'/ver')" ng-hide="!requisicion.id">
+      			<md-icon hide-xs ng-if="requisicion.id" md-svg-icon="{{(requisicion.estatus == 2)?'file-check':'file'}}" class="md-avatar-icon"></md-icon>
 				<div class="md-list-item-text">
-		        	<h3>{{ acta.folio }}</h3>
-		        	<h4>{{ acta.clues_nombre }}</h4>
-		        	<h4><strong>Fecha:</strong> {{acta.fecha | date:'yyyy-MM-dd'}} <strong>Total Importe:</strong> $ {{acta.total_importe | number:2}}</h4>
+		        	<h3>{{ requisicion.folio }} <small><strong>Requisición No. {{ requisicion.numero }}</strong></small></h3>
+		        	<h4>{{ requisicion.clues_nombre }}</h4>
+		        	<h4><strong>Pedido:</strong> {{requisicion.pedido}} <strong>Tipo: </strong> {{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}</h4>
 		        </div>
 				<md-divider></md-divider>
       		</md-list-item>
       		<md-list-item class="md-3-line paciente-item" ng-if="cargandoLista">
-      			<div class="md-list-item-text" ng-show="!acta.id">
+      			<div class="md-list-item-text" ng-show="!requisicion.id">
 			        <md-subheader style="background:none;">
 			        	<h2><span>Cargando...</span></h2>
 			        	<md-progress-linear md-mode="indeterminate"></md-progress-linear>
@@ -69,7 +69,7 @@
       		</md-list-item>
       		<md-list-item ng-if="((requisicionesInfinitas.requisiciones.length <= 0) && !cargando)">
       			<md-subheader>
-      				No se econtraron requisiciones capturadas.
+      				No se econtraron requisiciones validadas.
       			</md-subheader>
       		</md-list-item>
     	</md-list>
@@ -80,7 +80,7 @@
 			<div flex layout="row" layout-xs="column" ng-style="(smallScreen)?{'font-size':'small'}:{}">
 				<div flex>
 					<small>
-						<strong>Total requisiciones capturadas:</strong> <span>{{requisicionesInfinitas.maxItems | number}}</span>
+						<strong>Total requisiciones validadas:</strong> <span>{{requisicionesInfinitas.maxItems | number}}</span>
 					</small>
 				</div>
 			</div>

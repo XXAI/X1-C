@@ -1,0 +1,127 @@
+<md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column"   class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"   ng-include="'src/app/views/menu.html'"></md-sidenav>
+<div layout="column" class="relative" layout-fill role="main" id="modulo-nuevo">
+	<md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+	<md-toolbar layout="column" class="md-whiteframe-z2">
+		<div class="md-toolbar-tools">    
+			<md-button hide-gt-sm class="md-icon-button " ng-click="toggleMenu(true)" aria-label="Menu">
+		        <md-icon md-svg-icon="menu" ></md-icon>
+		    </md-button>		
+			<h2>
+			  <span>Requisición de Compra </span>
+			</h2>
+			
+			<span flex></span>
+			<md-button hide-xs hide-sm ng-click="ir('requisiciones')"   aria-label="{{ 'REGRESAR' | translate }}">
+			  <md-icon md-svg-icon="keyboard-backspace"></md-icon>
+			  {{ 'REGRESAR' | translate }}
+			</md-button>   
+			<md-button class="md-icon-button"  hide-gt-sm  ng-click="ir('requisiciones')"   aria-label="{{ 'REGRESAR' | translate }}">
+			  <md-icon md-svg-icon="keyboard-backspace"></md-icon>
+			</md-button>
+
+			<md-button ng-click="toggleDatosRequisicion=!toggleDatosRequisicion"  ng-disabled="cargando" aria-label="Toggle Datos Acta">
+				<md-icon md-svg-icon="{{(toggleDatosRequisicion)?'format-vertical-align-top':'format-vertical-align-bottom'}}"></md-icon>
+				<span show-gt-sm>
+				{{ (toggleDatosRequisicion)?'OCULTAR DATOS':'MOSTRAR DATOS' | translate }}
+				</span>
+				<md-tooltip hide-gt-sm md-direction="down">
+					{{ (toggleDatosRequisicion)?'OCULTAR DATOS':'MOSTRAR DATOS' | translate }}
+				</md-tooltip>
+			</md-button>
+
+			<md-icon md-svg-icon="dots-vertical" style="color: #005DA7;"></md-icon>
+
+			<md-button ng-if="(requisicion.estatus >= 1)" class="md-icon-button" ng-disabled="cargando" ng-click="imprimir()"  aria-label="{{ 'IMPRIMIR' | translate }}">
+			  <md-icon md-svg-icon="printer"></md-icon>
+			</md-button>
+
+			<md-button ng-if="requisicion.estatus == 1" class="md-accent md-raised" hide-xs hide-sm ng-click="aprobarRequisicion($event)" ng-disabled="cargando"  aria-label="{{ 'ENVIAR' | translate }}">
+			  <md-icon md-svg-icon="check"></md-icon>
+			  {{ 'ENVIAR' | translate }}
+			</md-button>
+			<md-button class="md-icon-button md-accent" ng-if="requisicion.estatus == 1" hide-gt-sm  ng-disabled="cargando" ng-click="aprobarRequisicion($event)"  aria-label="{{ 'ENVIAR' | translate }}">
+			  <md-icon md-svg-icon="check"></md-icon>
+			</md-button>
+
+			<md-button ng-if="requisicion.estatus == 1" hide-xs hide-sm ng-click="guardar()" ng-disabled="cargando"  aria-label="{{ 'GUARDAR' | translate }}">
+			  <md-icon md-svg-icon="content-save"></md-icon>
+			  {{ 'GUARDAR' | translate }}
+			</md-button>
+			<md-button class="md-icon-button" ng-if="requisicion.estatus == 1" hide-gt-sm  ng-disabled="cargando" ng-click="guardar()"  aria-label="{{ 'GUARDAR' | translate }}">
+			  <md-icon md-svg-icon="check"></md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-content layout="column" flex>
+		<md-content id="modulo-contenedor" layout="column" flex>
+			<md-content ng-show="toggleDatosRequisicion" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
+					<label>Requisición de compra</label>
+					<input value="No. {{requisicion.numero}}" readonly>
+				</md-input-container>
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
+					<label>Unidad Médica</label>
+					<input value="{{requisicion.acta.clues}}" readonly>
+				</md-input-container>
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
+					<label>Pedido</label>
+					<input value="{{requisicion.pedido}}" readonly>
+				</md-input-container>
+				<md-input-container flex="25" style="margin-bottom:0px;height:46px;">
+					<label>Empresa Adjudicada</label>
+					<input value="{{requisicion.empresa_clave}}" readonly>
+				</md-input-container>
+			</md-content>
+			<md-divider></md-divider>
+			<md-subheader flex="none" class="md-primary">
+				<div layout="row">
+					<div flex="5" style="text-align:center;">No. Lote</div>
+					<div flex="15" style="text-align:center;">Clave</div>
+					<div flex style="text-align:center;">Descripción del Insumo</div>
+					<div flex="15" style="text-align:center;">Unidad de Medida</div>
+					<div flex="15" style="text-align:center;">Precio Unitario</div>
+					<div flex="10" style="text-align:center;">Cantidad</div>
+					<div flex="15" style="text-align:center;">Total</div>
+				</div>
+			</md-subheader>
+			<md-divider></md-divider>
+			<md-content flex>
+				<md-list>
+					<md-list-item ng-repeat="insumo in requisicion.insumos track by $index" ng-click="editarInsumo($event,$index)">
+						<div flex layout="row">
+							<div flex="5" style="text-align:center;">{{insumo.lote}}</div>
+							<div flex="15" style="text-align:center;">{{insumo.clave}}</div>
+							<div flex style="text-align:center;"><p style="line-height:14px; margin:0px;"><small>{{insumo.descripcion}}</small></p></div>
+							<div flex="15" style="text-align:center;">{{insumo.unidad}}</div>
+							<div flex="15" style="text-align:center;">$ {{insumo.precio | number:2}}</div>
+							<div flex="10" style="text-align:center;">{{insumo.cantidad | number}}</div>
+							<div flex="15" style="text-align:center;">$ {{insumo.total | number:2}}</div>
+						</div>
+						<md-divider></md-divider>
+					</md-list-item>
+				</md-list>
+			</md-content>
+			<md-divider></md-divider>
+			<md-content layout="row" flex="none" layout-wrap style="overflow:hidden;">
+				<md-button ng-if="(requisicion.estatus == 1)" class="md-raised md-primary" ng-click="revisarRequisicion()">
+					<md-icon md-svg-icon="undo-variant" ></md-icon> Volver a validar requisición
+				</md-button>
+				<div flex></div>
+				<div flex="none" layout="row">
+					<md-input-container flex style="margin-bottom:0px;height:46px;">
+						<label>Subtotal</label>
+						<input value="$ {{requisicion.sub_total | number:2}}" readonly>
+					</md-input-container>
+					<md-input-container flex style="margin-bottom:0px;height:46px;">
+						<label>I.V.A.</label>
+						<input value="$ {{requisicion.iva | number:2}}" readonly>
+					</md-input-container>
+					<md-input-container flex style="margin-bottom:0px;height:46px;">
+						<label>Total</label>
+						<input value="$ {{requisicion.gran_total | number:2}}" readonly>
+					</md-input-container>
+				</div>
+			</md-content>
+		</md-content>
+	</md-content>
+</div>
