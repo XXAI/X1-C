@@ -385,6 +385,10 @@
             requisicion.gran_total = requisicion.iva + total;
         };
 
+        $scope.imprimirOficio = function(){
+            window.open(URLS.BASE_API +'/oficio-pdf/'+$routeParams.id);
+        }
+
         $scope.imprimirSolicitudes = function(){
             /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
               .then(function (data) {     // data is your url
