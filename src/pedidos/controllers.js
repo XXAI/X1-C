@@ -209,7 +209,7 @@
                 insumo.clave = insumo_serv.clave;
                 insumo.lote = insumo_serv.lote;
                 insumo.unidad = insumo_serv.unidad;
-                insumo.precio = insumo_serv['precio_'+$scope.requisicion.empresa_clave];
+                insumo.precio = insumo_serv.precio;
 
                 insumo.insumo_id = insumo_serv.id;
                 insumo.cantidad = insumo_serv.pivot.cantidad_aprovada;

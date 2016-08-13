@@ -312,7 +312,7 @@
                     insumo.clave = requisicion.insumos[j].clave;
                     insumo.lote = requisicion.insumos[j].lote;
                     insumo.unidad = requisicion.insumos[j].unidad;
-                    insumo.precio = requisicion.insumos[j]['precio_'+requisicion.empresa_clave];
+                    insumo.precio = requisicion.insumos[j].precio;
 
                     insumo.insumo_id = requisicion.insumos[j].id;
                     insumo.cantidad = requisicion.insumos[j].pivot.cantidad;
