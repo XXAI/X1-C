@@ -30,10 +30,16 @@
 				<label>Buscar</label>
 				<md-icon md-svg-icon="magnify" class="buscar"></md-icon>
             	<input type="text" ng-model="textoBusqueda" ng-keyup="$event.keyCode==13?realizarBusqueda():null">
-            	<div class="hint" ng-if="mostrarAyuda"><small>La busqueda se realiza en los campos de folio, lugar o ciudad</small></div>
+            	<div class="hint" ng-if="mostrarAyuda"><small>La busqueda se realiza en los campos de clues,folio, lugar o ciudad</small></div>
           	</md-input-container>
 			<div layout="column">
-				<div flex layout-padding></div>
+				<div flex layout-padding>
+					<md-radio-group ng-model="menuFiltro.estatus">
+				      <md-radio-button value="todos" class="md-primary">Todos</md-radio-button>
+				      <md-radio-button value="pendientes">Pendientes</md-radio-button>
+				      <md-radio-button value="validados">Validados</md-radio-button>
+				    </md-radio-group>
+				</div>
 				<div layout="row" flex>
 					<div flex>
 						<md-switch ng-model="mostrarAyuda" aria-label="Ver ayuda">Ayuda</md-switch>
@@ -51,11 +57,19 @@
 	<md-virtual-repeat-container style="height:880px;" id="modulo-importar" flex>
 		<md-list layout="column">
       		<md-list-item class="md-2-line paciente-item" md-virtual-repeat="acta in requisicionesInfinitas" md-on-demand ng-click="ir('requisiciones/'+acta.id+'/ver')" ng-hide="!acta.id">
-      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="file" class="md-avatar-icon"></md-icon>
+      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="{{(acta.estatus >= 3)?'file-check':'file'}}" class="md-avatar-icon"></md-icon>
 				<div class="md-list-item-text">
 		        	<h3>{{ acta.folio }}</h3>
-		        	<h4>{{ acta.clues_nombre }}</h4>
-		        	<h4><strong>Fecha:</strong> {{acta.fecha | date:'yyyy-MM-dd'}} <strong>Total Importe:</strong> $ {{acta.total_importe | number:2}}</h4>
+		        	<h4 layout="row">
+		        		{{ acta.clues_nombre }}
+		        		<span flex></span>
+		        		<strong>Importado: </strong> {{acta.fecha_importacion | date:'yyyy-MM-dd'}} 
+		        	</h4>
+		        	<h4 layout="row">
+		        		<strong>Importe Validado:</strong> $ {{acta.total_importe | number:2}}
+		        		<span flex></span>
+		        		<strong>Validado: </strong> {{(acta.fecha_validacion)?(acta.fecha_validacion | date:'yyyy-MM-dd'):'Pendiente'}} 
+		        	</h4>
 		        </div>
 				<md-divider></md-divider>
       		</md-list-item>

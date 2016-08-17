@@ -77,6 +77,10 @@
                 
                 var filtro = {};
 
+                if($scope.filtro.estatus != 'todos'){
+                    filtro.estatus = $scope.filtro.estatus;
+                }
+
                 var parametros = parametrosFiltro({filtro:filtro});
                 parametros.pagina = ((this.pedidos.length)/50) + 1;
                 if($scope.textoBuscado){
@@ -92,12 +96,28 @@
                         var obj = {
                             id: res.data[i].id,
                             folio: res.data[i].folio,
-                            numero: res.data[i].numero,
-                            pedido: res.data[i].pedido,
-                            clues: res.data[i].clues,
-                            tipo_requisicion: res.data[i].tipo_requisicion,
+                            fecha_importacion: new Date(res.data[i].fecha_importacion),
+                            fecha_validacion: new Date(res.data[i].fecha_validacion),
+                            fecha_termino: undefined,
+                            total_importe: 0,
+                            clues_nombre:'Clues no encontrada en el catalogo',
                             estatus: res.data[i].estatus
                         };
+
+                        if(res.data[i].fecha_termino){
+                            obj.fecha_termino = new Date(res.data[i].fecha_termino);
+                        }
+
+                        if(res.data[i].unidad_medica){
+                            obj.clues_nombre = res.data[i].unidad_medica.nombre;
+                        }
+
+                        for(var j in res.data[i].requisiciones){
+                            var requisicion = res.data[i].requisiciones[j];
+                            if(requisicion.estatus){
+                                obj.total_importe += parseFloat(requisicion.gran_total_validado);
+                            }
+                        }
                         
                         $scope.pedidosInfinitos.pedidos.push(obj);
                         $scope.pedidosInfinitos.numLoaded_++;
@@ -138,6 +158,14 @@
         };
 
         $scope.realizarBusqueda = function(){
+            $scope.filtro.estatus = $scope.menuFiltro.estatus;
+
+            if($scope.filtro.estatus != 'todos'){
+                $scope.filtro.aplicado = true;
+            }else{
+                $scope.filtro.aplicado = false;
+            }
+
             $scope.textoBuscado = $scope.textoBusqueda;
             $mdSidenav('busqueda-filtro').close();
             
@@ -194,29 +222,49 @@
         $scope.menu = Menu.getMenu();
         $scope.menuIsOpen = false;
         $scope.loggedUser = UsuarioData.getDatosUsuario();
-        $scope.toggleDatosRequisicion = true;
+        $scope.toggleDatosActa = true;
 
         $scope.cargando = true;
 
         PedidosDataApi.ver($routeParams.id,function(res){
-            $scope.requisicion = res.data;
+            $scope.acta = res.data;
 
-            for(var j in $scope.requisicion.insumos){
-                var insumo_serv = $scope.requisicion.insumos[j];
-                var insumo = {};
-                
-                insumo.descripcion = insumo_serv.descripcion;
-                insumo.clave = insumo_serv.clave;
-                insumo.lote = insumo_serv.lote;
-                insumo.unidad = insumo_serv.unidad;
-                insumo.precio = insumo_serv.precio;
+            $scope.proveedores = res.proveedores;
 
-                insumo.insumo_id = insumo_serv.id;
-                insumo.cantidad = insumo_serv.pivot.cantidad_aprovada;
-                insumo.total = parseFloat(insumo_serv.pivot.total_aprovado);
-                insumo.requisicion_id = insumo_serv.pivot.requisicion_id;
+            if($scope.acta.fecha_solicitud){
+                $scope.acta.fecha_solicitud = new Date(res.data.fecha_solicitud+' 00:00:00');
+            }
 
-                $scope.requisicion.insumos[j] = insumo;
+            if($scope.acta.fecha_pedido){
+                $scope.acta.fecha_pedido = new Date(res.data.fecha_pedido+' 00:00:00');
+            }else{
+                $scope.acta.fecha_pedido = new Date();
+            }
+
+            if(!$scope.acta.num_oficio_pedido){
+                $scope.acta.num_oficio_pedido = res.oficio;
+            }
+
+            for(var i in $scope.acta.requisiciones){
+                var requisicion = $scope.acta.requisiciones[i];
+
+                for(var j in requisicion.insumos){
+                    var insumo = {};
+                    
+                    insumo.descripcion = requisicion.insumos[j].descripcion;
+                    insumo.clave = requisicion.insumos[j].clave;
+                    insumo.lote = requisicion.insumos[j].lote;
+                    insumo.unidad = requisicion.insumos[j].unidad;
+                    insumo.precio = requisicion.insumos[j].precio;
+
+                    insumo.insumo_id = requisicion.insumos[j].id;
+                    insumo.cantidad_aprovada = requisicion.insumos[j].pivot.cantidad_aprovada;
+                    insumo.total_aprovado = parseFloat(requisicion.insumos[j].pivot.total_aprovado);
+                    insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
+                    insumo.proveedor_id = requisicion.insumos[j].pivot.proveedor_id;
+
+                    requisicion.insumos[j] = insumo;
+                }
             }
             $scope.cargando = false;
         },function(e){
@@ -224,20 +272,46 @@
             console.log(e);
         });
         
-        $scope.aprobarRequisicion = function(){
-            $scope.requisicion.estatus = 2;
-            $scope.cargando = true;
-            PedidosDataApi.editar($scope.requisicion.id,$scope.requisicion,function(res){
-                $scope.cargando = false;
-            },function(e){
-                $scope.requisicion.estatus = 1;
-                $scope.cargando = false;
-                console.log(e);
-                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrión un error al intentar aprobar la requisicion.'});
-            });
+        $scope.validarPedido = function(ev){
+            var confirm = $mdDialog.confirm()
+                .title('Validar pedido?')
+                .content('El pedido sera validado y ya no podrá editarse.')
+                .targetEvent(ev)
+                .ok('Validar')
+                .cancel('Cancelar');
+            $mdDialog.show(confirm).then(function() {
+                $scope.acta.estatus = 4;
+                $scope.guardar();
+            }, function() {});
         };
 
-        $scope.imprimir = function(){
+        $scope.guardar = function(){
+            $scope.cargando = true;
+            $scope.validacion = {};
+            PedidosDataApi.editar($scope.acta.id,$scope.acta,function(res){
+                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Datos guardados con éxito.'});
+                $scope.cargando = false;
+            },function(e){
+                $scope.cargando = false;
+                if($scope.acta.estatus == 4){
+                    $scope.acta.estatus = 3;
+                }
+                if(e.error_type == 'form_validation'){
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Hay un error en los datos del formulario.'});
+                    var errors = e.error;
+                    for (var i in errors){
+                        var error = JSON.parse('{ "' + errors[i] + '" : true }');
+                        $scope.validacion[i] = error;
+                    }
+                }else if(e.error_type == 'data_validation'){
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:e.error});
+                }else{
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrió un error al intentar guardar los datos.'});
+                }
+            });
+        };
+        
+        $scope.imprimirNotificacion = function(){
             /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
               .then(function (data) {     // data is your url
                   var file = new Blob([data], {type: 'application/pdf'});
@@ -246,7 +320,19 @@
               });
             */
             //PedidosDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            window.open(URLS.BASE_API +'/pedido-pdf/'+$routeParams.id);
+            window.open(URLS.BASE_API +'/notificacion-pdf/'+$routeParams.id);
+        };
+
+        $scope.imprimirPedido = function(){
+            /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
+              .then(function (data) {     // data is your url
+                  var file = new Blob([data], {type: 'application/pdf'});
+                  var fileURL = URL.createObjectURL(file);
+                  $window.open(fileURL);
+              });
+            */
+            //PedidosDataApi.verPDF($routeParams.id,function(e){console.log(e)});
+            window.open(URLS.BASE_API +'/pedidos-pdf/'+$routeParams.id);
         };
 
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();

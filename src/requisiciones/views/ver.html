@@ -63,7 +63,7 @@
 	            <md-menu-item>
 	            	<md-button ng-click="imprimirSolicitudes()">
 		                <div layout="row">
-		                	<p flex>Solicitudes</p>
+		                	<p flex>Requisiciones</p>
 		                    <md-icon md-menu-align-target md-svg-icon="file" style="margin: auto 3px auto 0;"></md-icon>
 		                </div>
 		            </md-button>
@@ -77,7 +77,7 @@
 			<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
 				<md-input-container flex="20" style="margin-bottom:0px;">
 					<label>Fecha del Acta</label>
-					<input value="{{acta.fecha | date:'MM/dd/yyyy'}}" readonly>
+					<input value="{{acta.fecha | date:'dd/MM/yyyy'}}" readonly>
 				</md-input-container>
 
 				<md-input-container flex="20" md-is-error="validacion.fecha_solicitud" style="margin-bottom:0px;">

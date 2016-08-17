@@ -8,11 +8,11 @@
 			<h1 class="md-display-4" style="font-size:2.5em; margin-bottom:0px; line-height:1em;text-align:center" translate="BIENVENIDO"></h1>
 			<div ng-if="errorSignin" layout layout-align="center"><p><md-icon md-svg-icon="alert-circle"></md-icon> {{ errorSignin | translate }}</p></div>
 			<form flex layout="column" ng-submit="signin()">
-				<md-input-container class="filtro-busqueda">
+				<md-input-container class="filtro-busqueda" style="margin-bottom:0px;height:46px;">
 					<label translate="EMAIL"></label>
 					<input name="email" type="email" ng-model="email" required>
 				</md-input-container>
-				<md-input-container class="filtro-busqueda">
+				<md-input-container class="filtro-busqueda" style="margin-bottom:0px;height:46px;">
 					<label translate="PASSWORD"></label>
 					<input name="password" type="password" ng-model="password" required>
 				</md-input-container>

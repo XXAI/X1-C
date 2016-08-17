@@ -78,7 +78,12 @@
       			<md-icon hide-xs ng-if="acta.id" md-svg-icon="file" class="md-avatar-icon"></md-icon>
 				<div class="md-list-item-text">
 		        	<h3>{{ acta.folio }}</h3>
-		        	<h4><strong>Fecha:</strong> {{acta.fecha | date:'yyyy-MM-dd'}}</h4>
+		        	<h4>{{ acta.clues_nombre }}</h4>
+		        	<h4 layout="row">
+		        		<strong>Total Importe:</strong> $ {{acta.total_importe | number:2}}
+		        		<span flex></span>
+		        		<strong>Importado:</strong> {{acta.fecha_importacion | date:'yyyy-MM-dd'}}
+		        	</h4>
 		        </div>
 				<md-divider></md-divider>
       		</md-list-item>

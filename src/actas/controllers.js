@@ -95,9 +95,22 @@
                         var obj = {
                             id: res.data[i].id,
                             folio: res.data[i].folio,
-                            fecha: new Date(res.data[i].fecha + ' 00:00:00'),
+                            fecha_importacion: new Date(res.data[i].fecha_importacion),
+                            total_importe:0,
+                            clues_nombre:'Clues no encontrada en el catalogo',
                             estatus: res.data[i].estatus
                         };
+
+                        if(res.data[i].unidad_medica){
+                            obj.clues_nombre = res.data[i].unidad_medica.nombre;
+                        }
+
+                        for(var j in res.data[i].requisiciones){
+                            var requisicion = res.data[i].requisiciones[j];
+                            if(requisicion.estatus){
+                                obj.total_importe += parseFloat(requisicion.gran_total_validado);
+                            }
+                        }
                         
                         $scope.actasInfinitas.actas.push(obj);
                         $scope.actasInfinitas.numLoaded_++;

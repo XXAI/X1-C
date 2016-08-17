@@ -76,6 +76,9 @@
                 $scope.cargandoLista = true;
                 
                 var filtro = {};
+                if($scope.filtro.estatus != 'todos'){
+                    filtro.estatus = $scope.filtro.estatus;
+                }
 
                 var parametros = parametrosFiltro({filtro:filtro});
                 parametros.pagina = ((this.requisiciones.length)/50) + 1;
@@ -92,11 +95,20 @@
                         var obj = {
                             id: res.data[i].id,
                             folio: res.data[i].folio,
-                            fecha: new Date(res.data[i].fecha + ' 00:00:00'),
+                            fecha_importacion: new Date(res.data[i].fecha_importacion),
+                            fecha_validacion: undefined,
                             total_importe: 0,
-                            clues_nombre:res.data[i].unidad_medica.nombre,
+                            clues_nombre:'Clues no encontrada en el catalogo',
                             estatus: res.data[i].estatus
                         };
+
+                        if(res.data[i].fecha_validacion){
+                            obj.fecha_validacion = new Date(res.data[i].fecha_validacion);
+                        }
+
+                        if(res.data[i].unidad_medica){
+                            obj.clues_nombre = res.data[i].unidad_medica.nombre;
+                        }
 
                         for(var j in res.data[i].requisiciones){
                             var requisicion = res.data[i].requisiciones[j];
@@ -144,6 +156,14 @@
         };
 
         $scope.realizarBusqueda = function(){
+            $scope.filtro.estatus = $scope.menuFiltro.estatus;
+
+            if($scope.filtro.estatus != 'todos'){
+                $scope.filtro.aplicado = true;
+            }else{
+                $scope.filtro.aplicado = false;
+            }
+
             $scope.textoBuscado = $scope.textoBusqueda;
             $mdSidenav('busqueda-filtro').close();
             
