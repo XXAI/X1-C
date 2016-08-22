@@ -107,9 +107,7 @@
 
                         for(var j in res.data[i].requisiciones){
                             var requisicion = res.data[i].requisiciones[j];
-                            if(requisicion.estatus){
-                                obj.total_importe += parseFloat(requisicion.gran_total_validado);
-                            }
+                            obj.total_importe += parseFloat(requisicion.gran_total);
                         }
                         
                         $scope.actasInfinitas.actas.push(obj);

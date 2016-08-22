@@ -1,0 +1,69 @@
+<md-dialog aria-label="form insumo" flex ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Insumo</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-icon="close" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="column">
+        <div flex layout="row" layout-wrap>
+          <div flex="100">
+            <div class="hint">{{insumo.clave}}</div>
+          </div>
+          <div flex="100">
+            <div class="hint">{{insumo.descripcion}}</div>
+          </div>
+          <md-input-container flex style="margin-bottom:0px;height:46px;">
+            <label>Lote</label>
+            <input value="{{insumo.lote}}" disabled>
+          </md-input-container>
+          <md-input-container flex style="margin-bottom:0px;height:46px;">
+            <label>Unidad</label>
+            <input value="{{insumo.unidad}}" disabled>
+          </md-input-container>
+          <md-input-container flex style="margin-bottom:0px;height:46px;">
+            <label>Precio</label>
+            <input value="$ {{insumo.precio | number:2}}" disabled>
+          </md-input-container>
+          <md-input-container flex style="margin-bottom:0px;height:46px;">
+            <label>Cantidad</label>
+            <input value="{{insumo.cantidad_aprovada | number}} / {{insumo.cantidad | number}}" disabled>
+          </md-input-container>
+          <md-input-container flex style="margin-bottom:0px;height:46px;">
+            <label>Total</label>
+            <input value="$ {{insumo.total_aprovado | number:2}}" disabled>
+          </md-input-container>
+        </div>
+        <md-divider></md-divider>
+        <div layout="row" layout-wrap>
+          <div flex="100" layout="row" ng-repeat="item in lista_clues.clues">
+            <md-input-container>
+              <label>CLUES</label>
+              <input type="text" value="{{item.clues}}" disabled>
+            </md-input-container>
+            <md-input-container flex>
+              <label>Cantidad</label>
+              <input type="number" ng-model="item.cantidad_aprovada" ng-change="calcularTotal(item)" min="0">
+              <div class="hint"><small>{{item.cantidad | number}}</small></div>
+            </md-input-container>
+            <md-input-container flex>
+              <label>Total</label>
+              <input value="$ {{item.total_aprovado | number:2}}" disabled>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" ng-click="answer()" style="margin-right:20px;">
+        <md-icon md-svg-icon="check"></md-icon> Aceptar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

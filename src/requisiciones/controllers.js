@@ -221,7 +221,7 @@
         $scope.menuIsOpen = false;
         $scope.loggedUser = UsuarioData.getDatosUsuario();
         $scope.toggleDatosActa = true;
-
+        $scope.insumos_por_clues = {};
         $scope.cargando = true;
 
         RequisicionesDataApi.ver($routeParams.id,function(res){
@@ -237,12 +237,6 @@
                 $scope.acta.fecha_solicitud = new Date();
             }
 
-            //$scope.acta.insumos = [];
-            //$scope.acta.subtotal = 0;
-            //$scope.acta.total = 0;
-            //$scope.acta.firma_director = res.data.requisiciones[0].firma_director;
-            //$scope.acta.firma_solicita = res.data.requisiciones[0].firma_solicita;
-
             for(var i in $scope.acta.requisiciones){
                 var requisicion = $scope.acta.requisiciones[i];
                 if(requisicion.estatus){
@@ -251,6 +245,7 @@
                     requisicion.gran_total = requisicion.gran_total_validado;
                     requisicion.iva = requisicion.iva_validado;
                 }
+
                 for(var j in requisicion.insumos){
                     var insumo = {};
                     
@@ -269,7 +264,33 @@
 
                     requisicion.insumos[j] = insumo;
                 }
+
+                for(var j in requisicion.insumos_clues){
+                    var insumo = requisicion.insumos_clues[j];
+                    
+                    if(!$scope.insumos_por_clues[insumo.id]){
+                        $scope.insumos_por_clues[insumo.id] = {
+                            descripcion: insumo.descripcion,
+                            clave: insumo.clave,
+                            lote: insumo.lote,
+                            unidad: insumo.unidad,
+                            precio: parseFloat(insumo.precio),
+                            insumo_id: insumo.id,
+                            clues: []
+                        };
+                    }
+                    
+                    $scope.insumos_por_clues[insumo.id].clues.push({
+                        clues: insumo.pivot.clues,
+                        cantidad: insumo.pivot.cantidad,
+                        total: parseFloat(insumo.pivot.total),
+                        cantidad_aprovada: insumo.pivot.cantidad_validada,
+                        total_aprovado: parseFloat(insumo.pivot.total_validado),
+                        requisicion_id: insumo.pivot.requisicion_id
+                    });
+                }
             }
+            console.log($scope.insumos_por_clues);
             $scope.cargando = false;
         },function(e){
             Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrió un error al intentar obtener los datos.'});
@@ -279,6 +300,70 @@
         $scope.cambiarValor = function(insumo){
             insumo.total_aprovado = insumo.cantidad_aprovada * insumo.precio;
             $scope.actualizarTotal($scope.selectedIndex);
+        };
+
+        $scope.validarPorClues = function(ev,insumo){
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            var locals = {
+                insumo: insumo,
+                por_clues: $scope.insumos_por_clues[insumo.insumo_id]
+            };
+
+            $mdDialog.show({
+                controller: function($scope, $mdDialog, insumo, por_clues) {
+                    $scope.insumo = insumo;
+                    $scope.lista_clues = por_clues;
+                    $scope.reset_clues = {};
+                    $scope.reset_insumo = {
+                        cantidad: insumo.cantidad_aprovada,
+                        total: insumo.total_aprovado
+                    };
+
+                    for(var i in por_clues.clues){
+                        $scope.reset_clues[por_clues.clues[i].clues] = {
+                            cantidad: por_clues.clues[i].cantidad_aprovada,
+                            total: por_clues.clues[i].total_aprovado
+                        };
+                    }
+
+                    $scope.cancel = function() {
+                        for(var i in $scope.lista_clues.clues){
+                            $scope.lista_clues.clues[i].cantidad_aprovada = $scope.reset_clues[$scope.lista_clues.clues[i].clues].cantidad;
+                            $scope.lista_clues.clues[i].total_aprovado = $scope.reset_clues[$scope.lista_clues.clues[i].clues].total;
+                        }
+                        $scope.insumo.cantidad_aprovada = $scope.reset_insumo.cantidad;
+                        $scope.insumo.total_aprovado = $scope.reset_insumo.total;
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.calcularTotal = function(item){
+                        item.total_aprovado = item.cantidad_aprovada * $scope.lista_clues.precio;
+                        var total = 0;
+                        var cantidad = 0;
+                        for(var i in $scope.lista_clues.clues){
+                            cantidad += $scope.lista_clues.clues[i].cantidad_aprovada;
+                            total += $scope.lista_clues.clues[i].total_aprovado;
+                        }
+                        $scope.insumo.cantidad_aprovada = cantidad;
+                        $scope.insumo.total_aprovado = total;
+                    };
+
+                    $scope.answer = function() {
+                        $mdDialog.hide({yes:true});
+                    };
+                },
+                templateUrl: 'src/requisiciones/views/validar-clues.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen,
+                locals:locals
+            })
+            .then(function(res) {
+                $scope.actualizarTotal($scope.selectedIndex);
+            }, function() {
+                console.log('cancelado');
+            });
         }
 
         $scope.guardarValidacion = function(ev){
@@ -293,6 +378,22 @@
                     $scope.cargando = true;
                     var requisicion = $scope.acta.requisiciones[$scope.selectedIndex];
                     requisicion.estatus = 1;
+                    var insumos_clues = [];
+                    for(var i in $scope.insumos_por_clues){
+                        var insumo = $scope.insumos_por_clues[i];
+                        for(var j in insumo.clues){
+                            insumos_clues.push({
+                                insumo_id: insumo.insumo_id,
+                                requisicion_id: insumo.clues[j].requisicion_id,
+                                cantidad: insumo.clues[j].cantidad,
+                                cantidad_aprovada: insumo.clues[j].cantidad_aprovada,
+                                total: insumo.clues[j].total,
+                                total_aprovado: insumo.clues[j].total_aprovado,
+                                clues: insumo.clues[j].clues
+                            });
+                        }
+                    }
+                    requisicion.insumos_clues = insumos_clues;
                     $scope.actualizarTotal($scope.selectedIndex);
                     RequisicionesDataApi.editar(requisicion.id,requisicion,function(res){
                         requisicion.validado = true;
@@ -411,7 +512,7 @@
 
         $scope.imprimirSolicitudes = function(){
             /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
-              .then(function (data) {     // data is your url
+              .then(function (data) {    // data is your url
                   var file = new Blob([data], {type: 'application/pdf'});
                   var fileURL = URL.createObjectURL(file);
                   $window.open(fileURL);
