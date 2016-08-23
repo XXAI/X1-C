@@ -42,16 +42,20 @@
         <md-divider></md-divider>
         <div layout="row" layout-wrap>
           <div flex="100" layout="row" ng-repeat="item in lista_clues.clues">
-            <md-input-container>
+            <md-input-container flex="none">
               <label>CLUES</label>
               <input type="text" value="{{item.clues}}" disabled>
             </md-input-container>
             <md-input-container flex>
+              <label>Nombre</label>
+              <input type="text" value="{{nombres_clues[item.clues]}}" disabled>
+            </md-input-container>
+            <md-input-container flex="15">
               <label>Cantidad</label>
               <input type="number" ng-model="item.cantidad_aprovada" ng-change="calcularTotal(item)" min="0">
               <div class="hint"><small>{{item.cantidad | number}}</small></div>
             </md-input-container>
-            <md-input-container flex>
+            <md-input-container flex="15">
               <label>Total</label>
               <input value="$ {{item.total_aprovado | number:2}}" disabled>
             </md-input-container>

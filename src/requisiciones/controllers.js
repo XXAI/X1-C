@@ -223,9 +223,11 @@
         $scope.toggleDatosActa = true;
         $scope.insumos_por_clues = {};
         $scope.cargando = true;
+        $scope.nombres_clues = {};
 
         RequisicionesDataApi.ver($routeParams.id,function(res){
             $scope.acta = res.data;
+            $scope.nombres_clues = res.clues;
 
             if($scope.acta.fecha){
                 $scope.acta.fecha = new Date(res.data.fecha+' 00:00:00');
@@ -306,13 +308,15 @@
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
             var locals = {
                 insumo: insumo,
-                por_clues: $scope.insumos_por_clues[insumo.insumo_id]
+                por_clues: $scope.insumos_por_clues[insumo.insumo_id],
+                nombres_clues: $scope.nombres_clues
             };
 
             $mdDialog.show({
-                controller: function($scope, $mdDialog, insumo, por_clues) {
+                controller: function($scope, $mdDialog, insumo, por_clues, nombres_clues) {
                     $scope.insumo = insumo;
                     $scope.lista_clues = por_clues;
+                    $scope.nombres_clues = nombres_clues;
                     $scope.reset_clues = {};
                     $scope.reset_insumo = {
                         cantidad: insumo.cantidad_aprovada,

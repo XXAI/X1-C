@@ -100,7 +100,7 @@
 
 				<md-input-container flex="45" md-is-error="validacion.lugar_entrega" style="margin-bottom:0px;">
 					<label>Lugar de Entrega</label>
-					<input ng-model="acta.lugar_entrega">
+					<input value="{{acta.lugar_entrega}}" readonly>
 					<div class="errors" ng-messages="validacion.lugar_entrega" >
 						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
 					</div>
