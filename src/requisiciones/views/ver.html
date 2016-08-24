@@ -47,6 +47,14 @@
 			  <md-icon md-svg-icon="check"></md-icon>
 			</md-button>
 
+			<md-button ng-if="(acta.estatus > 2)" hide-xs hide-sm ng-click="exportar()" ng-disabled="cargando"  aria-label="{{ 'EXPORTAR' | translate }}">
+			  <md-icon md-svg-icon="file-export"></md-icon>
+			  {{ 'EXPORTAR' | translate }}
+			</md-button>		 
+			<md-button ng-if="(acta.estatus > 2)" class="md-icon-button"  hide-gt-sm ng-disabled="cargando" ng-click="exportar()"  aria-label="{{ 'EXPORTAR' | translate }}">
+			  <md-icon md-svg-icon="file-export"></md-icon>
+			</md-button>
+
 			<md-menu md-position-mode="target-right target" >
 	          <md-button aria-label="Open demo menu" class="md-icon-button" ng-disabled="cargando" ng-click="$mdOpenMenu($event)">
 	            <md-icon md-menu-origin md-svg-icon="printer"></md-icon>
@@ -91,19 +99,12 @@
 				
 				<md-input-container flex="15" md-is-error="validacion.num_oficio" style="margin-bottom:0px;">
 					<label>No. de Oficio</label>
-					<input type="number" ng-model="acta.num_oficio">
-					<div class="errors" ng-messages="validacion.num_oficio" >
-						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
-						<div ng-message="unique">Este número de oficio ya fue capturado</div>
-					</div>
+					<input value="{{acta.num_oficio}}" readonly>
 				</md-input-container>
 
 				<md-input-container flex="45" md-is-error="validacion.lugar_entrega" style="margin-bottom:0px;">
 					<label>Lugar de Entrega</label>
 					<input value="{{acta.lugar_entrega}}" readonly>
-					<div class="errors" ng-messages="validacion.lugar_entrega" >
-						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
-					</div>
 				</md-input-container>
 			</md-content>
 			<md-divider></md-divider>
