@@ -290,6 +290,9 @@
             $scope.validacion = {};
             PedidosDataApi.editar($scope.acta.id,$scope.acta,function(res){
                 Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Datos guardados con éxito.'});
+                if(res.data.estatus == 4){
+                    $scope.acta.num_oficio_pedido = res.data.num_oficio_pedido;
+                }
                 $scope.cargando = false;
             },function(e){
                 $scope.cargando = false;

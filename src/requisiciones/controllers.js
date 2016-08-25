@@ -228,6 +228,9 @@
         RequisicionesDataApi.ver($routeParams.id,function(res){
             $scope.acta = res.data;
             $scope.nombres_clues = res.clues;
+            if(!$scope.acta.num_oficio){
+                $scope.acta.num_oficio = res.oficio;
+            }
 
             if($scope.acta.fecha){
                 $scope.acta.fecha = new Date(res.data.fecha+' 00:00:00');
@@ -455,6 +458,9 @@
             $scope.validacion = {};
             RequisicionesDataApi.editarActa($scope.acta.id,$scope.acta,function(res){
                 Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Datos guardados con éxito.'});
+                if(res.data.estatus == 3){
+                    $scope.acta.num_oficio = res.data.num_oficio;
+                }
                 $scope.cargando = false;
             },function(e){
                 $scope.cargando = false;

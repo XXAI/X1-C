@@ -8,7 +8,7 @@
         $scope.menuIsOpen = false;
         $scope.menu = Menu.getMenu();
         $scope.loggedUser = UsuarioData.getDatosUsuario();
-        
+
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();
         if(!$scope.menuCerrado){
           $scope.menuIsOpen = true;

@@ -91,7 +91,7 @@
 				
 				<md-input-container flex="15" md-is-error="validacion.num_oficio_pedido" style="margin-bottom:0px;">
 					<label>No. de Oficio</label>
-					<input type="number" ng-model="acta.num_oficio_pedido">
+					<input value="{{acta.num_oficio_pedido}}" readonly>
 					<div class="errors" ng-messages="validacion.num_oficio_pedido" >
 						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
 						<div ng-message="unique">Este número de oficio ya fue capturado</div>

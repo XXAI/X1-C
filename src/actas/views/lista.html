@@ -82,7 +82,7 @@
 		        	<h4 layout="row">
 		        		<strong>Total Importe:</strong> $ {{acta.total_importe | number:2}}
 		        		<span flex></span>
-		        		<strong>Importado:</strong> {{acta.fecha_importacion | date:'yyyy-MM-dd'}}
+		        		<strong>Importado:</strong> {{(acta.fecha_importacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}}
 		        	</h4>
 		        </div>
 				<md-divider></md-divider>

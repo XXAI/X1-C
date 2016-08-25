@@ -63,12 +63,12 @@
 		        	<h4 layout="row">
 		        		{{ acta.clues_nombre }}
 		        		<span flex></span>
-		        		<strong>Importado: </strong> {{acta.fecha_importacion | date:'yyyy-MM-dd'}} 
+		        		<strong>Importado: </strong> {{(acta.fecha_importacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}} 
 		        	</h4>
 		        	<h4 layout="row">
 		        		<strong>Importe Validado:</strong> $ {{acta.total_importe | number:2}}
 		        		<span flex></span>
-		        		<strong>Validado: </strong> {{(acta.fecha_validacion)?(acta.fecha_validacion | date:'yyyy-MM-dd'):'Pendiente'}} 
+		        		<strong>Validado: </strong> {{(acta.fecha_validacion)?(acta.fecha_validacion | date:'yyyy-MM-dd HH:mm') + ' hrs':'Pendiente'}} 
 		        	</h4>
 		        </div>
 				<md-divider></md-divider>
