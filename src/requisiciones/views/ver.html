@@ -113,7 +113,7 @@
 					<md-tab-label>
 						<md-icon md-svg-icon="checkbox-marked" ng-if="requisicion.validado"></md-icon>
 						<md-icon md-svg-icon="pencil-box" ng-if="validandoRequisicion == $index"></md-icon>
-						<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':'Materiales de curación')}}</span>
+						<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':((requisicion.tipo_requisicion == 4)?'Controlados':'Materiales de curación'))}}</span>
 					</md-tab-label>
 					<md-tab-body>
 						<div layout="column" class="relative" layout-fill>
