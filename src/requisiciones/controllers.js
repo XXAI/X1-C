@@ -552,8 +552,8 @@
               });
             */
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            //window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
-			
+            window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
+		/*
 			var nombreUnidadMedica = $scope.acta.unidad_medica.nombre;
 			var nombreEmpresa = $scope.acta.empresa.nombre;
 			var detalleCauses = null;
@@ -574,9 +574,6 @@
 				else if(requisi.tipo_requisicion==4)
 					detalleMedicamentoControlado = requisi;					
 			}
-				
-			console.log(detalleMedicamentoControlado);
-			//console.log($scope.acta);
 				
 			var cantidadLineas = 0;
 			var cantidadLineas2 = 0;
@@ -692,16 +689,16 @@
 				]);	
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONCEPTO Y PARTIDA PRESUPUESTAL: '+$scope.acta.empresa.partida_presupuestal, style: 'normal', alignment: 'left'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'REQUISICIÓN DE MEDICAMENTOS CAUSES', style: 'normal', alignment: 'center'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -783,30 +780,30 @@
 				{colSpan: 2,text: 'TOTAL', style: 'footer', alignment: 'right'},{},
 				{text: '$ '+parseFloat(subTotalCauses).toFixed(2), style: 'footer', alignment: 'center'},
 				{text: '', style: 'parabordes'}
-				]);/**/
+				]);
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONDICIONES DE PAGO: 20 días naturales contados a partir de la recepción de la factura original, debidamente requisitada y previa validación de la unidad aplicativa a entera satisfacción de las mismas. Las facturas deberán presentarse a la Dirección de Atención Médica, mismas que enviaran a la Subdirección de Recursos Materiales y Servicios Generales para realizar el trámite correspondiente para este fin, conforme a la fuente de Financiamiento correspondiente', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'TIEMPO DE ENTREGA: Deberá surtir los insumos en un periodo no mayor a 48 horas posteriores a su notificación.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'LUGAR DE ENTREGA: '+$scope.acta.lugar_entrega, style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'ANEXOS: Carta original en papel membretado con nombre y firma autógrafa de su representante legal, en la que bajo protesta de decir verdad manifieste Que el tiempo mínimo de garantía de los bienes a entregar será de 4 meses, contados a partir de la entrega asumiendo el compromiso de cambiarlos en caso de defectos de fabricación, diferencias o vicios ocultos, en un plazo no mayor de 24 horas contados a partir de la notificación. Sin costo para el Instituto.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -850,16 +847,16 @@
 				]);	
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONCEPTO Y PARTIDA PRESUPUESTAL: '+$scope.acta.empresa.partida_presupuestal, style: 'normal', alignment: 'left'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'REQUISICIÓN DE MEDICAMENTOS NO CAUSES', style: 'normal', alignment: 'center'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -941,32 +938,32 @@
 				{colSpan: 2,text: 'TOTAL', style: 'footer', alignment: 'right'},{},
 				{text: '$ '+parseFloat(subTotalNoCauses).toFixed(2), style: 'footer', alignment: 'center'},
 				{text: '', style: 'parabordes'}
-				]);/**/
+				]);
 				
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONDICIONES DE PAGO: 20 días naturales contados a partir de la recepción de la factura original, debidamente requisitada y previa validación de la unidad aplicativa a entera satisfacción de las mismas. Las facturas deberán presentarse a la Dirección de Atención Médica, mismas que enviaran a la Subdirección de Recursos Materiales y Servicios Generales para realizar el trámite correspondiente para este fin, conforme a la fuente de Financiamiento correspondiente', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'TIEMPO DE ENTREGA: Deberá surtir los insumos en un periodo no mayor a 48 horas posteriores a su notificación.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'LUGAR DE ENTREGA: '+$scope.acta.lugar_entrega, style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'ANEXOS: Carta original en papel membretado con nombre y firma autógrafa de su representante legal, en la que bajo protesta de decir verdad manifieste Que el tiempo mínimo de garantía de los bienes a entregar será de 4 meses, contados a partir de la entrega asumiendo el compromiso de cambiarlos en caso de defectos de fabricación, diferencias o vicios ocultos, en un plazo no mayor de 24 horas contados a partir de la notificación. Sin costo para el Instituto.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -1010,16 +1007,16 @@
 				]);	
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONCEPTO Y PARTIDA PRESUPUESTAL: '+$scope.acta.empresa.partida_presupuestal, style: 'normal', alignment: 'left'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'REQUISICIÓN DE MEDICAMENTOS NO CAUSES', style: 'normal', alignment: 'center'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -1104,30 +1101,30 @@
 				{colSpan: 2,text: 'TOTAL', style: 'footer', alignment: 'right'},{},
 				{text: '$ '+parseFloat(totalMaterialCuracion).toFixed(2), style: 'footer', alignment: 'center'},
 				{text: '', style: 'parabordes'}
-				]);/**/
+				]);
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONDICIONES DE PAGO: 20 días naturales contados a partir de la recepción de la factura original, debidamente requisitada y previa validación de la unidad aplicativa a entera satisfacción de las mismas. Las facturas deberán presentarse a la Dirección de Atención Médica, mismas que enviaran a la Subdirección de Recursos Materiales y Servicios Generales para realizar el trámite correspondiente para este fin, conforme a la fuente de Financiamiento correspondiente', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'TIEMPO DE ENTREGA: Deberá surtir los insumos en un periodo no mayor a 48 horas posteriores a su notificación.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'LUGAR DE ENTREGA: '+$scope.acta.lugar_entrega, style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'ANEXOS: Carta original en papel membretado con nombre y firma autógrafa de su representante legal, en la que bajo protesta de decir verdad manifieste Que el tiempo mínimo de garantía de los bienes a entregar será de 4 meses, contados a partir de la entrega asumiendo el compromiso de cambiarlos en caso de defectos de fabricación, diferencias o vicios ocultos, en un plazo no mayor de 24 horas contados a partir de la notificación. Sin costo para el Instituto.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -1171,16 +1168,16 @@
 				]);	
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONCEPTO Y PARTIDA PRESUPUESTAL: '+$scope.acta.empresa.partida_presupuestal, style: 'normal', alignment: 'left'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'REQUISICIÓN DE MEDICAMENTOS CONTROLADOS', style: 'normal', alignment: 'center'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -1263,30 +1260,30 @@
 				{colSpan: 2,text: 'TOTAL', style: 'footer', alignment: 'right'},{},
 				{text: '$ '+parseFloat(subTotalMedicamentoControlado).toFixed(2), style: 'footer', alignment: 'center'},
 				{text: '', style: 'parabordes'}
-				]);/**/
+				]);
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'CONDICIONES DE PAGO: 20 días naturales contados a partir de la recepción de la factura original, debidamente requisitada y previa validación de la unidad aplicativa a entera satisfacción de las mismas. Las facturas deberán presentarse a la Dirección de Atención Médica, mismas que enviaran a la Subdirección de Recursos Materiales y Servicios Generales para realizar el trámite correspondiente para este fin, conforme a la fuente de Financiamiento correspondiente', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'TIEMPO DE ENTREGA: Deberá surtir los insumos en un periodo no mayor a 48 horas posteriores a su notificación.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'LUGAR DE ENTREGA: '+$scope.acta.lugar_entrega, style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/},
+				{text: '', style: 'parabordes'},
 				{colSpan: 10, text: 'ANEXOS: Carta original en papel membretado con nombre y firma autógrafa de su representante legal, en la que bajo protesta de decir verdad manifieste Que el tiempo mínimo de garantía de los bienes a entregar será de 4 meses, contados a partir de la entrega asumiendo el compromiso de cambiarlos en caso de defectos de fabricación, diferencias o vicios ocultos, en un plazo no mayor de 24 horas contados a partir de la notificación. Sin costo para el Instituto.', style: 'normal', alignment: 'justify'},
 				{},{},{},{},{},{},{},{},{},
-				{text: '', style: 'parabordes'/*, rowSpan: cantidadLineas*/}]);
+				{text: '', style: 'parabordes'}]);
 				
 				docDefinition.content.table.body.push([
 				{text: '', style: 'parabordes'},
@@ -1311,10 +1308,9 @@
 				]);										
 			}
 											
-				pdfMake.createPdf(docDefinition).print();
-    	        $scope.cargando = false;
-			
-			
+			pdfMake.createPdf(docDefinition).print();
+	        $scope.cargando = false;
+		*/
 			
         };
         
