@@ -7,10 +7,7 @@
 		        <md-icon md-svg-icon="menu" ></md-icon>
 		    </md-button>		
 			<h2>
-			  <span>
-			  <small>ACTA: {{acta.folio}} </small><br>
-			  <small>{{acta.unidad_medica.nombre}}</small>
-			  </span>
+			  <span>ACTA: {{acta.folio}}</span>
 			</h2>
 			
 			<span flex></span>
@@ -25,7 +22,7 @@
 			<md-button class="md-icon-button" ng-click="toggleDatosActa=!toggleDatosActa"  ng-disabled="cargando" aria-label="Toggle Datos Acta">
 				<md-icon md-svg-icon="{{(toggleDatosActa)?'expand-panel-off':'expand-panel-on'}}"></md-icon>
 			</md-button>
-			
+
 			<md-icon md-svg-icon="dots-vertical" style="color: #005DA7;"></md-icon>
 
 			<md-button ng-if="acta.estatus == 3" class="md-accent md-raised" hide-xs hide-sm ng-click="validarPedido($event)" ng-disabled="cargando"  aria-label="{{ 'VALIDAR' | translate }}">
@@ -78,7 +75,7 @@
 			<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
 				<md-input-container flex="60" style="margin-bottom:0px;">
 					<label>Unidad Medica</label>
-					<input value="nombre Unidad medica" readonly>
+					<input value="{{acta.unidad_medica.nombre}}" readonly>
 				</md-input-container>
 
 				<md-input-container flex="15" style="margin-bottom:0px;">
