@@ -7,7 +7,10 @@
 		        <md-icon md-svg-icon="menu" ></md-icon>
 		    </md-button>		
 			<h2>
-			  <span>ACTA: {{acta.folio}} </span>
+			  <span>
+			  <small>ACTA: {{acta.folio}} </small><br>
+			  <small>{{acta.unidad_medica.nombre}}</small>
+			  </span>
 			</h2>
 			
 			<span flex></span>
@@ -22,10 +25,10 @@
 			<md-button ng-click="toggleDatosActa=!toggleDatosActa"  ng-disabled="cargando" aria-label="Toggle Datos Acta">
 				<md-icon md-svg-icon="{{(toggleDatosActa)?'toggle-switch':'toggle-switch-off'}}"></md-icon>
 				<span show-gt-sm>
-				{{ (toggleDatosActa)?'OCULTAR DATOS DEL ACTA':'MOSTRAR DATOS DEL ACTA' | translate }}
+				{{ (toggleDatosActa)?'OCULTAR DETALLES':'MOSTRAR DETALLES' | translate }}
 				</span>
 				<md-tooltip hide-gt-sm md-direction="down">
-					{{ (toggleDatosActa)?'OCULTAR DATOS DEL ACTA':'MOSTRAR DATOS DEL ACTA' | translate }}
+					{{ (toggleDatosActa)?'OCULTAR DETALLES':'MOSTRAR DETALLES' | translate }}
 				</md-tooltip>
 			</md-button>
 
@@ -75,12 +78,17 @@
 	<md-content layout="column" flex>
 		<md-content id="modulo-contenedor" layout="column" flex>
 			<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
-				<md-input-container flex="20" style="margin-bottom:0px;">
+				<md-input-container flex="60" style="margin-bottom:0px;">
+					<label>Unidad Medica</label>
+					<input value="nombre Unidad medica" readonly>
+				</md-input-container>
+
+				<md-input-container flex="15" style="margin-bottom:0px;">
 					<label>Fecha del Acta</label>
 					<input value="{{acta.fecha_solicitud | date:'dd/MM/yyyy'}}" readonly>
 				</md-input-container>
 
-				<md-input-container flex="20" md-is-error="validacion.fecha_pedido" style="margin-bottom:0px;">
+				<md-input-container flex="15" md-is-error="validacion.fecha_pedido" style="margin-bottom:0px;">
 					<label>Fecha de Notificación</label>
 					<input type="date" ng-model="acta.fecha_pedido">
 					<div class="errors" ng-messages="validacion.fecha_pedido" >
@@ -89,7 +97,7 @@
 					</div>
 				</md-input-container>
 				
-				<md-input-container flex="15" md-is-error="validacion.num_oficio_pedido" style="margin-bottom:0px;">
+				<md-input-container flex="10" md-is-error="validacion.num_oficio_pedido" style="margin-bottom:0px;">
 					<label>No. de Oficio</label>
 					<input value="{{acta.num_oficio_pedido}}" readonly>
 					<div class="errors" ng-messages="validacion.num_oficio_pedido" >
@@ -98,13 +106,19 @@
 					</div>
 				</md-input-container>
 
-				<!--md-input-container flex="45" md-is-error="validacion.fuente_financiamiento" style="margin-bottom:0px;">
-					<label>Fuente de Financiamiento</label>
-					<input ng-model="acta.fuente_financiamiento">
-					<div class="errors" ng-messages="validacion.fuente_financiamiento" >
-						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
-					</div>
-				</md-input-container-->
+				<md-input-container flex class="md-block" style="margin-bottom:0px;" ng-if="acta.estatus == 3">
+					<label>Proveedor</label>
+					<md-select ng-model="aplicar_proveedor.id" aria-label="proveedor general">
+						<md-option ng-repeat="proveedor in proveedores" ng-value="proveedor.id">
+							{{proveedor.nombre}}
+						</md-option>
+					</md-select>
+				</md-input-container>
+				<div flex="none" ng-if="acta.estatus == 3">
+					<md-button class="md-raised md-accent" ng-click="aplicarAInsumos()" ng-disabled="cargando">
+						<md-icon md-svg-icon="subdirectory-arrow-right"></md-icon> Aplicar a {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 3)?'Materiales de curación':'Controlados'))}}
+					</md-button>
+				</div>
 			</md-content>
 			<md-divider></md-divider>
 			<md-tabs  flex layout="column"  md-stretch-tabs="always"  md-border-bottom class="md-hue-1" md-selected="selectedIndex">

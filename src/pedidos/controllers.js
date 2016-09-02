@@ -223,6 +223,7 @@
         $scope.menuIsOpen = false;
         $scope.loggedUser = UsuarioData.getDatosUsuario();
         $scope.toggleDatosActa = true;
+        $scope.aplicar_proveedor = {};
 
         $scope.cargando = true;
 
@@ -312,6 +313,15 @@
                     Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrió un error al intentar guardar los datos.'});
                 }
             });
+        };
+
+        $scope.aplicarAInsumos = function(){
+            var insumos = $scope.acta.requisiciones[$scope.selectedIndex].insumos;
+            var proveedor_seleccionado = $scope.aplicar_proveedor;
+            
+            for(var i in insumos){
+                insumos[i].proveedor_id = proveedor_seleccionado.id;
+            }
         };
         
         $scope.imprimirNotificacion = function(){
