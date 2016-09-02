@@ -36,6 +36,8 @@
 		  .icon("ssa", "assets/svg/secretaria_salud.svg", 128)
 		  .icon("marca", "assets/svg/chiapas_nos_une.svg", 128)
 		  .icon("escudo-chiapas-h", "assets/svg/escudo_chiapas_h.svg", 128)
+		  .icon("expand-panel-off", "assets/svg/expand-panel-off.svg", 128)
+		  .icon("expand-panel-on", "assets/svg/expand-panel-on.svg", 128)
 		  
 		  .icon("hearts-filled", "assets/svg/hearts_filled.svg", 128)
 		  .icon("diabetes-filled", "assets/svg/diabetes_filled.svg", 128)

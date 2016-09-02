@@ -323,6 +323,10 @@
                 insumos[i].proveedor_id = proveedor_seleccionado.id;
             }
         };
+
+        $scope.generarExcel = function(){
+            window.open(URLS.BASE_API +'/pedidos-excel/'+$routeParams.id);
+        };
         
         $scope.imprimirNotificacion = function(){
             /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
