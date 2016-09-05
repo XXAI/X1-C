@@ -229,7 +229,7 @@
             $scope.acta = res.data;
 			$scope.configuracion = res.configuracion;			
 			
-			console.log(res);
+			//console.log(res);
 			
             $scope.nombres_clues = res.clues;
             if(!$scope.acta.num_oficio){
@@ -567,16 +567,15 @@
 
         $scope.imprimirSolicitudes = function(){
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            //window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
-								
+            window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
+			
+			/*											
 			RequisicionesDataApi.ver($routeParams.id,function(res){
-				
 				var actalocal = res.data;
-				
 				var nombreUnidadMedica = actalocal.unidad_medica.nombre;
-				var nombreEmpresa = actalocal.empresa.nombre;
-								
+				var nombreEmpresa = actalocal.empresa.nombre;								
 				$scope.cargando = true;
+								
 				var datosEmbedidos = [];			
 				var docDefinition = {
 					pageSize: 'LETTER',
@@ -656,7 +655,8 @@
 
 				for(var i in actalocal.requisiciones)
 				{
-					var requisi = actalocal.requisiciones[i];
+					//console.log(i);
+					var requisi = actalocal.requisiciones[0];
 					var cantidadLineas = 18+requisi.insumos.length;
 					
 					if(i==0)
@@ -840,12 +840,15 @@
 						{text: '', style: 'parabordes'}
 					]);	
 				}
+				
+				console.log(docDefinition);
 
 				pdfMake.createPdf(docDefinition).print();
+				
     	        $scope.cargando = false;
 			},function(e){
                 $scope.cargando = false;
-            });
+            });*/
 			
 
 			
