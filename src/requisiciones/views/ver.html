@@ -135,19 +135,19 @@
 											<div flex="15" style="text-align:center;">$ {{insumo.precio | number:2}}</div>
 											<div flex="10" layout="column" style="text-align:center;">
 												<span ng-if="validandoRequisicion == undefined">
-													{{((requisicion.validado)?insumo.cantidad_aprovada:insumo.cantidad) | number}}
+													{{((requisicion.validado)?insumo.cantidad_validada:insumo.cantidad) | number}}
 												</span>
 												<md-input-container style="margin:0px;" ng-if="(validandoRequisicion != undefined)">
-													<input type="number" min="0" max="insumo.cantidad_aprovada" aria-label="insumo-{{insumo.id}}" ng-model="insumo.cantidad_aprovada" ng-change="cambiarValor(insumo)" ng-if="(insumos_por_clues[insumo.insumo_id] == undefined)">
+													<input type="number" min="0" max="insumo.cantidad_validada" aria-label="insumo-{{insumo.id}}" ng-model="insumo.cantidad_validada" ng-change="cambiarValor(insumo)" ng-if="(insumos_por_clues[insumo.insumo_id] == undefined)">
 													<div ng-if="(insumos_por_clues[insumo.insumo_id] == undefined)" class="hint">
 														<small>{{insumo.cantidad | number}}</small>
 													</div>
 													<md-button ng-if="(insumos_por_clues[insumo.insumo_id] != undefined)" class="md-raised" ng-click="validarPorClues($event,insumo)">
-														{{insumo.cantidad_aprovada}} / {{insumo.cantidad}}
+														{{insumo.cantidad_validada}} / {{insumo.cantidad}}
 													</md-button>
 												</md-input-container>
 											</div>
-											<div flex="15" style="text-align:center;">$ {{((validandoRequisicion != undefined || requisicion.validado)?insumo.total_aprovado:insumo.total) | number:2}}</div>
+											<div flex="15" style="text-align:center;">$ {{((validandoRequisicion != undefined || requisicion.validado)?insumo.total_validado:insumo.total) | number:2}}</div>
 										</div>
 										<md-divider></md-divider>
 									</md-list-item>

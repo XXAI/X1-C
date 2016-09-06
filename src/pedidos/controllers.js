@@ -259,8 +259,8 @@
                     insumo.precio = requisicion.insumos[j].precio;
 
                     insumo.insumo_id = requisicion.insumos[j].id;
-                    insumo.cantidad_aprovada = requisicion.insumos[j].pivot.cantidad_aprovada;
-                    insumo.total_aprovado = parseFloat(requisicion.insumos[j].pivot.total_aprovado);
+                    insumo.cantidad_validada = requisicion.insumos[j].pivot.cantidad_validada;
+                    insumo.total_validado = parseFloat(requisicion.insumos[j].pivot.total_validado);
                     insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
                     insumo.proveedor_id = requisicion.insumos[j].pivot.proveedor_id;
 

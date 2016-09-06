@@ -267,8 +267,8 @@
                     insumo.insumo_id = requisicion.insumos[j].id;
                     insumo.cantidad = requisicion.insumos[j].pivot.cantidad;
                     insumo.total = parseFloat(requisicion.insumos[j].pivot.total);
-                    insumo.cantidad_aprovada = requisicion.insumos[j].pivot.cantidad_aprovada;
-                    insumo.total_aprovado = parseFloat(requisicion.insumos[j].pivot.total_aprovado);
+                    insumo.cantidad_validada = requisicion.insumos[j].pivot.cantidad_validada;
+                    insumo.total_validado = parseFloat(requisicion.insumos[j].pivot.total_validado);
                     insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
 
                     requisicion.insumos[j] = insumo;
@@ -293,8 +293,8 @@
                         clues: insumo.pivot.clues,
                         cantidad: insumo.pivot.cantidad,
                         total: parseFloat(insumo.pivot.total),
-                        cantidad_aprovada: insumo.pivot.cantidad_validada,
-                        total_aprovado: parseFloat(insumo.pivot.total_validado),
+                        cantidad_validada: insumo.pivot.cantidad_validada,
+                        total_validado: parseFloat(insumo.pivot.total_validado),
                         requisicion_id: insumo.pivot.requisicion_id
                     });
                 }
@@ -307,7 +307,7 @@
         });
 
         $scope.cambiarValor = function(insumo){
-            insumo.total_aprovado = insumo.cantidad_aprovada * insumo.precio;
+            insumo.total_validado = insumo.cantidad_validada * insumo.precio;
             $scope.actualizarTotal($scope.selectedIndex);
         };
 
@@ -326,37 +326,37 @@
                     $scope.nombres_clues = nombres_clues;
                     $scope.reset_clues = {};
                     $scope.reset_insumo = {
-                        cantidad: insumo.cantidad_aprovada,
-                        total: insumo.total_aprovado
+                        cantidad: insumo.cantidad_validada,
+                        total: insumo.total_validado
                     };
 
                     for(var i in por_clues.clues){
                         $scope.reset_clues[por_clues.clues[i].clues] = {
-                            cantidad: por_clues.clues[i].cantidad_aprovada,
-                            total: por_clues.clues[i].total_aprovado
+                            cantidad: por_clues.clues[i].cantidad_validada,
+                            total: por_clues.clues[i].total_validado
                         };
                     }
 
                     $scope.cancel = function() {
                         for(var i in $scope.lista_clues.clues){
-                            $scope.lista_clues.clues[i].cantidad_aprovada = $scope.reset_clues[$scope.lista_clues.clues[i].clues].cantidad;
-                            $scope.lista_clues.clues[i].total_aprovado = $scope.reset_clues[$scope.lista_clues.clues[i].clues].total;
+                            $scope.lista_clues.clues[i].cantidad_validada = $scope.reset_clues[$scope.lista_clues.clues[i].clues].cantidad;
+                            $scope.lista_clues.clues[i].total_validado = $scope.reset_clues[$scope.lista_clues.clues[i].clues].total;
                         }
-                        $scope.insumo.cantidad_aprovada = $scope.reset_insumo.cantidad;
-                        $scope.insumo.total_aprovado = $scope.reset_insumo.total;
+                        $scope.insumo.cantidad_validada = $scope.reset_insumo.cantidad;
+                        $scope.insumo.total_validado = $scope.reset_insumo.total;
                         $mdDialog.cancel();
                     };
 
                     $scope.calcularTotal = function(item){
-                        item.total_aprovado = item.cantidad_aprovada * $scope.lista_clues.precio;
+                        item.total_validado = item.cantidad_validada * $scope.lista_clues.precio;
                         var total = 0;
                         var cantidad = 0;
                         for(var i in $scope.lista_clues.clues){
-                            cantidad += $scope.lista_clues.clues[i].cantidad_aprovada;
-                            total += $scope.lista_clues.clues[i].total_aprovado;
+                            cantidad += $scope.lista_clues.clues[i].cantidad_validada;
+                            total += $scope.lista_clues.clues[i].total_validado;
                         }
-                        $scope.insumo.cantidad_aprovada = cantidad;
-                        $scope.insumo.total_aprovado = total;
+                        $scope.insumo.cantidad_validada = cantidad;
+                        $scope.insumo.total_validado = total;
                     };
 
                     $scope.answer = function() {
@@ -397,9 +397,9 @@
                                 insumo_id: insumo.insumo_id,
                                 requisicion_id: insumo.clues[j].requisicion_id,
                                 cantidad: insumo.clues[j].cantidad,
-                                cantidad_aprovada: insumo.clues[j].cantidad_aprovada,
+                                cantidad_validada: insumo.clues[j].cantidad_validada,
                                 total: insumo.clues[j].total,
-                                total_aprovado: insumo.clues[j].total_aprovado,
+                                total_validado: insumo.clues[j].total_validado,
                                 clues: insumo.clues[j].clues
                             });
                         }
@@ -505,7 +505,7 @@
             var requisicion = $scope.acta.requisiciones[index];
             for(var i in requisicion.insumos){
                 if($scope.validandoRequisicion != undefined || requisicion.validado){
-                    total += requisicion.insumos[i].total_aprovado;
+                    total += requisicion.insumos[i].total_validado;
                 }else{
                     total += requisicion.insumos[i].total;
                 }
@@ -744,13 +744,13 @@
 							{text: requisi.insumos[i].lote.toString(), style: 'normal', alignment: 'center'},
 							{text: requisi.insumos[i].clave, style: 'normal', alignment: 'center'},
 							{colSpan: 3, text: requisi.insumos[i].descripcion, style: 'normal', alignment: 'center'},{},{},
-							{colSpan: 2, text: requisi.insumos[i].pivot.cantidad_aprovada.toString(), style: 'normal', alignment: 'center'},{},
+							{colSpan: 2, text: requisi.insumos[i].pivot.cantidad_validada.toString(), style: 'normal', alignment: 'center'},{},
 							{text: requisi.insumos[i].unidad, style: 'normal', alignment: 'center'},
 							{text: '$ '+numberFormat(requisi.insumos[i].precio), style: 'normal', alignment: 'center'},
-							{text: '$ '+numberFormat(requisi.insumos[i].pivot.total_aprovado), style: 'normal', alignment: 'center'},
+							{text: '$ '+numberFormat(requisi.insumos[i].pivot.total_validado), style: 'normal', alignment: 'center'},
 							{text: '', style: 'parabordes'}						
 						]);
-						subTotal = subTotal+parseFloat(requisi.insumos[i].pivot.total_aprovado);
+						subTotal = subTotal+parseFloat(requisi.insumos[i].pivot.total_validado);
 					}
 					
 					docDefinition.content.table.body.push([
