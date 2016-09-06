@@ -94,13 +94,32 @@
                     for (var i = 0; i < res.data.length; i++){
                         var obj = {
                             id: res.data[i].id,
+                            icono:'file-outline',
                             folio: res.data[i].folio,
                             fecha_importacion: new Date(res.data[i].fecha_importacion),
                             fecha_validacion: undefined,
                             total_importe: 0,
                             clues_nombre:'Clues no encontrada en el catalogo',
-                            estatus: res.data[i].estatus
+                            estatus: res.data[i].estatus,
+                            estatus_sincronizacion: res.data[i].estatus_sincronizacion,
+                            estilo:{}
                         };
+
+                        if(obj.estatus > 2){
+                            obj.icono = 'file-check';
+                        }else{
+                            obj.estilo = {
+                                'color': 'black',
+                                'font-weight': 'bold'
+                            }
+                            var hoy = new Date();
+                            var fecha = obj.fecha_importacion;
+                            var dias = Math.floor((hoy - fecha) / (1000 * 3600 * 24));
+                            console.log(dias);
+                            if(dias > 4){
+                                obj.estilo.color = 'darkred';
+                            }
+                        }
 
                         if(res.data[i].fecha_validacion){
                             obj.fecha_validacion = new Date(res.data[i].fecha_validacion);
@@ -524,9 +543,32 @@
             window.open(URLS.BASE_API +'/oficio-pdf/'+$routeParams.id);
         }
 
-        $scope.exportar = function(){
+        $scope.sincronizar = function(){
+            $scope.cargando = true;
+            RequisicionesDataApi.sincronizar($scope.acta.id,function(res){
+                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Datos sincronizados con éxito.'});
+                $scope.acta.estatus_sincronizacion = res.data.estatus_sincronizacion;
+                $scope.cargando = false;
+            },function(e){
+                $scope.cargando = false;
+                if(e.error_type == 'form_validation'){
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Hay un error en los datos del formulario.'});
+                    var errors = e.error;
+                    for (var i in errors){
+                        var error = JSON.parse('{ "' + errors[i] + '" : true }');
+                        $scope.validacion[i] = error;
+                    }
+                }else if(e.error_type == 'data_validation'){
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:e.error});
+                }else{
+                    Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:'Ocurrió un error al intentar guardar los datos.'});
+                }
+            });
+        };
+
+        /*$scope.exportar = function(){
             window.open(URLS.BASE_API +'/exportar-csv/'+$routeParams.id);
-        }
+        }*/
 		
 		function devuelveMes(mes){
             if(mes==0) return 'ENERO';
@@ -849,9 +891,6 @@
 			},function(e){
                 $scope.cargando = false;
             });*/
-			
-
-			
         };
         
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();

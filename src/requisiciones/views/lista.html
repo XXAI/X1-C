@@ -57,19 +57,19 @@
 	<md-virtual-repeat-container style="height:880px;" id="modulo-importar" flex>
 		<md-list layout="column">
       		<md-list-item class="md-2-line paciente-item" md-virtual-repeat="acta in requisicionesInfinitas" md-on-demand ng-click="ir('requisiciones/'+acta.id+'/ver')" ng-hide="!acta.id">
-      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="{{(acta.estatus >= 3)?'file-check':'file'}}" class="md-avatar-icon"></md-icon>
+      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="{{acta.icono}}" class="md-avatar-icon" ng-style="acta.estilo"></md-icon>
 				<div class="md-list-item-text">
-		        	<h3>{{ acta.folio }}</h3>
-		        	<h4 layout="row">
-		        		{{ acta.clues_nombre }}
-		        		<span flex></span>
-		        		<strong>Importado: </strong> {{(acta.fecha_importacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}} 
-		        	</h4>
-		        	<h4 layout="row">
-		        		<strong>Importe Validado:</strong> $ {{acta.total_importe | number:2}}
-		        		<span flex></span>
-		        		<strong>Validado: </strong> {{(acta.fecha_validacion)?(acta.fecha_validacion | date:'yyyy-MM-dd HH:mm') + ' hrs':'Pendiente'}} 
-		        	</h4>
+		        	<h3 ng-style="acta.estilo">{{ acta.folio }}</h3>
+		        	<p layout="row" layout-xs="column" ng-style="acta.estilo">
+		        		<span flex>
+			        		{{ acta.clues_nombre }}<br>
+			        		<span hide-xs><strong>Importe Validado:</strong> $ {{acta.total_importe | number:2}}</span>
+			        	</span>
+			        	<span flex="none">
+			        		<span hide-xs><strong>Importado: </strong> {{(acta.fecha_importacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}}<br></span>
+			        		<strong>Validado: </strong> {{(acta.fecha_validacion)?(acta.fecha_validacion | date:'yyyy-MM-dd HH:mm') + ' hrs':'Pendiente'}} 
+			        	</span>	
+		        	</p>
 		        </div>
 				<md-divider></md-divider>
       		</md-list-item>
