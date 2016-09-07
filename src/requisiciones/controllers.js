@@ -105,7 +105,9 @@
                             estilo:{}
                         };
 
-                        if(obj.estatus > 2){
+                        if(obj.estatus > 2 && obj.estatus_sincronizacion < 2){
+                            obj.icono = 'sync-alert';
+                        }else if(obj.estatus > 2){
                             obj.icono = 'file-check';
                         }else{
                             obj.estilo = {
@@ -115,7 +117,7 @@
                             var hoy = new Date();
                             var fecha = obj.fecha_importacion;
                             var dias = Math.floor((hoy - fecha) / (1000 * 3600 * 24));
-                            console.log(dias);
+                            
                             if(dias > 4){
                                 obj.estilo.color = 'darkred';
                             }

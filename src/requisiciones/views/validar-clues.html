@@ -32,11 +32,11 @@
           </md-input-container>
           <md-input-container flex style="margin-bottom:0px;height:46px;">
             <label>Cantidad</label>
-            <input value="{{insumo.cantidad_aprovada | number}} / {{insumo.cantidad | number}}" disabled>
+            <input value="{{insumo.cantidad_validada | number}} / {{insumo.cantidad | number}}" disabled>
           </md-input-container>
           <md-input-container flex style="margin-bottom:0px;height:46px;">
             <label>Total</label>
-            <input value="$ {{insumo.total_aprovado | number:2}}" disabled>
+            <input value="$ {{insumo.total_validado | number:2}}" disabled>
           </md-input-container>
         </div>
         <md-divider></md-divider>
@@ -52,12 +52,12 @@
             </md-input-container>
             <md-input-container flex="15">
               <label>Cantidad</label>
-              <input type="number" ng-model="item.cantidad_aprovada" ng-change="calcularTotal(item)" min="0">
+              <input type="number" ng-model="item.cantidad_validada" ng-change="calcularTotal(item)" min="0">
               <div class="hint"><small>{{item.cantidad | number}}</small></div>
             </md-input-container>
             <md-input-container flex="15">
               <label>Total</label>
-              <input value="$ {{item.total_aprovado | number:2}}" disabled>
+              <input value="$ {{item.total_validado | number:2}}" disabled>
             </md-input-container>
           </div>
         </div>
