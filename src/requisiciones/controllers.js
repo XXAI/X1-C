@@ -484,6 +484,7 @@
                 if(res.data.estatus == 3){
                     $scope.acta.num_oficio = res.data.num_oficio;
                 }
+                $scope.acta.estatus_sincronizacion = res.data.estatus_sincronizacion;
                 $scope.cargando = false;
             },function(e){
                 $scope.cargando = false;
