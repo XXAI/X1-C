@@ -612,9 +612,9 @@
 
         $scope.imprimirSolicitudes = function(){
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            //window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
+            window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
 			
-														
+				/*										
 			RequisicionesDataApi.ver($routeParams.id,function(res){
 				var actalocal = res.data;
 				var nombreUnidadMedica = actalocal.unidad_medica.nombre;
@@ -907,7 +907,7 @@
                 $scope.cargando = false;
 
             });			
-
+*/
         };
         
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();
