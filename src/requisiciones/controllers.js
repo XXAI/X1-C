@@ -567,9 +567,9 @@
 
         $scope.imprimirSolicitudes = function(){
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
+            //window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
 			
-			/*											
+														
 			RequisicionesDataApi.ver($routeParams.id,function(res){
 				var actalocal = res.data;
 				var nombreUnidadMedica = actalocal.unidad_medica.nombre;
@@ -656,7 +656,7 @@
 				for(var i in actalocal.requisiciones)
 				{
 					//console.log(i);
-					var requisi = actalocal.requisiciones[0];
+					var requisi = actalocal.requisiciones[i];
 					var cantidadLineas = 18+requisi.insumos.length;
 					
 					if(i==0)
@@ -848,7 +848,7 @@
     	        $scope.cargando = false;
 			},function(e){
                 $scope.cargando = false;
-            });*/
+            });
 			
 
 			
