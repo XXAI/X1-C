@@ -624,7 +624,9 @@
 				var folioActa = actalocal.folio;
 
        			folioActa=folioActa.replace('\/','-');
-				folioActa=folioActa.replace('\/','-');				
+				folioActa=folioActa.replace('\/','-');		
+				
+		
 								
 				var datosEmbedidos = [];			
 				var docDefinition = {
@@ -760,7 +762,7 @@
 					
 					docDefinition.content.table.body.push([
 						{text: '', style: 'parabordes'},
-						{colSpan: 2, text: 'No.', style: 'normal', alignment: 'center'},{},
+						{colSpan: 2, text: 'No.'+requisi.numero, style: 'normal', alignment: 'center'},{},
 						{colSpan: 2, text: nombreUnidadMedica, style: 'normal', alignment: 'center'},{},
 						{text: requisi.pedido, style: 'normal', alignment: 'center'},
 						{text: requisi.insumos.length.toString(), style: 'normal', alignment: 'center'},
