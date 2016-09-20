@@ -10,9 +10,6 @@
 		    </md-button>   
 			<h2><span ng-hide="textoBuscado">Pedidos</span><span ng-show="textoBuscado">Resultados para: "{{textoBuscado}}"</span></h2>
 			<span flex></span>
-			<!--md-button aria-label="importar" ng-click="importarExcel()" ng-disabled="cargando">
-				<md-icon md-svg-icon="file-import"></md-icon> Importar
-			</md-button-->
 			<md-button class="md-icon-button" aria-label="buscar" ng-click="prepararBusqueda()" >
 			  <md-icon md-svg-icon="magnify"></md-icon>
 			</md-button>
@@ -57,23 +54,21 @@
 	<md-virtual-repeat-container style="height:880px;" id="modulo-importar" flex>
 		<md-list layout="column">
       		<md-list-item class="md-2-line paciente-item" md-virtual-repeat="acta in pedidosInfinitos" md-on-demand ng-click="ir('pedidos/'+acta.id+'/ver')" ng-hide="!acta.id">
-      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="{{(acta.estatus > 3)?'file-lock':'file-check'}}" class="md-avatar-icon"></md-icon>
+      			<md-icon hide-xs ng-if="acta.id" md-svg-icon="{{acta.icono}}" class="md-avatar-icon" ng-style="acta.estilo"></md-icon>
 				<div class="md-list-item-text">
-		        	<h3 layout="row">
-		        		{{ acta.folio }}
-		        		<span flex></span>
-		        		<strong>Importado: </strong> {{(acta.fecha_importacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}} 
-		        	</h3>
-		        	<h4 layout="row">
-		        		{{ acta.clues_nombre }}
-		        		<span flex></span>
-		        		<strong>Validado: </strong> {{(acta.fecha_validacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}} 
-		        	</h4>
-		        	<h4 layout="row">
-		        		<strong>Importe Validado:</strong> $ {{acta.total_importe | number:2}}
-		        		<span flex></span>
-		        		<strong>Pedido: </strong> {{(acta.fecha_termino)?(acta.fecha_termino | date:'yyyy-MM-dd HH:mm') + ' hrs':'Pendiente'}} 
-		        	</h4>
+					<h3 ng-style="acta.estilo">{{ acta.folio }}</h3>
+		        	<p layout="row" layout-xs="column" ng-style="acta.estilo">
+		        		<span flex>
+			        		{{ acta.clues_nombre }}<br>
+			        		<span hide-xs><strong>Importe Validado:</strong> $ {{acta.total_importe | number:2}}</span>
+			        	</span>
+			        	<span flex="none">
+			        		<span hide-xs>
+			        			<strong>Validado: </strong> {{(acta.fecha_validacion | date:'yyyy-MM-dd HH:mm') + ' hrs'}} <br>
+			        		</span>
+			        		<strong>Pedido: </strong> {{(acta.fecha_termino)?(acta.fecha_termino | date:'yyyy-MM-dd HH:mm') + ' hrs':'Pendiente'}} 
+			        	</span>	
+		        	</p>
 		        </div>
 				<md-divider></md-divider>
       		</md-list-item>

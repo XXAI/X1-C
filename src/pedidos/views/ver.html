@@ -41,6 +41,14 @@
 			  <md-icon md-svg-icon="check"></md-icon>
 			</md-button>
 
+			<md-button ng-if="(acta.estatus > 3 && acta.estatus_sincronizacion < 3)" hide-xs hide-sm ng-click="sincronizar()" class="md-raised md-accent" ng-disabled="cargando"  aria-label="{{ 'SINCRONIZAR' | translate }}">
+			  <md-icon md-svg-icon="sync"></md-icon>
+			  {{ 'SINCRONIZAR' | translate }}
+			</md-button>		 
+			<md-button ng-if="(acta.estatus > 3 && acta.estatus_sincronizacion < 3)" class="md-icon-button md-accent"  hide-gt-sm ng-disabled="cargando" ng-click="sincronizar()"  aria-label="{{ 'SINCRONIZAR' | translate }}">
+			  <md-icon md-svg-icon="sync"></md-icon>
+			</md-button>
+
 			<md-menu md-position-mode="target-right target" >
 	          <md-button aria-label="Open demo menu" class="md-icon-button" ng-disabled="cargando" ng-click="$mdOpenMenu($event)">
 	            <md-icon md-menu-origin md-svg-icon="printer"></md-icon>
