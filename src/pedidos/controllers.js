@@ -314,6 +314,7 @@
                 Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Datos guardados con éxito.'});
                 if(res.data.estatus == 4){
                     $scope.acta.num_oficio_pedido = res.data.num_oficio_pedido;
+                    $scope.acta.estatus_sincronizacion = res.data.estatus_sincronizacion;
                 }
                 $scope.cargando = false;
             },function(e){

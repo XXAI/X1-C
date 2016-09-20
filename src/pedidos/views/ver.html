@@ -78,123 +78,120 @@
 			</md-button>
 		</div>
 	</md-toolbar>
-	<md-content layout="column" flex>
-		<md-content id="modulo-contenedor" layout="column" flex>
-			<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
-				<md-input-container flex="60" style="margin-bottom:0px;">
-					<label>Unidad Medica</label>
-					<input value="{{acta.unidad_medica.nombre}}" readonly>
-				</md-input-container>
+	<md-content id="modulo-contenedor" ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
+		<md-input-container flex="60" style="margin-bottom:0px;">
+			<label>Unidad Medica</label>
+			<input value="{{acta.unidad_medica.nombre}}" readonly>
+		</md-input-container>
 
-				<md-input-container flex="15" style="margin-bottom:0px;">
-					<label>Fecha del Acta</label>
-					<input value="{{acta.fecha_solicitud | date:'dd/MM/yyyy'}}" readonly>
-				</md-input-container>
+		<md-input-container flex="15" style="margin-bottom:0px;">
+			<label>Fecha del Acta</label>
+			<input value="{{acta.fecha_solicitud | date:'dd/MM/yyyy'}}" readonly>
+		</md-input-container>
 
-				<md-input-container flex="15" md-is-error="validacion.fecha_pedido" style="margin-bottom:0px;">
-					<label>Fecha de Notificación</label>
-					<input type="date" ng-model="acta.fecha_pedido">
-					<div class="errors" ng-messages="validacion.fecha_pedido" >
-						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
-						<div ng-message="date">Formato de fecha no valido, el formato valido es aaaa/mm/dd</div>
+		<md-input-container flex="15" md-is-error="validacion.fecha_pedido" style="margin-bottom:0px;">
+			<label>Fecha de Notificación</label>
+			<input type="date" ng-model="acta.fecha_pedido">
+			<div class="errors" ng-messages="validacion.fecha_pedido" >
+				<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+				<div ng-message="date">Formato de fecha no valido, el formato valido es aaaa/mm/dd</div>
+			</div>
+		</md-input-container>
+		
+		<md-input-container flex="10" md-is-error="validacion.num_oficio_pedido" style="margin-bottom:0px;">
+			<label>No. de Oficio</label>
+			<input value="{{acta.num_oficio_pedido}}" readonly>
+			<div class="errors" ng-messages="validacion.num_oficio_pedido" >
+				<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+				<div ng-message="unique">Este número de oficio ya fue capturado</div>
+			</div>
+		</md-input-container>
+
+		<md-input-container flex class="md-block" style="margin-bottom:0px;" ng-if="acta.estatus == 3">
+			<label>Proveedor</label>
+			<md-select ng-model="aplicar_proveedor.id" aria-label="proveedor general">
+				<md-option ng-repeat="proveedor in proveedores" ng-value="proveedor.id">
+					{{proveedor.nombre}}
+				</md-option>
+			</md-select>
+		</md-input-container>
+		<div flex="none" ng-if="acta.estatus == 3">
+			<md-button class="md-raised md-accent" ng-click="aplicarAInsumos()" ng-disabled="cargando">
+				<md-icon md-svg-icon="subdirectory-arrow-right"></md-icon> Aplicar a {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 3)?'Materiales de curación':'Controlados'))}}
+			</md-button>
+		</div>
+	</md-content>
+
+	<md-divider></md-divider>
+
+	<md-tabs flex="none" layout="column"  md-stretch-tabs="always"  md-border-bottom class="md-hue-1" md-selected="selectedIndex">
+		<md-tab ng-repeat="requisicion in acta.requisiciones track by $index">
+			<md-tab-label>
+				<md-icon md-svg-icon="checkbox-marked" ng-if="requisicion.estatus == 1"></md-icon>
+				<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':((requisicion.tipo_requisicion == 4)?'Controlados':'Materiales de curación'))}}</span>
+			</md-tab-label>
+		</md-tab>
+	</md-tabs>
+
+	<md-content flex="none">
+		<div layout="row" layout-padding style="font-size: 14px;font-weight: 500;line-height: 1em;color: rgb(33,150,243);">
+			<div flex="5" style="text-align:center;padding-left:0px;padding-right:0px;">No. Lote</div>
+			<div flex="15" style="text-align:center;padding-left:0px;padding-right:0px;">Clave</div>
+			<div flex style="text-align:center;padding-left:0px;padding-right:0px;">Descripción del Insumo</div>
+			<div flex="15" style="text-align:center;padding-left:0px;padding-right:0px;">Proveedor</div>
+			<div flex="15" style="text-align:center;padding-left:0px;padding-right:0px;">Precio Unitario</div>
+			<div flex="10" style="text-align:center;padding-left:0px;padding-right:0px;">Cantidad</div>
+			<div flex="15" style="text-align:center;padding-left:0px;padding-right:0px;">Total</div>
+		</div>
+		<md-divider></md-divider>
+	</md-content>
+
+	<md-virtual-repeat-container style="height:880px;" id="lista-insumos">
+		<md-list layout="column">
+			<md-list-item class="md-2-line paciente-item" md-virtual-repeat="insumo in acta.requisiciones[selectedIndex].insumos">
+				<div flex layout="row">
+					<div flex="5" style="text-align:center;">{{insumo.lote}}</div>
+					<div flex="15" style="text-align:center;">{{insumo.clave}}</div>
+					<div flex style="text-align:center;"><p style="line-height:14px; margin:0px;"><small>{{insumo.descripcion}}</small></p></div>
+					<div flex="15" style="text-align:center;">
+						<md-input-container class="md-block">
+							<md-select ng-model="insumo.proveedor_id" aria-label="select-{{insumo.id}}">
+								<md-option ng-repeat="proveedor in proveedores" ng-value="proveedor.id">
+									{{proveedor.nombre}}
+								</md-option>
+							</md-select>
+						</md-input-container>
 					</div>
-				</md-input-container>
-				
-				<md-input-container flex="10" md-is-error="validacion.num_oficio_pedido" style="margin-bottom:0px;">
-					<label>No. de Oficio</label>
-					<input value="{{acta.num_oficio_pedido}}" readonly>
-					<div class="errors" ng-messages="validacion.num_oficio_pedido" >
-						<div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
-						<div ng-message="unique">Este número de oficio ya fue capturado</div>
-					</div>
-				</md-input-container>
+					<div flex="15" style="text-align:center;">$ {{insumo.precio | number:2}}</div>
+					<div flex="10" layout="column" style="text-align:center;">{{insumo.cantidad_validada | number}}</div>
+					<div flex="15" style="text-align:center;">$ {{ insumo.total_validado | number:2}}</div>
+				</div>
+				<md-divider></md-divider>
+			</md-list-item>
+		</md-list>
+	</md-virtual-repeat-container>
 
-				<md-input-container flex class="md-block" style="margin-bottom:0px;" ng-if="acta.estatus == 3">
-					<label>Proveedor</label>
-					<md-select ng-model="aplicar_proveedor.id" aria-label="proveedor general">
-						<md-option ng-repeat="proveedor in proveedores" ng-value="proveedor.id">
-							{{proveedor.nombre}}
-						</md-option>
-					</md-select>
-				</md-input-container>
-				<div flex="none" ng-if="acta.estatus == 3">
-					<md-button class="md-raised md-accent" ng-click="aplicarAInsumos()" ng-disabled="cargando">
-						<md-icon md-svg-icon="subdirectory-arrow-right"></md-icon> Aplicar a {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 3)?'Materiales de curación':'Controlados'))}}
-					</md-button>
-				</div>
-			</md-content>
-			<md-divider></md-divider>
-			<md-tabs  flex layout="column"  md-stretch-tabs="always"  md-border-bottom class="md-hue-1" md-selected="selectedIndex">
-				<md-tab ng-repeat="requisicion in acta.requisiciones track by $index" ng-disabled="(validandoRequisicion != $index && validandoRequisicion != undefined)">
-					<md-tab-label>
-						<md-icon md-svg-icon="checkbox-marked" ng-if="requisicion.estatus == 1"></md-icon>
-						<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':((requisicion.tipo_requisicion == 4)?'Controlados':'Materiales de curación'))}}</span>
-					</md-tab-label>
-					<md-tab-body>
-						<div layout="column" class="relative" layout-fill>
-							<md-subheader class="md-primary">
-								<div layout="row">
-									<div flex="5" style="text-align:center;">No. Lote</div>
-									<div flex="15" style="text-align:center;">Clave</div>
-									<div flex style="text-align:center;">Descripción del Insumo</div>
-									<div flex="15" style="text-align:center;">Proveedor</div>
-									<div flex="15" style="text-align:center;">Precio Unitario</div>
-									<div flex="10" style="text-align:center;">Cantidad</div>
-									<div flex="15" style="text-align:center;">Total</div>
-								</div>
-							</md-subheader>
-							<md-content flex>
-								<md-divider></md-divider>
-								<md-list>
-									<md-list-item ng-repeat="insumo in requisicion.insumos">
-										<div flex layout="row">
-											<div flex="5" style="text-align:center;">{{insumo.lote}}</div>
-											<div flex="15" style="text-align:center;">{{insumo.clave}}</div>
-											<div flex style="text-align:center;"><p style="line-height:14px; margin:0px;"><small>{{insumo.descripcion}}</small></p></div>
-											<div flex="15" style="text-align:center;">
-												<md-input-container class="md-block">
-													<md-select ng-model="insumo.proveedor_id" aria-label="select-{{insumo.id}}">
-														<md-option ng-repeat="proveedor in proveedores" ng-value="proveedor.id">
-															{{proveedor.nombre}}
-														</md-option>
-													</md-select>
-												</md-input-container>
-											</div>
-											<div flex="15" style="text-align:center;">$ {{insumo.precio | number:2}}</div>
-											<div flex="10" layout="column" style="text-align:center;">{{insumo.cantidad_validada | number}}</div>
-											<div flex="15" style="text-align:center;">$ {{ insumo.total_validado | number:2}}</div>
-										</div>
-										<md-divider></md-divider>
-									</md-list-item>
-								</md-list>
-							</md-content>
-						</div>
-					</md-tab-body>
-				</md-tab>
-			</md-tabs>
-			<md-content layout="row" flex="none" layout-wrap>
-				<div flex="none">
-					<md-input-container flex="none" style="margin-bottom:0px;height:35px;">
-						<label>Total Insumos</label>
-						<input value="{{ acta.requisiciones[selectedIndex].insumos.length | number }}" readonly>
-					</md-input-container>
-				</div>
-				<div flex></div>
-				<div flex="none" layout="row" style="overflow:hidden;">
-					<md-input-container flex style="margin-bottom:0px;height:35px;">
-						<label>Subtotal</label>
-						<input value="$ {{acta.requisiciones[selectedIndex].sub_total_validado | number:2}}" readonly>
-					</md-input-container>
-					<md-input-container flex style="margin-bottom:0px;height:35px;">
-						<label>I.V.A.</label>
-						<input value="$ {{acta.requisiciones[selectedIndex].iva_validado | number:2}}" readonly>
-					</md-input-container>
-					<md-input-container flex style="margin-bottom:0px;height:35px;">
-						<label>Total</label>
-						<input value="$ {{acta.requisiciones[selectedIndex].gran_total_validado | number:2}}" readonly>
-					</md-input-container>
-				</div>
-			</md-content>
-		</md-content>
+	<md-content layout="row" flex="none" layout-wrap>
+		<div flex="none">
+			<md-input-container flex="none" style="margin-bottom:0px;height:35px;">
+				<label>Total Insumos</label>
+				<input value="{{ acta.requisiciones[selectedIndex].insumos.length | number }}" readonly>
+			</md-input-container>
+		</div>
+		<div flex></div>
+		<div flex="none" layout="row" style="overflow:hidden;">
+			<md-input-container flex style="margin-bottom:0px;height:35px;">
+				<label>Subtotal</label>
+				<input value="$ {{acta.requisiciones[selectedIndex].sub_total_validado | number:2}}" readonly>
+			</md-input-container>
+			<md-input-container flex style="margin-bottom:0px;height:35px;">
+				<label>I.V.A.</label>
+				<input value="$ {{acta.requisiciones[selectedIndex].iva_validado | number:2}}" readonly>
+			</md-input-container>
+			<md-input-container flex style="margin-bottom:0px;height:35px;">
+				<label>Total</label>
+				<input value="$ {{acta.requisiciones[selectedIndex].gran_total_validado | number:2}}" readonly>
+			</md-input-container>
+		</div>
 	</md-content>
 </div>
