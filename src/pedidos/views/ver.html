@@ -1,7 +1,7 @@
 <md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column"   class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"   ng-include="'src/app/views/menu.html'"></md-sidenav>
 <div layout="column" class="relative" layout-fill role="main" id="modulo-nuevo">
-	<md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
-	<md-toolbar layout="column" class="md-whiteframe-z2">
+	<md-progress-linear ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+	<md-toolbar  id="modulo-contenedor" layout="column" class="md-whiteframe-z2">
 		<div class="md-toolbar-tools">    
 			<md-button hide-gt-sm class="md-icon-button " ng-click="toggleMenu(true)" aria-label="Menu">
 		        <md-icon md-svg-icon="menu" ></md-icon>
@@ -78,7 +78,8 @@
 			</md-button>
 		</div>
 	</md-toolbar>
-	<md-content id="modulo-contenedor" ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
+	
+	<md-content ng-show="toggleDatosActa" layout="row" flex="none" layout-wrap layout-padding style="overflow:visible;">
 		<md-input-container flex="60" style="margin-bottom:0px;">
 			<label>Unidad Medica</label>
 			<input value="{{acta.unidad_medica.nombre}}" readonly>
