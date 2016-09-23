@@ -608,12 +608,11 @@
 
 			return resultado;
     	}
-		
-
+        
         $scope.imprimirSolicitudes = function(){
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            //window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
-																
+            window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
+			/*													
 			RequisicionesDataApi.ver($routeParams.id,function(res){
 				var actalocal = res.data;											
 				var folioActa = actalocal.folio;
@@ -625,12 +624,10 @@
 				ImprimirSolicitud.imprimir(actalocal, folioActa, $scope.configuracion);
 				
 				$scope.cargando = false;
-				
 			},function(e){
                 $scope.cargando = false;
-
-            });			
-
+            });
+            */
         };
         
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();
