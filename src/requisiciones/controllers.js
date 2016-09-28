@@ -248,7 +248,8 @@
 
         RequisicionesDataApi.ver($routeParams.id,function(res){
             $scope.acta = res.data;
-			$scope.configuracion = res.configuracion;			
+			$scope.configuracion = res.configuracion;
+            $scope.impresion_requisiciones = [];
 			
 			//console.log(res);
 			
@@ -319,6 +320,19 @@
                         requisicion_id: insumo.pivot.requisicion_id
                     });
                 }
+
+                var tipo_requisicion_descripcion = 'MEDICAMENTOS CAUSES';
+                if(requisicion.tipo_requisicion == 2){
+                    tipo_requisicion_descripcion = 'MEDICAMENTOS NO CAUSES';
+                }else if(requisicion.tipo_requisicion == 3){
+                    tipo_requisicion_descripcion = 'MATERIAL DE CURACIÓN';
+                }else if(requisicion.tipo_requisicion == 4){
+                    tipo_requisicion_descripcion = 'MEDICAMENTOS CONTROLADOS';
+                }
+                $scope.impresion_requisiciones.push({
+                    tipo_requisicion: requisicion.tipo_requisicion,
+                    descripcion: tipo_requisicion_descripcion
+                });
             }
             //console.log($scope.insumos_por_clues);
             $scope.cargando = false;
@@ -573,61 +587,27 @@
             window.open(URLS.BASE_API +'/exportar-csv/'+$routeParams.id);
         }*/
 		
-		function devuelveMes(mes){
-            if(mes==0) return 'ENERO';
-			else if(mes==1) return 'FEBRERO';
-			else if(mes==2) return 'MARZO';
-			else if(mes==3) return 'ABRIL';
-			else if(mes==4) return 'MAYO';
-			else if(mes==5) return 'JUNIO';
-			else if(mes==6) return 'JULIO';
-			else if(mes==7) return 'AGOSTO';
-			else if(mes==8) return 'SEPTIEMBRE';
-			else if(mes==9) return 'OCTUBRE';
-			else if(mes==10) return 'NOVIEMBRE';
-			else return 'DICIEMBRE';			
-        }
-		
-		function numberFormat(numero){
-     	   // Variable que contendra el resultado final
-        	var resultado = "";
-			var decimales = "";		        
-       		// Tomamos el numero eliminando los posibles puntos que tenga
-       		var nuevoNumero=numero.replace(/\./g,'');				
-			// Si tiene decimales, se los quitamos al numero				
-	        if(numero.indexOf(".")>=0)
-			{
-       		    nuevoNumero = nuevoNumero.substring(0,numero.indexOf(".")); 
-				decimales = "."+numero.substring(numero.length,numero.indexOf(".")+1);
-			}
-	       // Ponemos una coma cada 3 caracteres
-       		for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
-	            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
- 
-			resultado = resultado + decimales; 
-
-			return resultado;
-    	}
-        
-        $scope.imprimirSolicitudes = function(){
+        $scope.imprimirSolicitudes = function(tipo_requisicion){
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
-			/*													
+            //window.open(URLS.BASE_API +'/solicitudes-pdf/'+$routeParams.id);
+            $scope.cargando = true;
 			RequisicionesDataApi.ver($routeParams.id,function(res){
 				var actalocal = res.data;											
 				var folioActa = actalocal.folio;
 				folioActa=folioActa.replace('\/','-');
 				folioActa=folioActa.replace('\/','-');		
 				
-				$scope.cargando = true;
-				
-				ImprimirSolicitud.imprimir(actalocal, folioActa, $scope.configuracion);
-				
-				$scope.cargando = false;
+				ImprimirSolicitud.imprimir(actalocal, folioActa, res.configuracion,tipo_requisicion).then(
+                            function(res){
+                                $scope.cargando = false
+                            },function(err){
+                                console.log('error');
+                                Mensajero.mostrarToast({contenedor:'#modulo-contenedor',titulo:'Error:',mensaje:err});
+                                $scope.cargando = false
+                            });
 			},function(e){
                 $scope.cargando = false;
             });
-            */
         };
         
         $scope.menuCerrado = !UsuarioData.obtenerEstadoMenu();

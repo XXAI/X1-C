@@ -71,10 +71,11 @@
 		                </div>
 		            </md-button>
 	            </md-menu-item>
-	            <md-menu-item>
-	            	<md-button ng-click="imprimirSolicitudes()">
+	            <md-menu-divider></md-menu-divider>
+	            <md-menu-item ng-repeat="impresion in impresion_requisiciones">
+	            	<md-button ng-click="imprimirSolicitudes(impresion.tipo_requisicion)">
 		                <div layout="row">
-		                	<p flex>Requisiciones</p>
+		                	<p flex>{{impresion.descripcion}}</p>
 		                    <md-icon md-menu-align-target md-svg-icon="file" style="margin: auto 3px auto 0;"></md-icon>
 		                </div>
 		            </md-button>
