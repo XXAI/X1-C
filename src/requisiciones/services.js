@@ -268,6 +268,7 @@
 				}
 
 				pdfMake.createPdf(dd).download('requisiciones-'+folioActa+'-'+tipo_requisicion_descripcion+'.pdf');
+				//pdfMake.createPdf(dd).open('requisiciones-'+folioActa+'-'+tipo_requisicion_descripcion+'.pdf');
 				
 				defer.resolve();
 				return defer.promise;
