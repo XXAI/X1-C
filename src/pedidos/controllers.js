@@ -233,11 +233,11 @@
         };
     }])
     .controller('VerPedidoCtrl',
-    ['$rootScope', '$scope', 'PedidosDataApi', '$mdSidenav','$location','$mdBottomSheet','$routeParams','$filter','$localStorage',
-    '$http','$mdToast','Auth','Menu','URLS','UsuarioData','$mdDialog','$mdMedia','$window','Mensajero',
+    ['$rootScope', '$scope', 'PedidosDataApi', '$mdSidenav','$location','$mdBottomSheet','$routeParams','$filter','$localStorage','$timeout',
+    '$http','$mdToast','Auth','Menu','URLS','UsuarioData','$mdDialog','$mdMedia','$window','Mensajero','ImprimirPedido',
     function(
-    $rootScope, $scope, PedidosDataApi,$mdSidenav,$location,$mdBottomSheet,$routeParams,$filter,$localStorage,
-    $http,$mdToast,Auth,Menu,URLS,UsuarioData,$mdDialog,$mdMedia,$window,Mensajero
+    $rootScope, $scope, PedidosDataApi,$mdSidenav,$location,$mdBottomSheet,$routeParams,$filter,$localStorage,$timeout,
+    $http,$mdToast,Auth,Menu,URLS,UsuarioData,$mdDialog,$mdMedia,$window,Mensajero,ImprimirPedido
     ){
         $scope.menuSelected = "/pedidos";
         $scope.menu = Menu.getMenu();
@@ -362,7 +362,7 @@
             window.open(URLS.BASE_API +'/notificacion-pdf/'+$routeParams.id);
         };
 
-        $scope.imprimirPedido = function(){
+        $scope.imprimirPedido = function(ev){
             /*$http.get(URLS.BASE_API + '/requisicion-pdf/' + $routeParams.id)
               .then(function (data) {     // data is your url
                   var file = new Blob([data], {type: 'application/pdf'});
@@ -371,7 +371,77 @@
               });
             */
             //PedidosDataApi.verPDF($routeParams.id,function(e){console.log(e)});
-            window.open(URLS.BASE_API +'/pedidos-pdf/'+$routeParams.id);
+            //window.open(URLS.BASE_API +'/pedidos-pdf/'+$routeParams.id);
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            var locals = {
+                acta_id: $scope.acta.id
+            };
+            $mdDialog.show({
+                controller: function($scope, $mdDialog, acta_id) {
+                    $scope.acta_id = acta_id;
+                    $scope.cargando = true;
+                    $scope.proveedores = {};
+                    $scope.descargandoPedido = false;
+
+                    PedidosDataApi.cargarPedidos(acta_id,function(res){
+                        
+                        for(var i in res.data.pedidos){
+                            for(var j in res.data.pedidos[i]){
+                                if(!$scope.proveedores[i]){
+                                    $scope.proveedores[i] = {nombre:res.data.pedidos[i][j].proveedor,pedidos:[]};
+                                }
+                                $scope.proveedores[i].pedidos.push(res.data.pedidos[i][j]);
+                            }
+                        }
+
+                        $scope.configuracion = res.data.configuracion;
+                        $scope.empresa = res.data.empresa;
+                        $scope.estatus = res.data.estatus
+                        $scope.oficio_area_medica = res.data.oficio_area_medica;
+
+                        $scope.cargando = false;
+                    },function(error){
+                        $scope.cargando = false;
+                    });
+
+                    $scope.descargarPedido = function(pedido){
+                        $scope.descargandoPedido = true;
+                        pedido.cargando = true;
+                        
+                        ImprimirPedido.imprimir(pedido, $scope.empresa, $scope.configuracion, $scope.estatus, $scope.oficio_area_medica)
+                        .then(function(res){
+                            $scope.descargandoPedido = false;
+                            pedido.cargando = false
+                        },function(err){
+                            console.log('error');
+                            Mensajero.mostrarToast({contenedor:'#modulo-dialogo',titulo:'Error:',mensaje:err});
+                            $scope.descargandoPedido = false;
+                            pedido.cargando = false
+                        });
+                    }
+
+                    $scope.cancel = function() {
+                        $scope.cargando = false;
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.answer = function(cerrar) {
+                        $mdDialog.hide({yes:true});
+                    };
+                },
+                templateUrl: 'src/pedidos/views/formatos-pedido.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                escapeToClose:true,
+                fullscreen: useFullScreen,
+                locals:locals
+            })
+            .then(function(res) {
+                //$scope.actualizarTotal($scope.selectedIndex);
+            }, function() {
+                //console.log('cancelado');
+            });
         };
 
         $scope.sincronizar = function(){

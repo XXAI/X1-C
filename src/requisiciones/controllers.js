@@ -583,9 +583,9 @@
             });
         };
 
-        /*$scope.exportar = function(){
+        $scope.exportar = function(){
             window.open(URLS.BASE_API +'/exportar-csv/'+$routeParams.id);
-        }*/
+        }
 		
         $scope.imprimirSolicitudes = function(tipo_requisicion){
             //RequisicionesDataApi.verPDF($routeParams.id,function(e){console.log(e)});

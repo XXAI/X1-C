@@ -50,13 +50,13 @@
 			  <md-icon md-svg-icon="sync"></md-icon>
 			</md-button>
 
-			<!--md-button ng-if="(acta.estatus > 2)" hide-xs hide-sm ng-click="exportar()" ng-disabled="cargando"  aria-label="{{ 'EXPORTAR' | translate }}">
-			  <md-icon md-svg-icon="file-export"></md-icon>
+			<md-button ng-if="(acta.estatus > 2)" hide-xs hide-sm ng-click="exportar()" ng-disabled="cargando"  aria-label="{{ 'EXPORTAR' | translate }}">
+			  <md-icon md-svg-icon="download"></md-icon>
 			  {{ 'EXPORTAR' | translate }}
 			</md-button>		 
 			<md-button ng-if="(acta.estatus > 2)" class="md-icon-button"  hide-gt-sm ng-disabled="cargando" ng-click="exportar()"  aria-label="{{ 'EXPORTAR' | translate }}">
-			  <md-icon md-svg-icon="file-export"></md-icon>
-			</md-button-->
+			  <md-icon md-svg-icon="download"></md-icon>
+			</md-button>
 
 			<md-menu md-position-mode="target-right target" >
 	          <md-button aria-label="Open demo menu" class="md-icon-button" ng-disabled="cargando" ng-click="$mdOpenMenu($event)">
@@ -147,7 +147,7 @@
 					<div flex="15" style="text-align:center;">$ {{insumo.precio | number:2}}</div>
 					<div flex="10" layout="column" style="text-align:center;">
 						<span ng-if="validandoRequisicion == undefined">
-							{{((requisicion.validado)?insumo.cantidad_validada:insumo.cantidad) | number}}
+							{{((acta.requisiciones[selectedIndex].validado)?insumo.cantidad_validada:insumo.cantidad) | number}}
 						</span>
 						<md-input-container style="margin:0px;" ng-if="(validandoRequisicion != undefined)">
 							<input type="number" min="0" max="insumo.cantidad_validada" aria-label="insumo-{{insumo.id}}" ng-model="insumo.cantidad_validada" ng-change="cambiarValor(insumo)" ng-if="(insumos_por_clues[insumo.insumo_id] == undefined)">
@@ -159,7 +159,7 @@
 							</md-button>
 						</md-input-container>
 					</div>
-					<div flex="15" style="text-align:center;">$ {{((validandoRequisicion != undefined || requisicion.validado)?insumo.total_validado:insumo.total) | number:2}}</div>
+					<div flex="15" style="text-align:center;">$ {{((validandoRequisicion != undefined || acta.requisiciones[selectedIndex].validado)?insumo.total_validado:insumo.total) | number:2}}</div>
 				</div>
 				<md-divider></md-divider>
 			</md-list-item>
