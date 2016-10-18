@@ -119,7 +119,7 @@
 		</md-input-container>
 		<div flex="none" ng-if="acta.estatus == 3">
 			<md-button class="md-raised md-accent" ng-click="aplicarAInsumos()" ng-disabled="cargando">
-				<md-icon md-svg-icon="subdirectory-arrow-right"></md-icon> Aplicar a {{(acta.requisiciones[selectedIndex].tipo_requisicion == 1)?'Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 2)?'No Causes':((acta.requisiciones[selectedIndex].tipo_requisicion == 3)?'Materiales de curación':'Controlados'))}}
+				<md-icon md-svg-icon="subdirectory-arrow-right"></md-icon> Aplicar a {{acta.requisiciones[selectedIndex].tipo_descripcion}}
 			</md-button>
 		</div>
 	</md-content>
@@ -130,7 +130,7 @@
 		<md-tab ng-repeat="requisicion in acta.requisiciones track by $index">
 			<md-tab-label>
 				<md-icon md-svg-icon="checkbox-marked" ng-if="requisicion.estatus == 1"></md-icon>
-				<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':((requisicion.tipo_requisicion == 4)?'Controlados':'Materiales de curación'))}}</span>
+				<span>{{requisicion.tipo_descripcion}}</span>
 			</md-tab-label>
 		</md-tab>
 	</md-tabs>

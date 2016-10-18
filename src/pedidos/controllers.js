@@ -270,6 +270,20 @@
             for(var i in $scope.acta.requisiciones){
                 var requisicion = $scope.acta.requisiciones[i];
 
+                if(requisicion.tipo_requisicion == 1){
+                    requisicion.tipo_descripcion = 'Causes';
+                }else if(requisicion.tipo_requisicion == 2){
+                    requisicion.tipo_descripcion = 'No Causes';
+                }else if(requisicion.tipo_requisicion == 3){
+                    requisicion.tipo_descripcion = 'Materiales de Curación';
+                }else if(requisicion.tipo_requisicion == 4){
+                    requisicion.tipo_descripcion = 'Controlados';
+                }else if(requisicion.tipo_requisicion == 5){
+                    requisicion.tipo_descripcion = 'Surfactante Causes';
+                }else if(requisicion.tipo_requisicion == 6){
+                    requisicion.tipo_descripcion = 'Surfactante No Causes';
+                }
+
                 for(var j in requisicion.insumos){
                     var insumo = {};
                     
@@ -398,6 +412,7 @@
                         $scope.empresa = res.data.empresa;
                         $scope.estatus = res.data.estatus
                         $scope.oficio_area_medica = res.data.oficio_area_medica;
+                        $scope.folio = res.data.folio;
 
                         $scope.cargando = false;
                     },function(error){
@@ -408,7 +423,7 @@
                         $scope.descargandoPedido = true;
                         pedido.cargando = true;
                         
-                        ImprimirPedido.imprimir(pedido, $scope.empresa, $scope.configuracion, $scope.estatus, $scope.oficio_area_medica)
+                        ImprimirPedido.imprimir(pedido, $scope.empresa, $scope.configuracion, $scope.estatus, $scope.oficio_area_medica,$scope.folio)
                         .then(function(res){
                             $scope.descargandoPedido = false;
                             pedido.cargando = false

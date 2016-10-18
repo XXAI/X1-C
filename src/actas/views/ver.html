@@ -70,7 +70,7 @@
 				<md-tab ng-repeat="requisicion in acta.requisiciones track by $index" ng-disabled="(validandoRequisicion != $index && validandoRequisicion != undefined)">
 					<md-tab-label>
 						<md-icon md-svg-icon="checkbox-marked" ng-if="requisicion.estatus == 1"></md-icon>
-						<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':((requisicion.tipo_requisicion == 4)?'Controlados':'Materiales de curación'))}}</span>
+						<span>{{(requisicion.tipo_requisicion == 1)?'Causes':((requisicion.tipo_requisicion == 2)?'No Causes':((requisicion.tipo_requisicion == 4)?'Controlados':((requisicion.tipo_requisicion == 5)?'Surfactante Causes':((requisicion.tipo_requisicion == 6)?'Surfactante No Causes':'Materiales de curación'))))}}</span>
 					</md-tab-label>
 					<md-tab-body>
 						<div layout="column" class="relative" layout-fill>

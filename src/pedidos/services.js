@@ -28,7 +28,7 @@
 	angular.module('PedidosModule')
 		.service('ImprimirPedido',['$filter','$q',function($filter,$q){
         return {
-            imprimir: function(pedido, empresa, configuracion, estatus, oficio) {
+            imprimir: function(pedido, empresa, configuracion, estatus, oficio,folio) {
 				var defer = $q.defer();
 
 				try{
@@ -72,11 +72,6 @@
 									},{},{},{},{},{},{}],
 									[{ text: '"2016, Año de Don Ángel Albino Corzo"', style: 'tableHeaderLeyenda', colSpan: 7, alignment: 'center' },{},{},{},{},{}],
 									[{ text: 'SECRETARIA DE SALUD\nINSTITUTO DE SALUD\nDIRECCIÓN DE ADMINISTRACIÓN Y FINANZAS\nSUBDIRECCION DE RECURSOS MATERIALES Y SERVICIOS GENERALES', style: 'tableHeaderTop', colSpan: 7, alignment: 'center' },{},{},{},{},{}],
-									[
-										{ text: 'PEDIDO EMERGENTE DE ABASTOS A UNIDADES MEDICAS EN RELACION AL CONTRATO ABIERTO DE PRESTACION DE SERVICIO.', style: 'tableHeaderVerde', colSpan: 5, alignment: 'center' },{},{},{},{},
-										{ text: 'No. DE OFICIO DE SOLICITUD DEL ÁREA MÉDICA', style: 'tableHeaderVerde',  alignment: 'center', rowSpan:2},
-										{ text: oficio.toString(), style: 'tableHeader', alignment: 'center', rowSpan:2}
-									],
 									[
 										{ text: 'PROVEEDOR ADJUDICADO', style: 'tableHeaderVerde', alignment: 'center'},
 										{ text: pedido.proveedor, style: 'tableHeader', alignment: 'center', colSpan:2},
@@ -206,19 +201,31 @@
 						}
 					}
 
-					var index = 4;
+					var index = 3;
 					if(pedido.proveedor_id == 7){
-						dd.content[0].table.body.splice(index,0,[
-							{ text: 'PARTIDA PRESUPUESTAL', style: 'tableHeaderVerde', alignment: 'center'},
-							{ text: pedido.partida_presupuestal, style: 'tableHeader', alignment: 'center', colSpan:2},
-							{},
-							{ text: 'EMPRESA ADJUDICADA EN LICITACIÓN', style: 'tableHeaderVerde', alignment: 'center'},
-							{ text: empresa.nombre, style: 'tableHeader', alignment: 'center'},
-							{ text: 'NÚMERO DE PEDIDO ADJUDICADO EN LICITACIÓN', style: 'tableHeaderVerde', alignment: 'center'},
-							{ text: pedido.pedido+' \n('+pedido.tipo_requisicion_descripcion+')', style: 'tableHeader', alignment: 'center'}
-						]);
+						dd.content[0].table.body.splice(index,0,
+							[
+								{ text: 'PEDIDO EMERGENTE DE ABASTOS A UNIDADES MEDICAS EN RELACION AL CONTRATO ABIERTO DE PRESTACION DE SERVICIO.', style: 'tableHeaderVerde', colSpan: 5, alignment: 'center' },{},{},{},{},
+								{ text: 'No. DE OFICIO DE SOLICITUD DEL ÁREA MÉDICA', style: 'tableHeaderVerde',  alignment: 'center'},
+								{ text: oficio.toString(), style: 'tableHeader', alignment: 'center'}
+							],
+							[
+								{ text: 'PARTIDA PRESUPUESTAL', style: 'tableHeaderVerde', alignment: 'center'},
+								{ text: pedido.partida_presupuestal, style: 'tableHeader', alignment: 'center', colSpan:2},
+								{},
+								{ text: 'EMPRESA ADJUDICADA EN LICITACIÓN', style: 'tableHeaderVerde', alignment: 'center'},
+								{ text: empresa.nombre, style: 'tableHeader', alignment: 'center'},
+								{ text: 'NÚMERO DE PEDIDO ADJUDICADO EN LICITACIÓN', style: 'tableHeaderVerde', alignment: 'center'},
+								{ text: pedido.pedido+' \n('+pedido.tipo_requisicion_descripcion+')', style: 'tableHeader', alignment: 'center'}
+							]
+						);
 					}else{
 						dd.content[0].table.body.splice(index,0,
+							[
+								{ text: 'PEDIDO EMERGENTE DE ABASTOS A UNIDADES MEDICAS EN RELACION AL CONTRATO ABIERTO DE PRESTACION DE SERVICIO.', style: 'tableHeaderVerde', colSpan: 5, alignment: 'center' },{},{},{},{},
+								{ text: 'No. DE OFICIO DE SOLICITUD DEL ÁREA MÉDICA', style: 'tableHeaderVerde',  alignment: 'center', rowSpan:2},
+								{ text: oficio.toString(), style: 'tableHeader', alignment: 'center', rowSpan:2}
+							],
 							[{ 
 								text: 'FUNDAMENTO LEGAL: CLAUSULA SEGUNDA NUMERALES VIII párrafos primero y segundo Y IX ultimo parrafo 1545 del contrato contraido con la empresa EXFARMA, S.A. DE C.V. que a la letra dice:…\n\n“SEGUNDA. "EL PROVEEDOR" se obliga a lo siguiente:…”\n\n…”VIII. “EL PROVEEDOR” deberá mantener en existencia las cantidades necesarias de medicamentos y material de curación en cada modulo de distribución. Si por alguna razón imputable a “EL PROVEEDOR” llegara a existir faltante de alguna clave de medicamentos o material de curación, para mantener la operatividad de las Unidades Medicas y no poner en riesgo la salud o incluso la vida misma de los usuarios de los servicios de salud brindados por “EL INSTITUTO”, “EL PROVEEDOR” se compromete a surtir en un periodo máximo de 24 horas dichas claves; en caso de que terminado este plazo continuara el desabasto de medicamento o material de curación, entorpeciendo este acto el fin de privilegiar las acciones y medidas preventivas destinadas a evitar o mitigar el impacto negativo que tendría este hecho en la población, “EL INSTITUTO” podrá efectuar la compra inmediata de los medicamentos y material de curación en el mercado local.....\n\n...La compra de los medicamentos y material de curación que “EL INSTITUTO” adquiera con motivo del desabasto de alguna de las claves será realizada por la Subdirección de Recursos Materiales, a solicitud expresa de la Dirección de Atención Médica…” \n\n..."IX. ...\n\n...El importe que se genere de los pagos que “EL INSTITUTO” realizará a los proveedores locales que cubran el desabasto, estará incluido y con cargo al monto total máximo establecido en la CLAUSULA TERCERA del presente contrato.”…', 
 								style: 'tableHeader', 
@@ -310,7 +317,10 @@
 						},{},{},{},{},{}]
 					);
 
-					pdfMake.createPdf(dd).download('pedido.pdf');
+					var folioActa = folio;
+					folioActa=folioActa.replace('\/','-');
+
+					pdfMake.createPdf(dd).download('pedido-'+folioActa+'-'+pedido.tipo_requisicion_descripcion+'.pdf');
 					//pdfMake.createPdf(dd).open('requisiciones-'+folioActa+'-'+tipo_requisicion_descripcion+'.pdf');
 					
 					defer.resolve();

@@ -277,6 +277,20 @@
                     requisicion.iva = requisicion.iva_validado;
                 }
 
+                if(requisicion.tipo_requisicion == 1){
+                    requisicion.tipo_descripcion = 'Causes';
+                }else if(requisicion.tipo_requisicion == 2){
+                    requisicion.tipo_descripcion = 'No Causes';
+                }else if(requisicion.tipo_requisicion == 3){
+                    requisicion.tipo_descripcion = 'Materiales de Curación';
+                }else if(requisicion.tipo_requisicion == 4){
+                    requisicion.tipo_descripcion = 'Controlados';
+                }else if(requisicion.tipo_requisicion == 5){
+                    requisicion.tipo_descripcion = 'Surfactante Causes';
+                }else if(requisicion.tipo_requisicion == 6){
+                    requisicion.tipo_descripcion = 'Surfactante No Causes';
+                }
+
                 for(var j in requisicion.insumos){
                     var insumo = {};
                     
@@ -328,6 +342,10 @@
                     tipo_requisicion_descripcion = 'MATERIAL DE CURACIÓN';
                 }else if(requisicion.tipo_requisicion == 4){
                     tipo_requisicion_descripcion = 'MEDICAMENTOS CONTROLADOS';
+                }else if(requisicion.tipo_requisicion == 5){
+                    tipo_requisicion_descripcion = 'SURFACTANTE (CAUSES)';
+                }else if(requisicion.tipo_requisicion == 6){
+                    tipo_requisicion_descripcion = 'SURFACTANTE (NO CAUSES)';
                 }
                 $scope.impresion_requisiciones.push({
                     tipo_requisicion: requisicion.tipo_requisicion,
