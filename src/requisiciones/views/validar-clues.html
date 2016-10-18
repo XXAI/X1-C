@@ -9,37 +9,39 @@
         </md-button>
       </div>
     </md-toolbar>
+    <md-subheader class="md-primary md-hue-1">
+      <div flex layout="row" layout-wrap>
+        <div flex="100">
+          {{insumo.clave}}
+        </div>
+        <div flex="100">
+          {{insumo.descripcion}}
+        </div>
+        <md-input-container flex style="margin-bottom:0px;height:46px;">
+          <label>Lote</label>
+          <input value="{{insumo.lote}}" readonly>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom:0px;height:46px;">
+          <label>Unidad</label>
+          <input value="{{insumo.unidad}}" readonly>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom:0px;height:46px;">
+          <label>Precio</label>
+          <input value="$ {{insumo.precio | number:2}}" readonly>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom:0px;height:46px;">
+          <label>Cantidad</label>
+          <input value="{{insumo.cantidad_validada | number}} / {{insumo.cantidad | number}}" readonly>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom:0px;height:46px;">
+          <label>Total</label>
+          <input value="$ {{insumo.total_validado | number:2}}" readonly>
+        </md-input-container>
+      </div>
+    </md-subheader><!--You can use md-no-sticky class-->
+    <md-divider></md-divider>
     <md-dialog-content>
       <div class="md-dialog-content" layout="column">
-        <div flex layout="row" layout-wrap>
-          <div flex="100">
-            <div class="hint">{{insumo.clave}}</div>
-          </div>
-          <div flex="100">
-            <div class="hint">{{insumo.descripcion}}</div>
-          </div>
-          <md-input-container flex style="margin-bottom:0px;height:46px;">
-            <label>Lote</label>
-            <input value="{{insumo.lote}}" disabled>
-          </md-input-container>
-          <md-input-container flex style="margin-bottom:0px;height:46px;">
-            <label>Unidad</label>
-            <input value="{{insumo.unidad}}" disabled>
-          </md-input-container>
-          <md-input-container flex style="margin-bottom:0px;height:46px;">
-            <label>Precio</label>
-            <input value="$ {{insumo.precio | number:2}}" disabled>
-          </md-input-container>
-          <md-input-container flex style="margin-bottom:0px;height:46px;">
-            <label>Cantidad</label>
-            <input value="{{insumo.cantidad_validada | number}} / {{insumo.cantidad | number}}" disabled>
-          </md-input-container>
-          <md-input-container flex style="margin-bottom:0px;height:46px;">
-            <label>Total</label>
-            <input value="$ {{insumo.total_validado | number:2}}" disabled>
-          </md-input-container>
-        </div>
-        <md-divider></md-divider>
         <div layout="row" layout-wrap>
           <div flex="100" layout="row" ng-repeat="item in lista_clues.clues">
             <md-input-container flex="none">
