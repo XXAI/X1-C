@@ -51,9 +51,9 @@
 				}else if(requisicion.tipo_requisicion == 4){
 					tipo_requisicion_descripcion = 'MEDICAMENTOS CONTROLADOS';
 				}else if(requisicion.tipo_requisicion == 5){
-					tipo_requisicion_descripcion = 'SURFACTANTE CAUSES';
+					tipo_requisicion_descripcion = 'FACTOR SURFACTANTE (CAUSES)';
 				}else if(requisicion.tipo_requisicion == 6){
-					tipo_requisicion_descripcion = 'SURFACTANTE NO CAUSES';
+					tipo_requisicion_descripcion = 'FACTOR SURFACTANTE (NO CAUSES)';
 				}
 
 				var insumos = [];

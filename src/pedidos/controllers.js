@@ -297,7 +297,12 @@
                     insumo.cantidad_validada = requisicion.insumos[j].pivot.cantidad_validada;
                     insumo.total_validado = parseFloat(requisicion.insumos[j].pivot.total_validado);
                     insumo.requisicion_id = requisicion.insumos[j].pivot.requisicion_id;
-                    insumo.proveedor_id = requisicion.insumos[j].pivot.proveedor_id;
+
+                    if(!requisicion.insumos[j].pivot.proveedor_id && (requisicion.tipo_requisicion == 5 || requisicion.tipo_requisicion == 6)){
+                        insumo.proveedor_id = 8;
+                    }else{
+                        insumo.proveedor_id = requisicion.insumos[j].pivot.proveedor_id;
+                    }
 
                     requisicion.insumos[j] = insumo;
                 }

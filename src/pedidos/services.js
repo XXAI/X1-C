@@ -52,6 +52,14 @@
 						}
 					}
 
+					var tipo_requisicion_descripcion = pedido.tipo_requisicion_descripcion;
+
+					if(pedido.tipo_requisicion == 5){
+						tipo_requisicion_descripcion = 'FACTOR SURFACTANTE CAUSES';
+					}else if(pedido.tipo_requisicion == 6){
+						tipo_requisicion_descripcion = 'FACTOR SURFACTANTE NO CAUSES';
+					}
+
 					var header_rows = 12;
 					if(pedido.proveedor_id == 7){
 						header_rows = 9;
@@ -216,7 +224,7 @@
 								{ text: 'EMPRESA ADJUDICADA EN LICITACIÓN', style: 'tableHeaderVerde', alignment: 'center'},
 								{ text: empresa.nombre, style: 'tableHeader', alignment: 'center'},
 								{ text: 'NÚMERO DE PEDIDO ADJUDICADO EN LICITACIÓN', style: 'tableHeaderVerde', alignment: 'center'},
-								{ text: pedido.pedido+' \n('+pedido.tipo_requisicion_descripcion+')', style: 'tableHeader', alignment: 'center'}
+								{ text: pedido.pedido+' \n('+tipo_requisicion_descripcion+')', style: 'tableHeader', alignment: 'center'}
 							]
 						);
 					}else{
@@ -245,7 +253,7 @@
 							[
 								'','','','','',
 								{ text: 'NÚMERO DE PEDIDO ADJUDICADO EN LICITACIÓN', style: 'tableHeaderVerde',  alignment: 'center'},
-								{ text: pedido.pedido+' \n('+pedido.tipo_requisicion_descripcion+')', style: 'tableHeader', alignment: 'center'}
+								{ text: pedido.pedido+' \n('+tipo_requisicion_descripcion+')', style: 'tableHeader', alignment: 'center'}
 							]
 						);
 					}
