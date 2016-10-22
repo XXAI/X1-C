@@ -1,7 +1,7 @@
 <md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" ng-include="'src/app/views/menu.html'" md-is-locked-open="$mdMedia('gt-sm')"></md-sidenav>
 <div layout="column" class="relative" layout-fill role="main">
 	<md-progress-linear ng-if="cargando" class="md-accent" style="position:fixed; top:-5px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
-	<md-toolbar>
+	<md-toolbar id="modulo-contenedor">
 		<div class="md-toolbar-tools  md-whiteframe-z2">    
 			<md-button hide-gt-sm class="md-icon-button " ng-click="toggleMenu(true)" aria-label="Menu">
 		        <md-icon md-svg-icon="menu" ></md-icon>
@@ -12,7 +12,7 @@
 			<span flex></span>
 		</div>
 	</md-toolbar>
-	<md-content layout-padding id="modulo-contenedor">
+	<md-content layout-padding>
 		<div layout="row" layout-padding layout-wrap>
 			<div flex="50">
 				<div class="md-whiteframe-z2">
@@ -45,15 +45,15 @@
 					</md-list>
 				</div>
 			</div>
-			<!--div flex="50">
+			<div flex="50">
 				<div class="md-whiteframe-z2">
 					<md-toolbar class="md-primary md-hue-2">
-						<h1 class="md-toolbar-tools">Control de Actas<div flex></div></h1>
+						<h1 class="md-toolbar-tools">Captura de Actas: {{(actas_activas)?'Activada':'Desactivada'}}<div flex></div></h1>
 					</md-toolbar>
 					<md-list>
 						<md-list-item layout="row">
 							<div flex="none">
-								<md-button class="md-raised {{(actas_activas)?'':'md-primary'}}" aria-label="activar actas" md-ripple-size="full" ng-click="actas_activas=!actas_activas">
+								<md-button class="md-raised {{(actas_activas)?'':'md-primary'}}" aria-label="activar actas" md-ripple-size="full" ng-click="configurarCaptura()" ng-disabled="cargando">
 									<md-icon md-svg-icon="{{(actas_activas)?'close':'pencil'}}"></md-icon> {{(actas_activas)?'Desactivar':'Activar'}} Actas
 								</md-button>
 							</div>
@@ -63,7 +63,7 @@
 						</md-list-item>
 					</md-list>
 				</div>
-			</div-->
+			</div>
 		</div>
 	</md-content>
 </div>
