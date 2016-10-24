@@ -25,7 +25,12 @@
           }
           $scope.actas = res.data.actas;
           $scope.actas_por_validar = res.data.actas_sin_validar;
-          $scope.actas_activas = res.data.actas_activas;
+          if(res.data.actas_activas == 1){
+            $scope.actas_activas = 1;
+          }else{
+            $scope.actas_activas = 0;
+          }
+          
 
           $scope.cargando = false;
         },function(e){
