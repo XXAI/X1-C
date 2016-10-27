@@ -26,9 +26,9 @@
           $scope.actas = res.data.actas;
           $scope.actas_por_validar = res.data.actas_sin_validar;
           if(res.data.actas_activas == 1){
-            $scope.actas_activas = 1;
+            $scope.actas_activas = true;
           }else{
-            $scope.actas_activas = 0;
+            $scope.actas_activas = false;
           }
           
 
@@ -41,12 +41,13 @@
 
         $scope.configurarCaptura = function(){
           $scope.cargando = true;
+          //console.log($scope.actas_activas);
           if($scope.actas_activas){
-            var estatus = 0;
-            $scope.actas_activas = 0;
-          }else{
             var estatus = 1;
-            $scope.actas_activas = 1;
+            //$scope.actas_activas = false;
+          }else{
+            var estatus = 0;
+            //$scope.actas_activas = true;
           }
 
           DashboardDataApi.configurarHabilitarCaptura(estatus,function(res){
