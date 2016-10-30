@@ -247,6 +247,7 @@
         $scope.nombres_clues = {};
 
         RequisicionesDataApi.ver($routeParams.id,function(res){
+            console.log(res);
             $scope.acta = res.data;
 			$scope.configuracion = res.configuracion;
             $scope.impresion_requisiciones = [];
@@ -324,6 +325,7 @@
                             clues: []
                         };
                     }
+
                     
                     $scope.insumos_por_clues[insumo.id].clues.push({
                         clues: insumo.pivot.clues,
@@ -331,7 +333,8 @@
                         total: parseFloat(insumo.pivot.total),
                         cantidad_validada: insumo.pivot.cantidad_validada,
                         total_validado: parseFloat(insumo.pivot.total_validado),
-                        requisicion_id: insumo.pivot.requisicion_id
+                        requisicion_id: insumo.pivot.requisicion_id,
+                        requisicion_id_unidad: insumo.pivot.requisicion_id_unidad
                     });
                 }
 
@@ -439,6 +442,7 @@
                     .ok('Guardar')
                     .cancel('Cancelar');
                 $mdDialog.show(confirm).then(function() {
+                    console.log($scope.insumos_por_clues);
                     $scope.cargando = true;
                     var requisicion = $scope.acta.requisiciones[$scope.selectedIndex];
                     requisicion.estatus = 1;
@@ -453,13 +457,15 @@
                                 cantidad_validada: insumo.clues[j].cantidad_validada,
                                 total: insumo.clues[j].total,
                                 total_validado: insumo.clues[j].total_validado,
-                                clues: insumo.clues[j].clues
+                                clues: insumo.clues[j].clues,
+                                requisicion_id_unidad: insumo.clues[j].requisicion_id_unidad
                             });
                         }
                     }
                     requisicion.insumos_clues = insumos_clues;
                     $scope.actualizarTotal($scope.selectedIndex);
                     RequisicionesDataApi.editar(requisicion.id,requisicion,function(res){
+                        console.log(res);
                         requisicion.validado = true;
                         $scope.validandoRequisicion = undefined;
                         $scope.cargando = false;
@@ -511,6 +517,7 @@
         }
 
         $scope.guardar = function(){
+
             $scope.cargando = true;
             $scope.validacion = {};
             RequisicionesDataApi.editarActa($scope.acta.id,$scope.acta,function(res){
@@ -579,8 +586,11 @@
         }
 
         $scope.sincronizar = function(){
+
             $scope.cargando = true;
             RequisicionesDataApi.sincronizar($scope.acta.id,function(res){
+                console.log("hola");
+                console.log(res);
                 Mensajero.mostrarToast({contenedor:'#modulo-contenedor',mensaje:'Datos sincronizados con éxito.'});
                 $scope.acta.estatus_sincronizacion = res.data.estatus_sincronizacion;
                 $scope.cargando = false;
