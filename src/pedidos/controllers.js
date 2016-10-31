@@ -249,6 +249,7 @@
         $scope.cargando = true;
 
         PedidosDataApi.ver($routeParams.id,function(res){
+
             $scope.acta = res.data;
 
             $scope.proveedores = res.proveedores;
@@ -306,6 +307,7 @@
 
                     requisicion.insumos[j] = insumo;
                 }
+
             }
             $scope.cargando = false;
         },function(e){
