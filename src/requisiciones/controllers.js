@@ -508,7 +508,167 @@
                 $scope.acta.estatus = 3;
                 $scope.guardar();
             }, function() {});
-        }
+        };
+
+        $scope.clonarActa = function(ev){
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+                
+            var acta = {
+                id: $scope.acta.id,
+                ciudad: $scope.acta.ciudad,
+                lugar_reunion:$scope.acta.lugar_reunion,
+                clues: $scope.acta.clues,
+                estatus: $scope.acta.estatus,
+                hora_inicio: $scope.acta.hora_inicio,
+                hora_termino: $scope.acta.hora_termino
+            };
+
+            var locals = {
+                acta: acta
+            };
+
+            $mdDialog.show({
+                controller: function($scope, $mdDialog, acta) {
+                    //$scope.requisiciones = requisiciones;
+                    var fecha_actual = new Date();
+                    fecha_actual = new Date(fecha_actual.getFullYear(), fecha_actual.getMonth(), fecha_actual.getDate(), fecha_actual.getHours(), fecha_actual.getMinutes(), 0);
+                    $scope.cargando = true;
+                    $scope.clonacion = {validada: false};
+
+                    $scope.acta = {};
+                    $scope.acta.fecha = fecha_actual;
+                    $scope.acta.hora_inicio = acta.hora_inicio;
+                    $scope.acta.hora_termino = acta.hora_termino;
+                    $scope.acta.lugar_reunion = acta.lugar_reunion;
+                    $scope.acta.ciudad = acta.ciudad;
+                    $scope.acta.clues = acta.clues;
+                    $scope.acta.estatus = acta.estatus;
+
+                    if($scope.acta.hora_inicio){
+                        var horaInicio = $scope.acta.hora_inicio.split(':')
+                        $scope.acta.hora_inicio_date =  new Date(1970, 0, 1, horaInicio[0], horaInicio[1], 0);
+                    }
+
+                    if($scope.acta.hora_termino){
+                        var horaTermino = $scope.acta.hora_termino.split(':')
+                        $scope.acta.hora_termino_date =  new Date(1970, 0, 1, horaTermino[0], horaTermino[1], 0);
+                    }
+
+                    $scope.acta_origen = {};
+                    $scope.acta_origen.lugar_reunion = acta.lugar_reunion;
+
+                    $scope.acta_origen.hora_inicio = acta.hora_inicio;
+                    $scope.acta_origen.hora_termino = acta.hora_termino;
+                    $scope.acta_origen.ciudad = acta.ciudad;
+                    $scope.acta_origen.clues = acta.clues;
+                    $scope.acta_origen.id = acta.id;
+                    //$scope.acta_origen.estatus = acta.estatus;
+
+                    $scope.lista_clues = [];
+                    $scope.acta_base_sin_validar = true;
+
+                    RequisicionesDataApi.cargarClues(function (res) {
+                        $scope.lista_clues = res.data;
+                        $scope.cargando = false;
+                    }, function (e) {
+                        $scope.cargando = false;
+                        if(e.error_type == 'data_validation'){
+                            Mensajero.mostrarToast({contenedor:'#fomulario-dialogo-clonar-acta',titulo:'Error:',mensaje:e.error});
+                        }else{
+                            Mensajero.mostrarToast({contenedor:'#fomulario-dialogo-clonar-acta',titulo:'Error:',mensaje:'Ocurrió un error al intentar guardar los datos.'});
+                        }
+                    });
+
+                    $scope.cancel = function() {
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.clonar = function() {
+                        if(!$scope.cargando){
+                            $scope.cargando = true;
+
+                            var parametros = {
+                                //clues: $scope.acta.clues,
+                                validado: $scope.clonacion.validada,
+                                inputs:{
+                                    fecha:          $scope.acta.fecha,
+                                    hora_inicio:    $filter('date')($scope.acta.hora_inicio_date,'HH:mm:ss'),
+                                    hora_termino:   $filter('date')($scope.acta.hora_termino_date,'HH:mm:ss'),
+                                    ciudad:         $scope.acta.ciudad,
+                                    lugar_reunion:  $scope.acta.lugar_reunion
+                                }
+                            };
+
+                            RequisicionesDataApi.clonarActa($scope.acta_origen.id,parametros,function (res) {
+                                $scope.cargando = false;
+                                $location.path('requisiciones/'+res.data.id+'/ver');
+                            }, function (e) {
+                                $scope.cargando = false;
+                                $scope.validacion = {};
+                                if(e.error_type == 'form_validation'){
+                                    Mensajero.mostrarToast({contenedor:'#fomulario-dialogo-clonar-acta',titulo:'Error:',mensaje:'Hay un error en los datos del formulario.'});
+                                    var errors = e.error;
+                                    for (var i in errors){
+                                        var error = JSON.parse('{ "' + errors[i] + '" : true }');
+                                        $scope.validacion[i] = error;
+                                    }
+                                }else if(e.error_type == 'data_validation'){
+                                    Mensajero.mostrarToast({contenedor:'#fomulario-dialogo-clonar-acta',titulo:'Error:',mensaje:e.error});
+                                }else{
+                                    Mensajero.mostrarToast({contenedor:'#fomulario-dialogo-clonar-acta',titulo:'Error:',mensaje:'Ocurrió un error al intentar guardar los datos.'});
+                                }
+                            });
+                            /*
+                            $scope.acta.hora_inicio = $filter('date')($scope.acta.hora_inicio_date,'HH:mm:ss');
+                            $scope.acta.hora_termino = $filter('date')($scope.acta.hora_termino_date,'HH:mm:ss');
+                            $scope.acta.estatus = 2;
+                            //var parametros = {requisiciones: $scope.requisiciones, acta: $scope.acta};
+                            var parametros = {acta: $scope.acta};
+
+                            
+                            */
+                        }else{
+                            console.log('cargando');
+                        }
+                    };
+
+                    $scope.cluesAutoCompleteItemChange = function(){
+                        if ($scope.cluesAutoComplete.clues != null){
+                            $scope.acta.lugar_reunion = $scope.cluesAutoComplete.clues.nombre;
+                            $scope.acta.ciudad = $scope.cluesAutoComplete.clues.localidad;
+                            $scope.acta.clues = $scope.cluesAutoComplete.clues.clues;
+                        }else{
+                            $scope.acta.lugar_reunion = $scope.acta_origen.lugar_reunion;
+                            $scope.acta.ciudad = $scope.acta_origen.ciudad;
+                            $scope.acta.clues = $scope.acta_origen.clues;
+                        }
+                    };
+                    
+                    $scope.querySearchClues = function(query){
+                        return query ? $scope.lista_clues.filter( createFilterFor(query)) : $scope.lista_clues;
+                    };
+
+                    function createFilterFor(query) {
+                        var lowercaseQuery = angular.lowercase(query);
+                        return function filterFn(item) {
+                            if(angular.lowercase(item.nombre).indexOf(lowercaseQuery) >= 0 || angular.lowercase(item.clues).indexOf(lowercaseQuery) >= 0){
+                                return true;
+                            }
+                            return false;
+                        };
+                    };
+                },
+                templateUrl: 'src/requisiciones/views/form-clonar-acta.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen,
+                locals:locals
+            })
+            .then(function(res) {}, function() {
+                //console.log('cancelado');
+            });
+        };
 
         $scope.guardar = function(){
             $scope.cargando = true;
@@ -645,7 +805,7 @@
           UsuarioData.guardarEstadoMenu($scope.menuIsOpen);
         };
         
-        $scope.mostrarIdiomas = function($event){                
+        $scope.mostrarIdiomas = function($event){
             $mdBottomSheet.show({
               templateUrl: './src/app/views/idiomas.html',
               controller: 'ListaIdiomasCtrl',                 

@@ -1,0 +1,100 @@
+<md-dialog aria-label="form acta" flex ng-cloak id="fomulario-dialogo-clonar-acta">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Acta</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()" ng-disabled="cargando">
+          <md-icon md-svg-icon="close" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <!--md-subheader class="md-accent">
+      <div flex layout="row">
+        <md-autocomplete flex
+          md-input-id="autocomplete-clues"
+          md-no-cache="true"
+          md-selected-item="cluesAutoComplete.clues"
+          md-search-text="cluesAutoComplete.searchText"
+          md-selected-item-change ="cluesAutoCompleteItemChange()"
+          md-items="item in querySearchClues(cluesAutoComplete.searchText)"
+          md-item-text="item.clues + ' - ' + item.nombre"
+          md-min-length="3"
+          placeholder="Asignar a CLUES"
+          md-menu-class="autocomplete-custom-template">
+          <md-item-template>
+            <span class="item-title">
+                <div layout="row" layout-padding>
+                  <div flex="none"><strong><span md-highlight-text="cluesAutoComplete.searchText">CLUES:</span></strong> {{item.clues}}</div>
+                </div>
+            </span>
+            <span class="item-metadata md-padding">
+                <span class="item-metastat">
+                    <span md-highlight-text="cluesAutoComplete.searchText" >{{item.nombre}}</span><br>
+                    <small>JURISDICCIÓN {{item.jurisdiccion}}</small>
+                </span>
+            </span>
+          </md-item-template>
+          <md-not-found>
+            No hay resultados para  "{{cluesAutoComplete.searchText}}".
+          </md-not-found>
+        </md-autocomplete>
+      </div>
+    </md-subheader--><!--You can use md-no-sticky class-->
+    <md-divider></md-divider>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+        <div layout="row" flex="none" layout-wrap>
+          <md-input-container flex="50" md-is-error="validacion.ciudad" style="margin-bottom:0px;">
+            <label>Ciudad</label>
+            <input ng-model="acta.ciudad">
+            <div class="errors" ng-messages="validacion.ciudad" >
+              <div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+            </div>
+          </md-input-container>
+          <md-input-container flex="20" md-is-error="validacion.fecha" style="margin-bottom:0px;">
+            <label>Fecha</label>
+            <input type="date" ng-model="acta.fecha">
+            <div class="errors" ng-messages="validacion.fecha" >
+              <div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+            </div>
+          </md-input-container>
+          <md-input-container flex="15" md-is-error="validacion.hora_inicio" style="margin-bottom:0px;">
+            <label>Hora de inicio</label>
+            <input type="time" ng-model="acta.hora_inicio_date">
+            <div class="errors" ng-messages="validacion.hora_inicio" >
+              <div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+            </div>
+          </md-input-container>
+          <md-input-container flex="15" md-is-error="validacion.hora_termino" style="margin-bottom:0px;">
+            <label>Hora de termino</label>
+            <input type="time" ng-model="acta.hora_termino_date">
+            <div class="errors" ng-messages="validacion.hora_termino" >
+              <div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+            </div>
+          </md-input-container>
+          <md-input-container flex="100" md-is-error="validacion.lugar_reunion" style="margin-bottom:0px;">
+            <label>Lugar de Reunion</label>
+            <input ng-model="acta.lugar_reunion">
+            <div class="errors" ng-messages="validacion.lugar_reunion" >
+              <div ng-message="required">{{ 'CAMPO_REQUERIDO' | translate }}</div>
+            </div>
+          </md-input-container>
+        </div>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-checkbox ng-model="clonacion.validada" aria-label="acta validada" ng-disabled="acta.estatus < 3">
+        Validada
+      </md-checkbox>
+      <span flex></span>
+      <md-button class="md-raised md-accent" ng-disabled="cargando" ng-click="clonar()" style="margin-right:20px;">
+        <md-icon md-svg-icon="content-save"></md-icon> Clonar Acta
+      </md-button>
+      <md-button class="md-raised" ng-disabled="cargando" ng-click="cancel()" style="margin-right:20px;">
+        Cancelar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
