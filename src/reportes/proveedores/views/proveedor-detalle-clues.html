@@ -1,0 +1,120 @@
+<md-sidenav ng-class="(menuCerrado)?'menu-principal-izq':''" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" ng-include="'src/app/views/menu.html'"></md-sidenav>
+<div layout="column" class="relative" layout-fill role="main">
+	
+	<md-progress-linear  ng-if="cargando" class="md-accent" style="position:fixed; top:-3px; left:0px; z-index:999"  md-mode="indeterminate"></md-progress-linear>
+
+	<md-toolbar id="modulo-contenedor" layout="column" class="md-whiteframe-z2">
+		<div class="md-toolbar-tools">    
+			<md-button hide-gt-sm class="md-icon-button " ng-click="toggleMenu(true)" aria-label="Menu">
+		        <md-icon md-svg-icon="menu" ></md-icon>
+		    </md-button>		
+			<h2>
+				<span>{{proveedor.nombre}}</span>
+			</h2>
+			
+			<span flex></span>
+			<md-button hide-xs hide-sm ng-click="ir('reportes-proveedores')"   aria-label="{{ 'REGRESAR' | translate }}">
+			  <md-icon md-svg-icon="keyboard-backspace"></md-icon>
+			  {{ 'REGRESAR' | translate }}
+			</md-button>   
+			<md-button class="md-icon-button"  hide-gt-sm  ng-click="ir('reportes-proveedores')"   aria-label="{{ 'REGRESAR' | translate }}">
+			  <md-icon md-svg-icon="keyboard-backspace"></md-icon>
+			</md-button>
+
+			<!--md-button class="md-icon-button" ng-click="toggleDatosActa=!toggleDatosActa"  ng-disabled="cargando" aria-label="Toggle Datos Acta">
+				<md-icon md-svg-icon="{{(toggleDatosActa)?'expand-panel-off':'expand-panel-on'}}"></md-icon>
+			</md-button-->
+
+			<!--md-icon md-svg-icon="dots-vertical" style="color: #005DA7;"></md-icon-->
+
+			<!--md-button hide-xs hide-sm ng-click="exportar()" ng-disabled="cargando"  aria-label="{{ 'EXPORTAR' | translate }}">
+			  <md-icon md-svg-icon="download"></md-icon>
+			  {{ 'EXPORTAR' | translate }}
+			</md-button>		 
+			<md-button class="md-icon-button"  hide-gt-sm ng-disabled="cargando" ng-click="exportar()"  aria-label="{{ 'EXPORTAR' | translate }}">
+			  <md-icon md-svg-icon="download"></md-icon>
+			</md-button-->
+		</div>
+	</md-toolbar>
+
+	<md-subheader class="md-primary md-hue-1">
+		<div layout="row" flex>
+			<div flex="10">
+        		CLUES
+        	</div>
+			<div flex="30">
+        		Nombre de la unidad
+        	</div>
+        	<div flex="10" style="text-align: center;">
+        		Total de Claves
+        	</div>
+        	<div flex="10" style="text-align: center;">
+        		Claves Recibidas
+        	</div>
+        	<div flex="10" style="text-align: center;">
+        		% de Claves
+        	</div>
+        	<div flex="10" style="text-align: center;">
+        		Total Lotes
+        	</div>
+        	<div flex="10" style="text-align: center;">
+        		Lotes Recibidos
+        	</div>
+        	<div flex="10" style="text-align: center;">
+        		% Lotes
+        	</div>
+		</div>
+	</md-subheader>
+	<md-divider></md-divider>
+
+	<md-virtual-repeat-container style="height:880px;" id="modulo-proveedores">
+		<md-list layout="column">
+      		<md-list-item class="paciente-item" md-virtual-repeat="unidad in unidades_con_filtro">
+				<div layout="row" flex>
+					<div flex="10">
+		        		{{ unidad.clues }}
+		        	</div>
+		        	<div flex="30">
+		        		{{ unidad.nombre }}
+		        	</div>
+		        	<div flex="10" style="text-align: center;">
+		        		{{ unidad.total_claves | number }}
+		        	</div>
+		        	<div flex="10" style="text-align: center;">
+		        		{{ unidad.total_claves_recibidas | number }}
+		        	</div>
+		        	<div flex="10" style="text-align: center;" ng-style="(unidad.atencion_claves)?{'color':unidad.atencion_claves}:{}">
+		        		{{ unidad.porcentaje_claves | number:2 }} %
+		        	</div>
+		        	<div flex="10" style="text-align: center;">
+		        		{{ unidad.total_lotes | number }}
+		        	</div>
+		        	<div flex="10" style="text-align: center;">
+		        		{{ unidad.total_lotes_recibidos | number }}
+		        	</div>
+		        	<div flex="10" style="text-align: center;" ng-style="(unidad.atencion_lotes)?{'color':unidad.atencion_lotes}:{}">
+		        		{{ unidad.porcentaje_lotes | number:2 }} %
+		        	</div>
+		        </div>
+				<md-divider></md-divider>
+      		</md-list-item>
+      		<md-list-item ng-if="unidades_con_filtro.length == 0">
+		    	<md-subheader>
+		    		<span>No se encontraron unidades medicas.</span>
+		    	</md-subheader>
+		    </md-list-item>
+    	</md-list>
+    </md-virtual-repeat-container>
+
+    <md-toolbar md-theme="grey" class="md-primary">
+		<div class="md-toolbar-tools">
+			<div flex layout="row" layout-xs="column" ng-style="(smallScreen)?{'font-size':'small'}:{}">
+				<div flex>
+					<small>
+						<strong>Total:</strong> <span>{{unidades_con_filtro.length | number}}</span>
+					</small>
+				</div>
+			</div>
+		</div>
+	</md-toolbar>
+</div>
