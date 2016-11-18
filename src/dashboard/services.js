@@ -6,8 +6,11 @@
 	        	cargarDatos: function (success, error) {
 	            	$http.get(URLS.BASE_API + '/dashboard').success(success).error(error)
 	           	},
-	           	configurarHabilitarCaptura: function(estatus,success,error){
-	           		$http.get(URLS.BASE_API + '/habilitar-captura-acta/'+estatus).success(success).error(error)
+	           	configurarHabilitarCapturaOtros: function(estatus,success,error){
+	           		$http.get(URLS.BASE_API + '/habilitar-captura-acta/'+estatus+'?tipo=otros').success(success).error(error)
+	           	},
+	           	configurarHabilitarCapturaExfarma: function(estatus,success,error){
+	           		$http.get(URLS.BASE_API + '/habilitar-captura-acta/'+estatus+'?tipo=exfarma').success(success).error(error)
 	           	}
 	       };
 	   	}]);

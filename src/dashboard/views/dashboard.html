@@ -54,10 +54,12 @@
 					</md-toolbar>
 					<md-list>
 						<md-list-item layout="row" ng-click="false" ng-disabled="cargando">
-							<p>
-								Habilitar captura de actas:
-							</p>
-							<md-switch class="md-secondary" ng-model="actas_activas" ng-disabled="cargando" ng-change="configurarCaptura()" ng-value-true="1" ng-value-false="0"></md-switch>	
+							<p>Habilitar captura de actas (exfarma):</p>
+							<md-switch class="md-secondary" ng-model="actas_activas_exfarma" ng-disabled="cargando" ng-change="configurarCapturaExfarma()" ng-value-true="1" ng-value-false="0"></md-switch>
+						</md-list-item>
+						<md-list-item layout="row" ng-click="false" ng-disabled="cargando">
+							<p>Habilitar captura de actas (otros):</p>
+							<md-switch class="md-secondary" ng-model="actas_activas_otros" ng-disabled="cargando" ng-change="configurarCapturaOtros()" ng-value-true="1" ng-value-false="0"></md-switch>
 						</md-list-item>
 					</md-list>
 				</div>
