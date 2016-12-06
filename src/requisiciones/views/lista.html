@@ -40,6 +40,17 @@
 				      <md-radio-button value="validados">Validados</md-radio-button>
 				    </md-radio-group>
 				</div>
+				<md-subheader class="md-primary">
+	              Tipos de Clues
+	            </md-subheader>
+	            <md-divider></md-divider>
+				<div flex="100" layout="column" layout-wrap flex>
+		          <div flex ng-repeat="tipo in catalogos.tipos_clues">
+		            <md-checkbox ng-model="menuFiltro.tipo[tipo.id]">
+		              {{ tipo.nombre }}
+		            </md-checkbox>
+		          </div>
+		        </div>
 				<div layout="row" flex>
 					<div flex>
 						<md-switch ng-model="mostrarAyuda" aria-label="Ver ayuda">Ayuda</md-switch>

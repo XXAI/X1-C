@@ -6,6 +6,9 @@
 	           lista: function (params,success, error) {
 	               $http.get(URLS.BASE_API + '/usuarios',{params:params}).success(success).error(error)
 	           },
+	           catalogos: function (success, error) {
+	               $http.get(URLS.BASE_API + '/catalogos/usuarios').success(success).error(error)
+	           },
 	           buscar: function (query,success, error) {
 	               $http.get(URLS.BASE_API + '/usuarios?query='+query).success(success).error(error)
 	           },

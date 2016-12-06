@@ -6,6 +6,9 @@
 				lista: function (params,success, error) {
 					$http.get(URLS.BASE_API + '/requisiciones',{params:params}).success(success).error(error)
 				},
+				catalogos: function (success, error) {
+					$http.get(URLS.BASE_API + '/catalogos/requisiciones').success(success).error(error)
+				},
 				ver: function (id, success, error) {
 					$http.get(URLS.BASE_API + '/requisiciones/' + id).success(success).error(error)
 				},

@@ -9,8 +9,8 @@
         $scope.menuIsOpen = false;
         $scope.loggedUser = UsuarioData.getDatosUsuario();
 
-        $scope.filtro = {aplicado:false};
-        $scope.menuFiltro = {estatus:'todos'};
+        $scope.filtro = {aplicado:false,tipo:[]};
+        $scope.menuFiltro = {estatus:'todos', tipo:{}};
         $scope.textoBuscado = '';
 
         $scope.permisoAgregar = 'B646BDDC8ADB8';
@@ -19,17 +19,42 @@
         $scope.datosDelUsuario = {};
         $scope.cargasIniciales = {catalogos:false, listaRequisiciones:false};
         $scope.parametros = {};
+        $scope.catalogos = {tipos_clues:[]};
         $scope.cargando = true;
         $scope.cargandoLista = false;
         $scope.smallScreen = !$mdMedia('gt-sm');
 
         //$scope.empleados = [];
+        RequisicionesDataApi.catalogos(function(res){
+            $scope.catalogos.tipos_clues = res.data.tipos_clues;
+            var defaults = [];
 
-        $scope.cargasIniciales.catalogos = true;
-        if($scope.cargasIniciales.listaRequisiciones){
+            if(res.data.tipos_clues_default){
+                defaults = res.data.tipos_clues_default.split(',');
+            }
+            
+            for(var i in defaults){
+                $scope.menuFiltro.tipo[parseInt(defaults[i])] = true;
+            }
+
+            $scope.cargasIniciales.catalogos = true;
+            if($scope.cargasIniciales.listaRequisiciones){
+                $scope.cargando = false;
+            }
+        }, function (e, status) {
+            if(status == 403){
+                Mensajero.mostrarToast({contenedor:'#modulo-requisiciones',titulo:'Acceso Denegado:',mensaje:'No tiene permiso para listar estos elementos.'});
+            }else{
+                Mensajero.mostrarToast({contenedor:'#modulo-requisiciones',titulo:'Error:',mensaje:'Ocurrió un error al intentar listar los elementos.'});
+            }
             $scope.cargando = false;
-        }
-        
+            console.log(e);
+        });
+
+        $scope.existsTipoClues = function(tipo,asignados){
+            return false;
+        };
+
         function parametrosFiltro(filtro){
             var parametros = {};
 
@@ -78,6 +103,9 @@
                 var filtro = {};
                 if($scope.filtro.estatus != 'todos'){
                     filtro.estatus = $scope.filtro.estatus;
+                }
+                if($scope.filtro.tipo.length){
+                    filtro.tipo = $scope.filtro.tipo.join(',');
                 }
 
                 var parametros = parametrosFiltro({filtro:filtro});
@@ -172,14 +200,21 @@
         $scope.quitarFiltro = function(){
             $scope.textoBuscado = '';
             $scope.textoBusqueda = '';
-            $scope.menuFiltro = {estatus:'todos'};
+            $scope.menuFiltro = {estatus:'todos',tipo:{}};
             $scope.realizarBusqueda();
         };
 
         $scope.realizarBusqueda = function(){
             $scope.filtro.estatus = $scope.menuFiltro.estatus;
+            $scope.filtro.tipo = [];
 
-            if($scope.filtro.estatus != 'todos'){
+            for(var i in $scope.menuFiltro.tipo){
+                if($scope.menuFiltro.tipo[i]){
+                    $scope.filtro.tipo.push(i);
+                }
+            }
+
+            if($scope.filtro.estatus != 'todos' || $scope.filtro.tipo.length){
                 $scope.filtro.aplicado = true;
             }else{
                 $scope.filtro.aplicado = false;
