@@ -36,7 +36,8 @@
 					        		<div layout="row">
 					        			<p flex="none">{{ acta.unidad_medica.nombre }}</p>
 					        			<div flex></div>
-					        			<p flex="none">hace {{ acta.conteo_dias | number }} dias</p>
+					        			<p flex="none" ng-if="acta.conteo_dias">hace {{ acta.conteo_dias | number }} dias</p>
+					        			<p flex="none" ng-if="acta.conteo_dias == 0">hoy</p>
 					        		</div>
 					        	</p>
 					        </div>
