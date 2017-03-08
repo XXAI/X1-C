@@ -13,7 +13,8 @@
                         {
                             grupo:'Reportes',
                             lista: [
-                                { titulo: 'Proveedores', key: '4C915886C86CB', path: '/reportes-proveedores', icono: 'folder-account' }
+                                { titulo: 'Proveedores', key: '4C915886C86CB', path: '/reportes-proveedores', icono: 'folder-account' },
+                                { titulo: 'Recepcion', key: 'D82AC6CC7FCE9', path: '/recepcion', icono: 'truck' }
                             ]
                         },
                         { 
