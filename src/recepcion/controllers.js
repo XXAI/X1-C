@@ -19,6 +19,7 @@
         $scope.cargando = true;
         $scope.cargandoLista = false;
         $scope.smallScreen = !$mdMedia('gt-sm');
+        $scope.actasSeleccionadas = {actas:{},total:0};
 
         //$scope.empleados = [];
 
@@ -156,6 +157,29 @@
                 });
             }
           }
+        };
+
+        $scope.seleccionarActa = function(acta){
+            if(acta.selected){
+                $scope.actasSeleccionadas.actas[acta.id] = acta.folio;
+                $scope.actasSeleccionadas.total += 1;
+            }else{
+                $scope.actasSeleccionadas.actas[acta.id] = undefined;
+                $scope.actasSeleccionadas.total -= 1;
+            }
+        };
+
+        $scope.generarExcel = function(){
+            if($scope.actasSeleccionadas.total > 1){
+                var actas = [];
+                for(var i in $scope.actasSeleccionadas.actas){
+                    if($scope.actasSeleccionadas.actas[i]){
+                        actas.push(i);
+                    }
+                }
+                actas = actas.join();
+                window.open(URLS.BASE_API +'/entrada-acta-excel-concentrado?actas='+actas);
+            }
         };
 
         $scope.prepararBusqueda = function(){
